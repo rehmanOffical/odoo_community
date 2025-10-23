@@ -1,0 +1,55 @@
+2025-10-22 09:25:29,560 13964 DEBUG ? odoo.netsvc: logger level set: "odoo.http.rpc.request:INFO" 
+2025-10-22 09:25:29,565 13964 DEBUG ? odoo.netsvc: logger level set: "odoo.http.rpc.response:INFO" 
+2025-10-22 09:25:29,565 13964 DEBUG ? odoo.netsvc: logger level set: ":INFO" 
+2025-10-22 09:25:29,565 13964 DEBUG ? odoo.netsvc: logger level set: "odoo:DEBUG" 
+2025-10-22 09:25:29,565 13964 DEBUG ? odoo.netsvc: logger level set: "odoo.sql_db:INFO" 
+2025-10-22 09:25:29,565 13964 DEBUG ? odoo.netsvc: logger level set: ":INFO" 
+2025-10-22 09:25:29,565 13964 WARNING ? odoo.tools.config: missing --http-interface/http_interface, using 0.0.0.0 by default, will change to 127.0.0.1 in 20.0 
+2025-10-22 09:25:29,568 13964 INFO ? odoo: Odoo version 19.0 
+2025-10-22 09:25:29,570 13964 INFO ? odoo: Using configuration file at c:\users\lenovo\pictures\hk\odoo19\odoo-19.0\odoo.conf 
+2025-10-22 09:25:29,570 13964 INFO ? odoo: addons paths: _NamespacePath(['C:\\Users\\Lenovo\\Pictures\\HK\\odoo19\\odoo-19.0\\odoo\\addons', 'C:\\Users\\Lenovo\\AppData\\Local\\OpenERP S.A.\\Odoo\\addons\\19.0', 'c:\\users\\lenovo\\pictures\\hk\\odoo19\\odoo-19.0\\addons', 'c:\\users\\lenovo\\pictures\\hk\\odoo19\\odoo-19.0\\odoo\\addons']) 
+2025-10-22 09:25:29,571 13964 INFO ? odoo: database: odoo_super@127.0.0.1:5432 
+2025-10-22 09:25:31,053 13964 DEBUG ? odoo.service.server: Setting signal handlers 
+2025-10-22 09:25:31,070 13964 INFO ? odoo.service.server: HTTP service (werkzeug) running on DESKTOP-H1C0E2P:8069 
+2025-10-22 09:25:31,249 13964 DEBUG odoo19 odoo.registry: Multiprocess load registry signaling: [Registry: 2] [Cache default: 1] [Cache assets: 1] [Cache stable: 1] [Cache templates: 1] [Cache routing: 1] [Cache groups: 1] 
+2025-10-22 09:25:31,263 13964 INFO odoo19 odoo.modules.loading: loading 1 modules... 
+2025-10-22 09:25:31,263 13964 DEBUG odoo19 odoo.modules.loading: Loading module base (1/1) 
+2025-10-22 09:25:31,278 13964 DEBUG odoo19 odoo.modules.loading: Module base loaded in 0.01s, 0 queries 
+2025-10-22 09:25:31,278 13964 INFO odoo19 odoo.modules.loading: 1 modules loaded in 0.01s, 0 queries (+0 extra) 
+2025-10-22 09:25:31,301 13964 DEBUG odoo19 odoo.modules.loading: Updating graph with 13 more modules 
+2025-10-22 09:25:31,302 13964 INFO odoo19 odoo.modules.loading: loading 14 modules... 
+2025-10-22 09:25:31,302 13964 DEBUG odoo19 odoo.modules.loading: Loading module rpc (2/14) 
+2025-10-22 09:25:31,302 13964 DEBUG odoo19 odoo.modules.loading: Module rpc loaded in 0.00s, 0 queries 
+2025-10-22 09:25:31,302 13964 DEBUG odoo19 odoo.modules.loading: Loading module web (3/14) 
+2025-10-22 09:25:31,307 13964 DEBUG odoo19 odoo.modules.loading: Module web loaded in 0.00s, 0 queries 
+2025-10-22 09:25:31,307 13964 DEBUG odoo19 odoo.modules.loading: Loading module api_doc (4/14) 
+2025-10-22 09:25:31,325 13964 DEBUG odoo19 odoo.modules.loading: Module api_doc loaded in 0.02s, 0 queries 
+2025-10-22 09:25:31,325 13964 DEBUG odoo19 odoo.modules.loading: Loading module auth_totp (5/14) 
+2025-10-22 09:25:31,370 13964 DEBUG odoo19 odoo.modules.loading: Module auth_totp loaded in 0.04s, 0 queries 
+2025-10-22 09:25:31,370 13964 DEBUG odoo19 odoo.modules.loading: Loading module base_import (6/14) 
+2025-10-22 09:25:31,382 13964 DEBUG odoo19 odoo.modules.loading: Module base_import loaded in 0.01s, 0 queries 
+2025-10-22 09:25:31,382 13964 DEBUG odoo19 odoo.modules.loading: Loading module base_import_module (7/14) 
+2025-10-22 09:25:31,396 13964 DEBUG odoo19 odoo.modules.loading: Module base_import_module loaded in 0.01s, 0 queries 
+2025-10-22 09:25:31,396 13964 DEBUG odoo19 odoo.modules.loading: Loading module base_setup (8/14) 
+2025-10-22 09:25:31,410 13964 DEBUG odoo19 odoo.modules.loading: Module base_setup loaded in 0.01s, 0 queries 
+2025-10-22 09:25:31,411 13964 DEBUG odoo19 odoo.modules.loading: Loading module bus (9/14) 
+2025-10-22 09:25:31,437 13964 DEBUG odoo19 odoo.modules.loading: Module bus loaded in 0.03s, 0 queries 
+2025-10-22 09:25:31,437 13964 DEBUG odoo19 odoo.modules.loading: Loading module web_tour (10/14) 
+2025-10-22 09:25:31,446 13964 DEBUG odoo19 odoo.modules.loading: Module web_tour loaded in 0.01s, 0 queries 
+2025-10-22 09:25:31,447 13964 DEBUG odoo19 odoo.modules.loading: Loading module auth_passkey (11/14) 
+2025-10-22 09:25:31,577 13964 DEBUG odoo19 odoo.modules.loading: Module auth_passkey loaded in 0.13s, 0 queries 
+2025-10-22 09:25:31,578 13964 DEBUG odoo19 odoo.modules.loading: Loading module html_editor (12/14) 
+2025-10-22 09:25:31,995 13964 DEBUG odoo19 odoo.modules.loading: Module html_editor loaded in 0.42s, 0 queries 
+2025-10-22 09:25:31,995 13964 DEBUG odoo19 odoo.modules.loading: Loading module iap (13/14) 
+2025-10-22 09:25:31,996 13964 DEBUG odoo19 odoo.modules.loading: Module iap loaded in 0.00s, 0 queries 
+2025-10-22 09:25:31,996 13964 DEBUG odoo19 odoo.modules.loading: Loading module web_unsplash (14/14) 
+2025-10-22 09:25:32,010 13964 DEBUG odoo19 odoo.modules.loading: Module web_unsplash loaded in 0.01s, 0 queries 
+2025-10-22 09:25:32,011 13964 INFO odoo19 odoo.modules.loading: 14 modules loaded in 0.71s, 0 queries (+0 extra) 
+2025-10-22 09:25:32,074 13964 INFO odoo19 odoo.modules.loading: Modules loaded. 
+2025-10-22 09:25:32,098 13964 INFO odoo19 odoo.registry: Registry loaded in 0.896s 
+2025-10-22 09:25:32,103 13964 DEBUG odoo19 odoo.service.server: cron0 started! 
+2025-10-22 09:25:32,104 13964 DEBUG odoo19 odoo.service.server: cron1 started! 
+2025-10-22 09:26:32,181 13964 DEBUG ? odoo.service.server: cron0 polling for jobs (notified: OrderedSet([])) 
+2025-10-22 09:26:33,254 13964 DEBUG ? odoo.service.server: cron1 polling for jobs (notified: OrderedSet([])) 
+2025-10-22 09:27:32,201 13964 DEBUG ? odoo.service.server: cron0 polling for jobs (notified: OrderedSet([])) 
+2025-10-22 09:27:34,278 13964 DEBUG ? odoo.service.server: cron1 polling for jobs (notified: OrderedSet([])) 
