@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Recipe Tree View -->
+        <record id="view_recipe_tree" model="ir.ui.view">
+            <field name="name">recipe.tree</field>
+            <field name="model">recipe.recipe</field>
+            <field name="arch" type="xml">
+                <list string="Recipes" sample="1">
+                    <field name="name"/>
+                    <field name="category"/>
+                    <field name="difficulty"/>
+                    <field name="total_time"/>
+                    <field name="servings"/>
+                    <field name="serving_type"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Recipe Form View -->
+        <record id="view_recipe_form" model="ir.ui.view">
+            <field name="name">recipe.form</field>
+            <field name="model">recipe.recipe</field>
+            <field name="arch" type="xml">
+                <form string="Recipe">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </button>
+                            <button name="action_import_recipe" type="object" class="oe_stat_button" icon="fa-download">
+                                <span>Import Recipe</span>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Recipe Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="category"/>
+                                <field name="difficulty"/>
+                                <field name="servings"/>
+                                <field name="serving_type"/>
+                                <field name="rating"/>
+                            </group>
+                            <group>
+                                <field name="prep_time"/>
+                                <field name="cook_time"/>
+                                <field name="total_time"/>
+                                <field name="image" widget="image" class="oe_avatar"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description" placeholder="Recipe description..."/>
+                        </group>
+                        <notebook>
+                            <page string="Ingredients">
+                                <field name="ingredient_ids">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="quantity"/>
+                                        <field name="unit"/>
+                                        <field name="notes"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Instructions">
+                                <field name="instruction_ids">
+                                    <list editable="bottom">
+                                        <field name="sequence"/>
+                                        <field name="step"/>
+                                        <field name="duration"/>
+                                        <field name="temperature"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes" placeholder="Additional notes..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Recipe Search View -->
+        <record id="view_recipe_search" model="ir.ui.view">
+            <field name="name">recipe.search</field>
+            <field name="model">recipe.recipe</field>
+            <field name="arch" type="xml">
+                <search string="Search Recipes">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="category"/>
+                    <field name="difficulty"/>
+                    <field name="serving_type"/>
+                    <separator/>
+                    <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    <separator/>
+                    <filter string="Easy" name="easy" domain="[('difficulty', '=', 'easy')]"/>
+                    <filter string="Medium" name="medium" domain="[('difficulty', '=', 'medium')]"/>
+                    <filter string="Hard" name="hard" domain="[('difficulty', '=', 'hard')]"/>
+                    <separator/>
+                    <filter string="Appetizer" name="appetizer" domain="[('category', '=', 'appetizer')]"/>
+                    <filter string="Main Course" name="main_course" domain="[('category', '=', 'main_course')]"/>
+                    <filter string="Dessert" name="dessert" domain="[('category', '=', 'dessert')]"/>
+                    <separator/>
+                    <filter string="Group by Category" name="group_category" context="{'group_by': 'category'}"/>
+                    <filter string="Group by Difficulty" name="group_difficulty" context="{'group_by': 'difficulty'}"/>
+                    <filter string="Group by Serving Type" name="group_serving_type" context="{'group_by': 'serving_type'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Recipe Import Wizard Form View -->
+        <record id="view_recipe_import_wizard_form" model="ir.ui.view">
+            <field name="name">recipe.import.wizard.form</field>
+            <field name="model">recipe.import.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Import Recipe">
+                    <sheet>
+                        <group invisible="show_preview">
+                            <field name="recipe_id" invisible="1"/>
+                            <field name="import_source" widget="radio" options="{'horizontal': true}"/>
+                        </group>
+                        <group string="Upload File" invisible="import_source not in ('text_file', 'csv') or show_preview">
+                            <field name="file_data" required="import_source in ('text_file', 'csv')"/>
+                            <field name="file_name" invisible="1"/>
+                        </group>
+                        <group string="Recipe Text" invisible="import_source != 'text' or show_preview">
+                            <field name="import_data" placeholder="Paste recipe text in the format:&#10;&#10;Recipe Name&#10;&#10;Ingredients:&#10;Ingredient - Quantity&#10;Ingredient - Quantity&#10;..." nolabel="1"/>
+                        </group>
+                        
+                        <!-- Preview Section -->
+                        <group string="Recipe Preview" invisible="not show_preview">
+                            <field name="parsed_recipe_name"/>
+                        </group>
+                        
+                        <!-- Interactive Ingredients Table -->
+                        <group string="Ingredients" invisible="not show_preview">
+                            <field name="preview_ingredient_ids" nolabel="1" context="{'tree_view_ref': 'recipe.view_recipe_import_wizard_line_tree'}">
+                                <list editable="bottom" create="true" delete="true">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="quantity"/>
+                                    <field name="unit"/>
+                                    <field name="notes"/>
+                                </list>
+                            </field>
+                        </group>
+                        
+                        <field name="show_preview" invisible="1"/>
+                        <field name="created_recipe_id" invisible="1"/>
+                    </sheet>
+                    <footer>
+                        <button string="Parse &amp; Preview" name="action_parse_and_preview" type="object" class="btn-primary" invisible="show_preview or import_source in ('text_file', 'csv')"/>
+                        <button string="Import &amp; Preview" name="action_import" type="object" class="btn-primary" invisible="show_preview or import_source not in ('text_file', 'csv')"/>
+                        <button string="Save Recipe" name="action_save_recipe" type="object" class="btn-primary" invisible="not show_preview"/>
+                        <button string="Back" class="btn-secondary" invisible="not show_preview" special="cancel"/>
+                        <button string="Cancel" class="btn-secondary" invisible="show_preview" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Recipe Import Wizard Line Tree View -->
+        <record id="view_recipe_import_wizard_line_tree" model="ir.ui.view">
+            <field name="name">recipe.import.wizard.line.tree</field>
+            <field name="model">recipe.import.wizard.line</field>
+            <field name="arch" type="xml">
+                <list editable="bottom" create="true" delete="true" string="Ingredients">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name" string="Product"/>
+                    <field name="quantity" string="Quantity"/>
+                    <field name="unit" string="UOM"/>
+                    <field name="notes" string="Notes"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Consolidate Recipe Wizard View -->
+        <record id="view_recipe_consolidate_wizard_form" model="ir.ui.view">
+            <field name="name">recipe.consolidate.wizard.form</field>
+            <field name="model">recipe.consolidate.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Consolidate Recipe">
+                    <sheet>
+                        <group>
+                            <field name="recipe_id"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Consolidate" name="action_consolidate" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Consolidate Recipe Action -->
+        <record id="action_consolidate_recipe_wizard" model="ir.actions.act_window">
+            <field name="name">Consolidate Recipe</field>
+            <field name="res_model">recipe.consolidate.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Recipe Action -->
+        <record id="action_recipe" model="ir.actions.act_window">
+            <field name="name">Recipes</field>
+            <field name="res_model">recipe.recipe</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_recipe_search"/>
+            <field name="context">{'search_default_active': 1, 'search_default_group_category': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first recipe!
+                </p>
+                <p>
+                    Start by adding a recipe name and description, then add ingredients and instructions.
+                    Use the Import Recipe button to import recipes from external sources.
+                </p>
+            </field>
+        </record>
+
+        <!-- Import Recipe Action -->
+        <record id="action_import_recipe" model="ir.actions.act_window">
+            <field name="name">Import Recipe</field>
+            <field name="res_model">recipe.import.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu Items -->
+        <menuitem id="menu_recipe_root" name="Recipes" sequence="10"/>
+        <menuitem id="menu_recipe_recipes" name="All Recipes" parent="menu_recipe_root" action="action_recipe" sequence="10"/>
+        <menuitem id="menu_recipe_import" name="Import Recipe" parent="menu_recipe_root" action="action_import_recipe" sequence="20"/>
+        <menuitem id="menu_recipe_consolidate" name="Consolidate Recipe" parent="menu_recipe_root" action="action_consolidate_recipe_wizard" sequence="30"/>
+
+    </data>
+</odoo>

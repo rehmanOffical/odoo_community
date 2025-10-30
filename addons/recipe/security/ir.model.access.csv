@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_recipe_recipe_user,recipe.recipe.user,model_recipe_recipe,base.group_user,1,1,1,0
+access_recipe_recipe_manager,recipe.recipe.manager,model_recipe_recipe,base.group_system,1,1,1,1
+access_recipe_ingredient_user,recipe.ingredient.user,model_recipe_ingredient,base.group_user,1,1,1,0
+access_recipe_ingredient_manager,recipe.ingredient.manager,model_recipe_ingredient,base.group_system,1,1,1,1
+access_recipe_instruction_user,recipe.instruction.user,model_recipe_instruction,base.group_user,1,1,1,0
+access_recipe_instruction_manager,recipe.instruction.manager,model_recipe_instruction,base.group_system,1,1,1,1
+access_recipe_import_wizard_user,recipe.import.wizard.user,model_recipe_import_wizard,base.group_user,1,1,1,1
+access_recipe_import_wizard_line_user,recipe.import.wizard.line.user,model_recipe_import_wizard_line,base.group_user,1,1,1,1
+access_recipe_consolidate_wizard_user,recipe.consolidate.wizard.user,model_recipe_consolidate_wizard,base.group_user,1,1,1,1
+access_recipe_consolidate_wizard_manager,recipe.consolidate.wizard.manager,model_recipe_consolidate_wizard,base.group_system,1,1,1,1

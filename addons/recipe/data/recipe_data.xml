@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Sample Recipe 1: Chocolate Chip Cookies -->
+        <record id="recipe_chocolate_chip_cookies" model="recipe.recipe">
+            <field name="name">Chocolate Chip Cookies</field>
+            <field name="description">Classic homemade chocolate chip cookies that are soft and chewy on the inside with crispy edges.</field>
+            <field name="category">dessert</field>
+            <field name="difficulty">easy</field>
+            <field name="prep_time">15</field>
+            <field name="cook_time">12</field>
+            <field name="servings">24</field>
+            <field name="serving_type">large_group</field>
+            <field name="rating">4.5</field>
+            <field name="notes">For best results, chill the dough for at least 30 minutes before baking.</field>
+        </record>
+
+        <!-- Ingredients for Chocolate Chip Cookies -->
+        <record id="ingredient_flour_cookies" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">10</field>
+            <field name="name">All-purpose flour</field>
+            <field name="quantity">2.25</field>
+            <field name="unit">cup</field>
+        </record>
+
+        <record id="ingredient_baking_soda_cookies" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">20</field>
+            <field name="name">Baking soda</field>
+            <field name="quantity">1</field>
+            <field name="unit">tsp</field>
+        </record>
+
+        <record id="ingredient_salt_cookies" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">30</field>
+            <field name="name">Salt</field>
+            <field name="quantity">1</field>
+            <field name="unit">tsp</field>
+        </record>
+
+        <record id="ingredient_butter_cookies" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">40</field>
+            <field name="name">Unsalted butter</field>
+            <field name="quantity">1</field>
+            <field name="unit">cup</field>
+            <field name="notes">Room temperature</field>
+        </record>
+
+        <record id="ingredient_brown_sugar_cookies" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">50</field>
+            <field name="name">Brown sugar</field>
+            <field name="quantity">0.75</field>
+            <field name="unit">cup</field>
+        </record>
+
+        <record id="ingredient_white_sugar_cookies" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">60</field>
+            <field name="name">Granulated sugar</field>
+            <field name="quantity">0.75</field>
+            <field name="unit">cup</field>
+        </record>
+
+        <record id="ingredient_eggs_cookies" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">70</field>
+            <field name="name">Large eggs</field>
+            <field name="quantity">2</field>
+            <field name="unit">piece</field>
+        </record>
+
+        <record id="ingredient_vanilla_cookies" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">80</field>
+            <field name="name">Vanilla extract</field>
+            <field name="quantity">2</field>
+            <field name="unit">tsp</field>
+        </record>
+
+        <record id="ingredient_chocolate_chips_cookies" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">90</field>
+            <field name="name">Chocolate chips</field>
+            <field name="quantity">2</field>
+            <field name="unit">cup</field>
+        </record>
+
+        <!-- Instructions for Chocolate Chip Cookies -->
+        <record id="instruction_preheat_cookies" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">1</field>
+            <field name="step">Preheat oven to 375°F (190°C). Line baking sheets with parchment paper.</field>
+            <field name="temperature">375°F</field>
+        </record>
+
+        <record id="instruction_mix_dry_cookies" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">2</field>
+            <field name="step">In a medium bowl, whisk together flour, baking soda, and salt. Set aside.</field>
+        </record>
+
+        <record id="instruction_cream_butter_cookies" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">3</field>
+            <field name="step">In a large bowl, cream together butter and both sugars until light and fluffy, about 3-4 minutes.</field>
+            <field name="duration">4</field>
+        </record>
+
+        <record id="instruction_add_eggs_cookies" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">4</field>
+            <field name="step">Beat in eggs one at a time, then add vanilla extract.</field>
+        </record>
+
+        <record id="instruction_add_flour_cookies" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">5</field>
+            <field name="step">Gradually add flour mixture to butter mixture, mixing just until combined.</field>
+        </record>
+
+        <record id="instruction_add_chips_cookies" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">6</field>
+            <field name="step">Fold in chocolate chips.</field>
+        </record>
+
+        <record id="instruction_scoop_cookies" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">7</field>
+            <field name="step">Drop rounded tablespoons of dough onto prepared baking sheets, spacing about 2 inches apart.</field>
+        </record>
+
+        <record id="instruction_bake_cookies" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_chocolate_chip_cookies"/>
+            <field name="sequence">8</field>
+            <field name="step">Bake for 9-11 minutes until edges are golden brown. Let cool on baking sheet for 5 minutes before transferring to wire rack.</field>
+            <field name="duration">11</field>
+        </record>
+
+        <!-- Sample Recipe 2: Spaghetti Carbonara -->
+        <record id="recipe_spaghetti_carbonara" model="recipe.recipe">
+            <field name="name">Spaghetti Carbonara</field>
+            <field name="description">Classic Italian pasta dish with eggs, cheese, pancetta, and black pepper.</field>
+            <field name="category">main_course</field>
+            <field name="difficulty">medium</field>
+            <field name="prep_time">10</field>
+            <field name="cook_time">20</field>
+            <field name="servings">4</field>
+            <field name="serving_type">family</field>
+            <field name="rating">4.8</field>
+            <field name="notes">The key is to work quickly and keep the heat low to avoid scrambling the eggs.</field>
+        </record>
+
+        <!-- Ingredients for Spaghetti Carbonara -->
+        <record id="ingredient_spaghetti" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_spaghetti_carbonara"/>
+            <field name="sequence">10</field>
+            <field name="name">Spaghetti</field>
+            <field name="quantity">1</field>
+            <field name="unit">lb</field>
+        </record>
+
+        <record id="ingredient_pancetta" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_spaghetti_carbonara"/>
+            <field name="sequence">20</field>
+            <field name="name">Pancetta</field>
+            <field name="quantity">8</field>
+            <field name="unit">oz</field>
+            <field name="notes">Diced</field>
+        </record>
+
+        <record id="ingredient_eggs_carbonara" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_spaghetti_carbonara"/>
+            <field name="sequence">30</field>
+            <field name="name">Large eggs</field>
+            <field name="quantity">4</field>
+            <field name="unit">piece</field>
+        </record>
+
+        <record id="ingredient_parmesan" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_spaghetti_carbonara"/>
+            <field name="sequence">40</field>
+            <field name="name">Parmesan cheese</field>
+            <field name="quantity">1</field>
+            <field name="unit">cup</field>
+            <field name="notes">Freshly grated</field>
+        </record>
+
+        <record id="ingredient_black_pepper" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_spaghetti_carbonara"/>
+            <field name="sequence">50</field>
+            <field name="name">Black pepper</field>
+            <field name="quantity">1</field>
+            <field name="unit">tsp</field>
+            <field name="notes">Freshly ground</field>
+        </record>
+
+        <record id="ingredient_salt_carbonara" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_spaghetti_carbonara"/>
+            <field name="sequence">60</field>
+            <field name="name">Salt</field>
+            <field name="quantity">1</field>
+            <field name="unit">tsp</field>
+        </record>
+
+        <!-- Instructions for Spaghetti Carbonara -->
+        <record id="instruction_boil_pasta" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_spaghetti_carbonara"/>
+            <field name="sequence">1</field>
+            <field name="step">Bring a large pot of salted water to boil and cook spaghetti according to package directions until al dente.</field>
+            <field name="duration">10</field>
+        </record>
+
+        <record id="instruction_cook_pancetta" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_spaghetti_carbonara"/>
+            <field name="sequence">2</field>
+            <field name="step">Meanwhile, cook pancetta in a large skillet over medium heat until crispy, about 5-7 minutes.</field>
+            <field name="duration">7</field>
+        </record>
+
+        <record id="instruction_whisk_eggs" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_spaghetti_carbonara"/>
+            <field name="sequence">3</field>
+            <field name="step">In a bowl, whisk together eggs, parmesan cheese, and black pepper.</field>
+        </record>
+
+        <record id="instruction_combine_pasta" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_spaghetti_carbonara"/>
+            <field name="sequence">4</field>
+            <field name="step">Drain pasta, reserving 1 cup of pasta water. Add hot pasta to skillet with pancetta.</field>
+        </record>
+
+        <record id="instruction_add_egg_mixture" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_spaghetti_carbonara"/>
+            <field name="sequence">5</field>
+            <field name="step">Remove skillet from heat. Quickly add egg mixture, tossing constantly. Add pasta water as needed to create a creamy sauce.</field>
+        </record>
+
+        <record id="instruction_serve_carbonara" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_spaghetti_carbonara"/>
+            <field name="sequence">6</field>
+            <field name="step">Serve immediately with additional parmesan cheese and black pepper.</field>
+        </record>
+
+        <!-- Sample Recipe 3: Caesar Salad -->
+        <record id="recipe_caesar_salad" model="recipe.recipe">
+            <field name="name">Caesar Salad</field>
+            <field name="description">Classic Caesar salad with romaine lettuce, croutons, parmesan cheese, and homemade dressing.</field>
+            <field name="category">appetizer</field>
+            <field name="difficulty">easy</field>
+            <field name="prep_time">20</field>
+            <field name="cook_time">0</field>
+            <field name="servings">6</field>
+            <field name="serving_type">small_group</field>
+            <field name="rating">4.3</field>
+            <field name="notes">For authentic flavor, use anchovies in the dressing.</field>
+        </record>
+
+        <!-- Ingredients for Caesar Salad -->
+        <record id="ingredient_romaine" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_caesar_salad"/>
+            <field name="sequence">10</field>
+            <field name="name">Romaine lettuce</field>
+            <field name="quantity">2</field>
+            <field name="unit">head</field>
+            <field name="notes">Chopped</field>
+        </record>
+
+        <record id="ingredient_croutons" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_caesar_salad"/>
+            <field name="sequence">20</field>
+            <field name="name">Croutons</field>
+            <field name="quantity">1</field>
+            <field name="unit">cup</field>
+        </record>
+
+        <record id="ingredient_parmesan_caesar" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_caesar_salad"/>
+            <field name="sequence">30</field>
+            <field name="name">Parmesan cheese</field>
+            <field name="quantity">0.5</field>
+            <field name="unit">cup</field>
+            <field name="notes">Shaved</field>
+        </record>
+
+        <record id="ingredient_anchovies" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_caesar_salad"/>
+            <field name="sequence">40</field>
+            <field name="name">Anchovy fillets</field>
+            <field name="quantity">4</field>
+            <field name="unit">piece</field>
+            <field name="notes">Minced</field>
+        </record>
+
+        <record id="ingredient_garlic_caesar" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_caesar_salad"/>
+            <field name="sequence">50</field>
+            <field name="name">Garlic cloves</field>
+            <field name="quantity">2</field>
+            <field name="unit">clove</field>
+            <field name="notes">Minced</field>
+        </record>
+
+        <record id="ingredient_lemon_juice" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_caesar_salad"/>
+            <field name="sequence">60</field>
+            <field name="name">Lemon juice</field>
+            <field name="quantity">3</field>
+            <field name="unit">tbsp</field>
+        </record>
+
+        <record id="ingredient_dijon" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_caesar_salad"/>
+            <field name="sequence">70</field>
+            <field name="name">Dijon mustard</field>
+            <field name="quantity">1</field>
+            <field name="unit">tsp</field>
+        </record>
+
+        <record id="ingredient_olive_oil" model="recipe.ingredient">
+            <field name="recipe_id" ref="recipe_caesar_salad"/>
+            <field name="sequence">80</field>
+            <field name="name">Extra virgin olive oil</field>
+            <field name="quantity">0.5</field>
+            <field name="unit">cup</field>
+        </record>
+
+        <!-- Instructions for Caesar Salad -->
+        <record id="instruction_make_dressing" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_caesar_salad"/>
+            <field name="sequence">1</field>
+            <field name="step">In a small bowl, whisk together anchovies, garlic, lemon juice, and Dijon mustard. Slowly whisk in olive oil until emulsified.</field>
+        </record>
+
+        <record id="instruction_prepare_lettuce" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_caesar_salad"/>
+            <field name="sequence">2</field>
+            <field name="step">Wash and dry romaine lettuce thoroughly. Tear into bite-sized pieces.</field>
+        </record>
+
+        <record id="instruction_toss_salad" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_caesar_salad"/>
+            <field name="sequence">3</field>
+            <field name="step">In a large bowl, toss lettuce with dressing until well coated.</field>
+        </record>
+
+        <record id="instruction_add_toppings" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_caesar_salad"/>
+            <field name="sequence">4</field>
+            <field name="step">Add croutons and shaved parmesan cheese. Toss gently to combine.</field>
+        </record>
+
+        <record id="instruction_serve_caesar" model="recipe.instruction">
+            <field name="recipe_id" ref="recipe_caesar_salad"/>
+            <field name="sequence">5</field>
+            <field name="step">Serve immediately with additional parmesan cheese if desired.</field>
+        </record>
+
+    </data>
+</odoo>
