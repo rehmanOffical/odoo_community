@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_menu_category_user,access_menu_category_user,model_menu_category,base.group_user,1,1,1,1
+access_menu_item_user,access_menu_item_user,model_menu_item,base.group_user,1,1,1,1
+access_menu_allergen_user,access_menu_allergen_user,model_menu_allergen,base.group_user,1,1,1,1
+access_menu_dietary_tag_user,access_menu_dietary_tag_user,model_menu_dietary_tag,base.group_user,1,1,1,1

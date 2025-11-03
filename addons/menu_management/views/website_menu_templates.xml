@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb view rendering the public menu -->
+        <record id="menu_public_page_view" model="ir.ui.view">
+        <field name="name">menu.public.page.view</field>
+        <field name="type">qweb</field>
+        <field name="arch" type="xml">
+            <t t-name="menu_management.menu_public_page">
+                <t t-call="website.layout">
+                    <div id="wrap" class="oe_structure">
+                        <section class="s_cover pb-5 pt-5 text-center">
+                            <h1>Our Menu</h1>
+                        </section>
+                        <section class="pt-3 pb-5">
+                            <div class="container">
+                                <t t-foreach="request.env['menu.category'].sudo().search([('active','=',True)], order='sequence,name')" t-as="cat">
+                                    <h3 t-esc="cat.name"/>
+                                    <div class="row">
+                                        <t t-foreach="request.env['menu.item'].sudo().search([('active','=',True),('category_id','=',cat.id)], order='sequence,name')" t-as="item">
+                                            <div class="col-md-4 mb-4">
+                                                <div class="card h-100">
+                                                    <t t-if="item.image_1920">
+                                                        <img t-att-src="'data:image/png;base64,%s' % item.image_1920" class="card-img-top"/>
+                                                    </t>
+                                                    <div class="card-body">
+                                                        <h5 class="card-title" t-esc="item.name"/>
+                                                        <p class="card-text" t-esc="item.description or ''"/>
+                                                        <p class="fw-bold" t-esc="(item.price and ('$ %.2f' % item.price)) or ''"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+                        </section>
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
+
+    <!-- Website page that points to the QWeb view -->
+    <record id="menu_public_page" model="website.page">
+        <field name="name">Our Menu</field>
+        <field name="url">/our-menu</field>
+        <field name="view_id" ref="menu_public_page_view"/>
+        <field name="is_published">True</field>
+    </record>
+    </data>
+</odoo>

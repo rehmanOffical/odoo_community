@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+    <!-- Categories -->
+    <record id="menu_cat_appetizers" model="menu.category">
+    <field name="name">Appetizers</field>
+    <field name="sequence">1</field>
+  </record>
+  <record id="menu_cat_mains" model="menu.category">
+    <field name="name">Main Courses</field>
+    <field name="sequence">2</field>
+  </record>
+  <record id="menu_cat_sides" model="menu.category">
+    <field name="name">Sides</field>
+    <field name="sequence">3</field>
+  </record>
+  <record id="menu_cat_desserts" model="menu.category">
+    <field name="name">Desserts</field>
+    <field name="sequence">4</field>
+  </record>
+  <record id="menu_cat_beverages" model="menu.category">
+    <field name="name">Beverages</field>
+    <field name="sequence">5</field>
+  </record>
+  <record id="menu_cat_middle_eastern" model="menu.category">
+    <field name="name">Middle Eastern</field>
+    <field name="sequence">6</field>
+  </record>
+
+  <!-- Dietary Tags -->
+  <record id="dietary_tag_vegetarian" model="menu.dietary.tag">
+    <field name="name">Vegetarian</field>
+    <field name="color">1</field>
+  </record>
+  <record id="dietary_tag_vegan" model="menu.dietary.tag">
+    <field name="name">Vegan</field>
+    <field name="color">2</field>
+  </record>
+  <record id="dietary_tag_halal" model="menu.dietary.tag">
+    <field name="name">Halal</field>
+    <field name="color">3</field>
+  </record>
+  <record id="dietary_tag_gluten_free" model="menu.dietary.tag">
+    <field name="name">Gluten Free</field>
+    <field name="color">4</field>
+  </record>
+
+  <!-- Allergens -->
+  <record id="allergen_dairy" model="menu.allergen">
+    <field name="name">Dairy</field>
+    <field name="description">Contains milk products</field>
+  </record>
+  <record id="allergen_nuts" model="menu.allergen">
+    <field name="name">Nuts</field>
+    <field name="description">Contains tree nuts</field>
+  </record>
+  <record id="allergen_gluten" model="menu.allergen">
+    <field name="name">Gluten</field>
+    <field name="description">Contains wheat/gluten</field>
+  </record>
+
+  <!-- Items: Appetizers -->
+  <record id="menu_item_samosa" model="menu.item">
+    <field name="name">Samosa (2 pcs)</field>
+    <field name="code">SAM-001</field>
+    <field name="category_id" ref="menu_cat_appetizers"/>
+    <field name="price">3.50</field>
+    <field name="cost_price">1.20</field>
+    <field name="serving_size">2</field>
+    <field name="prep_time">15</field>
+    <field name="cooking_time">10</field>
+    <field name="short_description">Crispy pastry filled with spiced potatoes and peas.</field>
+    <field name="is_vegetarian">True</field>
+    <field name="is_halal">True</field>
+    <field name="spice_level">medium</field>
+    <field name="min_order_qty">1</field>
+    <field name="tags">appetizer,vegetarian,popular</field>
+    <field name="sequence">1</field>
+  </record>
+  <record id="menu_item_pakora" model="menu.item">
+    <field name="name">Mixed Vegetable Pakora</field>
+    <field name="code">PAK-001</field>
+    <field name="category_id" ref="menu_cat_appetizers"/>
+    <field name="price">5.00</field>
+    <field name="cost_price">2.00</field>
+    <field name="serving_size">3</field>
+    <field name="prep_time">20</field>
+    <field name="cooking_time">15</field>
+    <field name="short_description">Assorted vegetables battered and fried.</field>
+    <field name="is_vegetarian">True</field>
+    <field name="is_halal">True</field>
+    <field name="spice_level">mild</field>
+    <field name="min_order_qty">1</field>
+    <field name="sequence">2</field>
+  </record>
+
+  <!-- Items: Mains -->
+  <record id="menu_item_chicken_biryani" model="menu.item">
+    <field name="name">Chicken Biryani</field>
+    <field name="code">BIR-001</field>
+    <field name="category_id" ref="menu_cat_mains"/>
+    <field name="price">12.99</field>
+    <field name="cost_price">5.50</field>
+    <field name="serving_size">2</field>
+    <field name="prep_time">30</field>
+    <field name="cooking_time">45</field>
+    <field name="short_description">Fragrant basmati rice cooked with marinated chicken and spices.</field>
+    <field name="is_halal">True</field>
+    <field name="is_featured">True</field>
+    <field name="is_popular">True</field>
+    <field name="spice_level">hot</field>
+    <field name="calories">650</field>
+    <field name="protein">45</field>
+    <field name="carbs">75</field>
+    <field name="fat">18</field>
+    <field name="min_order_qty">1</field>
+    <field name="tags">main course,halal,featured,popular</field>
+    <field name="sequence">1</field>
+  </record>
+  <record id="menu_item_butter_chicken" model="menu.item">
+    <field name="name">Butter Chicken</field>
+    <field name="code">BTC-001</field>
+    <field name="category_id" ref="menu_cat_mains"/>
+    <field name="price">13.99</field>
+    <field name="cost_price">6.00</field>
+    <field name="serving_size">2</field>
+    <field name="prep_time">25</field>
+    <field name="cooking_time">30</field>
+    <field name="short_description">Creamy tomato gravy with tender chicken pieces.</field>
+    <field name="is_halal">True</field>
+    <field name="is_featured">True</field>
+    <field name="spice_level">mild</field>
+    <field name="calories">580</field>
+    <field name="protein">42</field>
+    <field name="carbs">28</field>
+    <field name="fat">32</field>
+    <field name="min_order_qty">1</field>
+    <field name="tags">main course,halal,featured</field>
+    <field name="sequence">2</field>
+  </record>
+  <record id="menu_item_lamb_kofta" model="menu.item">
+    <field name="name">Lamb Kofta</field>
+    <field name="code">LKF-001</field>
+    <field name="category_id" ref="menu_cat_middle_eastern"/>
+    <field name="price">14.50</field>
+    <field name="cost_price">6.50</field>
+    <field name="serving_size">2</field>
+    <field name="prep_time">20</field>
+    <field name="cooking_time">25</field>
+    <field name="short_description">Spiced lamb meatballs grilled and served with tahini.</field>
+    <field name="is_halal">True</field>
+    <field name="spice_level">medium</field>
+    <field name="calories">520</field>
+    <field name="protein">38</field>
+    <field name="carbs">12</field>
+    <field name="fat">32</field>
+    <field name="min_order_qty">1</field>
+    <field name="sequence">1</field>
+  </record>
+
+  <!-- Items: Sides -->
+  <record id="menu_item_zeera_rice" model="menu.item">
+    <field name="name">Zeera Rice</field>
+    <field name="code">ZEE-001</field>
+    <field name="category_id" ref="menu_cat_sides"/>
+    <field name="price">4.50</field>
+    <field name="cost_price">1.50</field>
+    <field name="serving_size">4</field>
+    <field name="prep_time">10</field>
+    <field name="cooking_time">20</field>
+    <field name="short_description">Cumin tempered basmati rice.</field>
+    <field name="is_vegetarian">True</field>
+    <field name="is_halal">True</field>
+    <field name="spice_level">none</field>
+    <field name="calories">220</field>
+    <field name="protein">4</field>
+    <field name="carbs">45</field>
+    <field name="fat">3</field>
+    <field name="min_order_qty">1</field>
+    <field name="sequence">1</field>
+  </record>
+  <record id="menu_item_garlic_naan" model="menu.item">
+    <field name="name">Garlic Naan</field>
+    <field name="code">NAN-001</field>
+    <field name="category_id" ref="menu_cat_sides"/>
+    <field name="price">2.50</field>
+    <field name="cost_price">0.80</field>
+    <field name="serving_size">2</field>
+    <field name="prep_time">5</field>
+    <field name="cooking_time">5</field>
+    <field name="short_description">Freshly baked naan bread with garlic butter.</field>
+    <field name="is_vegetarian">True</field>
+    <field name="is_halal">True</field>
+    <field name="spice_level">none</field>
+    <field name="calories">180</field>
+    <field name="protein">5</field>
+    <field name="carbs">28</field>
+    <field name="fat">6</field>
+    <field name="min_order_qty">1</field>
+    <field name="allergen_ids" eval="[(6, 0, [ref('allergen_gluten'), ref('allergen_dairy')])]"/>
+    <field name="sequence">2</field>
+  </record>
+
+  <!-- Items: Desserts -->
+  <record id="menu_item_gulab_jamun" model="menu.item">
+    <field name="name">Gulab Jamun</field>
+    <field name="code">GUL-001</field>
+    <field name="category_id" ref="menu_cat_desserts"/>
+    <field name="price">3.99</field>
+    <field name="cost_price">1.20</field>
+    <field name="serving_size">2</field>
+    <field name="prep_time">10</field>
+    <field name="cooking_time">15</field>
+    <field name="short_description">Milk-solid dumplings soaked in rose-cardamom syrup.</field>
+    <field name="is_vegetarian">True</field>
+    <field name="is_halal">True</field>
+    <field name="spice_level">none</field>
+    <field name="calories">320</field>
+    <field name="protein">6</field>
+    <field name="carbs">52</field>
+    <field name="fat">10</field>
+    <field name="min_order_qty">1</field>
+    <field name="allergen_ids" eval="[(6, 0, [ref('allergen_dairy')])]"/>
+    <field name="sequence">1</field>
+  </record>
+  <record id="menu_item_baklava" model="menu.item">
+    <field name="name">Baklava</field>
+    <field name="code">BAK-001</field>
+    <field name="category_id" ref="menu_cat_desserts"/>
+    <field name="price">4.25</field>
+    <field name="cost_price">1.50</field>
+    <field name="serving_size">3</field>
+    <field name="prep_time">20</field>
+    <field name="cooking_time">30</field>
+    <field name="short_description">Layered phyllo pastry with nuts and honey.</field>
+    <field name="is_vegetarian">True</field>
+    <field name="is_halal">True</field>
+    <field name="spice_level">none</field>
+    <field name="calories">280</field>
+    <field name="protein">4</field>
+    <field name="carbs">35</field>
+    <field name="fat">14</field>
+    <field name="min_order_qty">1</field>
+    <field name="allergen_ids" eval="[(6, 0, [ref('allergen_nuts'), ref('allergen_gluten')])]"/>
+    <field name="sequence">2</field>
+  </record>
+
+  <!-- Items: Beverages -->
+  <record id="menu_item_mango_lassi" model="menu.item">
+    <field name="name">Mango Lassi</field>
+    <field name="code">LAS-001</field>
+    <field name="category_id" ref="menu_cat_beverages"/>
+    <field name="price">3.75</field>
+    <field name="cost_price">1.00</field>
+    <field name="serving_size">1</field>
+    <field name="prep_time">5</field>
+    <field name="cooking_time">0</field>
+    <field name="short_description">Refreshing yogurt drink blended with mango.</field>
+    <field name="is_vegetarian">True</field>
+    <field name="is_halal">True</field>
+    <field name="spice_level">none</field>
+    <field name="calories">150</field>
+    <field name="protein">6</field>
+    <field name="carbs">28</field>
+    <field name="fat">3</field>
+    <field name="min_order_qty">1</field>
+    <field name="allergen_ids" eval="[(6, 0, [ref('allergen_dairy')])]"/>
+    <field name="sequence">1</field>
+  </record>
+  <record id="menu_item_chai" model="menu.item">
+    <field name="name">Masala Chai</field>
+    <field name="code">CHI-001</field>
+    <field name="category_id" ref="menu_cat_beverages"/>
+    <field name="price">2.50</field>
+    <field name="cost_price">0.60</field>
+    <field name="serving_size">1</field>
+    <field name="prep_time">3</field>
+    <field name="cooking_time">5</field>
+    <field name="short_description">Spiced Indian milk tea.</field>
+    <field name="is_vegetarian">True</field>
+    <field name="is_halal">True</field>
+    <field name="spice_level">mild</field>
+    <field name="calories">45</field>
+    <field name="protein">1</field>
+    <field name="carbs">8</field>
+    <field name="fat">2</field>
+    <field name="min_order_qty">1</field>
+    <field name="allergen_ids" eval="[(6, 0, [ref('allergen_dairy')])]"/>
+    <field name="is_new">True</field>
+    <field name="sequence">2</field>
+  </record>
+  </data>
+</odoo>
