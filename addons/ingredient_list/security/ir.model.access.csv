@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ingredient_list_user,ingredient.list.user,model_ingredient_list,base.group_user,1,1,1,0
+access_ingredient_list_manager,ingredient.list.manager,model_ingredient_list,base.group_system,1,1,1,1
+access_ingredient_list_line_user,ingredient.list.line.user,model_ingredient_list_line,base.group_user,1,1,1,0
+access_ingredient_list_line_manager,ingredient.list.line.manager,model_ingredient_list_line,base.group_system,1,1,1,1
+access_ingredient_list_wizard_user,ingredient.list.wizard.user,model_ingredient_list_wizard,base.group_user,1,1,1,1
+access_ingredient_list_wizard_manager,ingredient.list.wizard.manager,model_ingredient_list_wizard,base.group_system,1,1,1,1
+
+

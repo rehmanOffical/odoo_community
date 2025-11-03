@@ -183,33 +183,6 @@
             </field>
         </record>
 
-        <!-- Consolidate Recipe Wizard View -->
-        <record id="view_recipe_consolidate_wizard_form" model="ir.ui.view">
-            <field name="name">recipe.consolidate.wizard.form</field>
-            <field name="model">recipe.consolidate.wizard</field>
-            <field name="arch" type="xml">
-                <form string="Consolidate Recipe">
-                    <sheet>
-                        <group>
-                            <field name="recipe_id"/>
-                        </group>
-                    </sheet>
-                    <footer>
-                        <button string="Consolidate" name="action_consolidate" type="object" class="btn-primary"/>
-                        <button string="Cancel" class="btn-secondary" special="cancel"/>
-                    </footer>
-                </form>
-            </field>
-        </record>
-
-        <!-- Consolidate Recipe Action -->
-        <record id="action_consolidate_recipe_wizard" model="ir.actions.act_window">
-            <field name="name">Consolidate Recipe</field>
-            <field name="res_model">recipe.consolidate.wizard</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
-        </record>
-
         <!-- Recipe Action -->
         <record id="action_recipe" model="ir.actions.act_window">
             <field name="name">Recipes</field>
@@ -240,7 +213,6 @@
         <menuitem id="menu_recipe_root" name="Recipes" sequence="10"/>
         <menuitem id="menu_recipe_recipes" name="All Recipes" parent="menu_recipe_root" action="action_recipe" sequence="10"/>
         <menuitem id="menu_recipe_import" name="Import Recipe" parent="menu_recipe_root" action="action_import_recipe" sequence="20"/>
-        <menuitem id="menu_recipe_consolidate" name="Consolidate Recipe" parent="menu_recipe_root" action="action_consolidate_recipe_wizard" sequence="30"/>
 
     </data>
 </odoo>
