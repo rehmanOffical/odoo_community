@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_caterer_list_user,caterer.list.user,model_caterer_list,base.group_user,1,1,1,0
+access_caterer_list_manager,caterer.list.manager,model_caterer_list,base.group_system,1,1,1,1
+access_caterer_list_line_user,caterer.list.line.user,model_caterer_list_line,base.group_user,1,1,1,0
+access_caterer_list_line_manager,caterer.list.line.manager,model_caterer_list_line,base.group_system,1,1,1,1
+access_caterer_list_wizard_user,caterer.list.wizard.user,model_caterer_list_wizard,base.group_user,1,1,1,1
+access_caterer_list_wizard_manager,caterer.list.wizard.manager,model_caterer_list_wizard,base.group_system,1,1,1,1
+
+

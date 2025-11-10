@@ -4,23 +4,23 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 
 
-class IngredientList(models.Model):
-    _name = 'ingredient.list'
-    _description = 'Ingredient List'
+class CatererList(models.Model):
+    _name = 'caterer.list'
+    _description = 'Caterer'
     _order = 'id desc'
 
     name = fields.Char(string='Name', required=True)
     source_recipe_ids = fields.Many2many('recipe.recipe', string='Source Recipes')
-    ingredient_ids = fields.One2many('ingredient.list.line', 'ingredient_list_id', string='Ingredients')
+    ingredient_ids = fields.One2many('caterer.list.line', 'caterer_list_id', string='Ingredients')
     notes = fields.Text(string='Notes')
 
 
-class IngredientListLine(models.Model):
-    _name = 'ingredient.list.line'
-    _description = 'Ingredient List Line'
+class CatererListLine(models.Model):
+    _name = 'caterer.list.line'
+    _description = 'Caterer Line'
     _order = 'sequence, name'
 
-    ingredient_list_id = fields.Many2one('ingredient.list', string='Ingredient List', required=True, ondelete='cascade')
+    caterer_list_id = fields.Many2one('caterer.list', string='Caterer', required=True, ondelete='cascade')
     name = fields.Char(string='Ingredient Name', required=True)
     quantity = fields.Float(string='Quantity', required=True)
     unit = fields.Selection([
@@ -48,14 +48,14 @@ class IngredientListLine(models.Model):
     sequence = fields.Integer(string='Sequence', default=10)
 
 
-class IngredientListWizard(models.TransientModel):
-    _name = 'ingredient.list.wizard'
-    _description = 'Ingredient List Wizard'
+class CatererListWizard(models.TransientModel):
+    _name = 'caterer.list.wizard'
+    _description = 'Caterer Wizard'
 
     # Legacy single-select support to avoid KeyError from old contexts/views
     recipe_id = fields.Many2one('recipe.recipe', string='Recipe (legacy)')
     recipe_ids = fields.Many2many('recipe.recipe', string='Recipes to Combine', required=True)
-    name = fields.Char(string='Ingredient List Name', required=True, default='Ingredient List')
+    name = fields.Char(string='Caterer Name', required=True, default='Caterer')
 
     @api.onchange('recipe_id')
     def _onchange_recipe_id(self):
@@ -127,8 +127,8 @@ class IngredientListWizard(models.TransientModel):
                 if line.notes:
                     grouped[key]['notes'].append(line.notes)
 
-        # Create ingredient list record
-        ingredient_list = self.env['ingredient.list'].create({
+        # Create caterer record
+        caterer_list = self.env['caterer.list'].create({
             'name': self.name,
             'source_recipe_ids': [(6, 0, self.recipe_ids.ids)],
         })
@@ -136,8 +136,8 @@ class IngredientListWizard(models.TransientModel):
         sequence = 10
         for key in order:
             data = grouped[key]
-            self.env['ingredient.list.line'].create({
-                'ingredient_list_id': ingredient_list.id,
+            self.env['caterer.list.line'].create({
+                'caterer_list_id': caterer_list.id,
                 'name': data['name'],
                 'quantity': data['quantity'],
                 'unit': data['unit'],
@@ -148,10 +148,10 @@ class IngredientListWizard(models.TransientModel):
 
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Ingredient List',
-            'res_model': 'ingredient.list',
+            'name': 'Caterer',
+            'res_model': 'caterer.list',
             'view_mode': 'form',
-            'res_id': ingredient_list.id,
+            'res_id': caterer_list.id,
             'target': 'current',
         }
 

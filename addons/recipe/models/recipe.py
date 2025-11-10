@@ -47,6 +47,9 @@ class Recipe(models.Model):
     # Instructions
     instruction_ids = fields.One2many('recipe.instruction', 'recipe_id', string='Instructions')
     
+    # UOM Management
+    uom_ids = fields.One2many('recipe.uom', 'recipe_id', string='Units of Measure')
+    
     # Additional fields
     difficulty = fields.Selection([
         ('easy', 'Easy'),

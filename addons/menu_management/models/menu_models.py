@@ -121,6 +121,11 @@ class MenuItem(models.Model):
     customer_notes = fields.Text(
         'Customer Notes', help='Special information to display to customers')
 
+    # Recipe Information
+    recipe_id = fields.Many2one(
+        'recipe.recipe', string='Recipe', 
+        help='Link to the recipe for this menu item')
+
     # Related Information
     item_count = fields.Integer(
         'Total Orders', compute='_compute_item_count', store=False)
@@ -136,3 +141,43 @@ class MenuItem(models.Model):
         # This would be linked to orders if you have an order module
         for item in self:
             item.item_count = 0  # Placeholder - can link to order module later
+
+    def action_open_recipe(self):
+        """Open the linked recipe"""
+        self.ensure_one()
+        if not self.recipe_id:
+            return False
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Recipe',
+            'res_model': 'recipe.recipe',
+            'res_id': self.recipe_id.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
+
+
+class RecipeRecipe(models.Model):
+    _inherit = 'recipe.recipe'
+
+    menu_item_ids = fields.One2many(
+        'menu.item', 'recipe_id', string='Menu Items',
+        help='Menu items that use this recipe')
+    menu_item_count = fields.Integer(
+        'Menu Items Count', compute='_compute_menu_item_count', store=False)
+
+    def _compute_menu_item_count(self):
+        for recipe in self:
+            recipe.menu_item_count = len(recipe.menu_item_ids)
+
+    def action_open_menu_items(self):
+        """Open menu items that use this recipe"""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Menu Items',
+            'res_model': 'menu.item',
+            'domain': [('recipe_id', '=', self.id)],
+            'view_mode': 'list,form',
+            'target': 'current',
+        }

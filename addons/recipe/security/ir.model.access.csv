@@ -7,3 +7,5 @@ access_recipe_instruction_user,recipe.instruction.user,model_recipe_instruction,
 access_recipe_instruction_manager,recipe.instruction.manager,model_recipe_instruction,base.group_system,1,1,1,1
 access_recipe_import_wizard_user,recipe.import.wizard.user,model_recipe_import_wizard,base.group_user,1,1,1,1
 access_recipe_import_wizard_line_user,recipe.import.wizard.line.user,model_recipe_import_wizard_line,base.group_user,1,1,1,1
+access_recipe_uom_user,recipe.uom.user,model_recipe_uom,base.group_user,1,1,1,1
+access_recipe_uom_manager,recipe.uom.manager,model_recipe_uom,base.group_system,1,1,1,1

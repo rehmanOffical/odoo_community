@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Ingredient List',
+    'name': 'Caterer',
     'version': '19.0.1.0.0',
     'category': 'Productivity',
     'summary': 'Create consolidated ingredient lists from multiple recipes',
     'description': """
-        Ingredient List Module
+        Caterer Module
         =====================
         
         This module allows you to:
@@ -18,7 +18,7 @@
     'depends': ['recipe'],
     'data': [
         'security/ir.model.access.csv',
-        'views/ingredient_list_views.xml',
+        'views/caterer_views.xml',
     ],
     'installable': True,
     'application': True,
