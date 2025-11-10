@@ -4,7 +4,16 @@
     <record id="website_menu_our_menu" model="website.menu">
       <field name="name">Our Menu</field>
       <field name="url">/our-menu</field>
+      <field name="page_id" ref="menu_management.menu_public_page"/>
       <field name="sequence">40</field>
+      <field name="website_id" ref="website.default_website"/>
+    </record>
+    
+    <record id="website_menu_cart" model="website.menu">
+      <field name="name">Cart</field>
+      <field name="url">/menu/cart</field>
+      <field name="page_id" ref="menu_management.cart_page"/>
+      <field name="sequence">50</field>
       <field name="website_id" ref="website.default_website"/>
     </record>
   </data>
