@@ -54,6 +54,8 @@ class MenuCartController(http.Controller):
             delivery_date = post.get('delivery_date', '').strip()
             delivery_time = post.get('delivery_time', '').strip()
             special_instructions = post.get('special_instructions', '').strip()
+            serving_count = post.get('serving_count', '').strip()
+            service_type = post.get('service_type', '').strip()
 
             # Get cart data from request (passed via hidden field or session)
             cart_data_json = post.get('cart_data', '[]')
@@ -87,6 +89,8 @@ class MenuCartController(http.Controller):
                 delivery_date=delivery_date,
                 delivery_time=delivery_time,
                 special_instructions=special_instructions,
+                serving_count=serving_count,
+                service_type=service_type,
             )
 
             # Store order data in session for confirmation page
@@ -103,6 +107,8 @@ class MenuCartController(http.Controller):
                 'delivery_date': delivery_date,
                 'delivery_time': delivery_time,
                 'special_instructions': special_instructions,
+                'serving_count': serving_count,
+                'service_type': service_type,
                 'order_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 'total_amount': sale_order.amount_total,
             }
@@ -156,7 +162,8 @@ class MenuCartController(http.Controller):
         return partner_obj.create(partner_vals)
 
     def _create_sale_order(self, partner, cart_data, delivery_address, delivery_city,
-                           delivery_state, delivery_zip, delivery_date, delivery_time, special_instructions):
+                           delivery_state, delivery_zip, delivery_date, delivery_time, special_instructions,
+                           serving_count='', service_type=''):
         """Create a sales order from cart data"""
         # Use sudo for creation but ensure proper context
         # Remove website context to avoid website_id field issues when website_sale is not installed
@@ -182,6 +189,10 @@ class MenuCartController(http.Controller):
         if special_instructions:
             delivery_notes.append(
                 f"Special Instructions: {special_instructions}")
+        if serving_count:
+            delivery_notes.append(f"Serving: {serving_count}")
+        if service_type:
+            delivery_notes.append(f"Service Type: {service_type}")
 
         delivery_note_text = "\n".join(
             delivery_notes) if delivery_notes else "No special instructions"
@@ -429,6 +440,8 @@ class MenuCartController(http.Controller):
             'delivery_date': 'N/A',
             'delivery_time': 'N/A',
             'special_instructions': '',
+            'serving_count': 'N/A',
+            'service_type': 'N/A',
             'order_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             'total_amount': 0.0,
         }
