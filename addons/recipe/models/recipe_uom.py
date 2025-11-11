@@ -22,7 +22,8 @@ class RecipeUOM(models.Model):
         for record in self:
             record.is_global = not record.recipe_id
     
-    _sql_constraints = [
-        ('code_recipe_unique', 'unique(code, recipe_id)', 'The code must be unique per recipe!'),
-    ]
+    _code_recipe_unique = models.Constraint(
+        'UNIQUE (code, recipe_id)',
+        'The code must be unique per recipe!'
+    )
 
