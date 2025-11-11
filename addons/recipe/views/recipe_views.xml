@@ -78,6 +78,17 @@
                                     </list>
                                 </field>
                             </page>
+                            <page string="UOM">
+                                <field name="uom_ids">
+                                    <list editable="bottom" create="true" delete="true">
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="description"/>
+                                        <field name="active"/>
+                                        <field name="is_global"/>
+                                    </list>
+                                </field>
+                            </page>
                             <page string="Notes">
                                 <field name="notes" placeholder="Additional notes..."/>
                             </page>
@@ -183,33 +194,6 @@
             </field>
         </record>
 
-        <!-- Consolidate Recipe Wizard View -->
-        <record id="view_recipe_consolidate_wizard_form" model="ir.ui.view">
-            <field name="name">recipe.consolidate.wizard.form</field>
-            <field name="model">recipe.consolidate.wizard</field>
-            <field name="arch" type="xml">
-                <form string="Consolidate Recipe">
-                    <sheet>
-                        <group>
-                            <field name="recipe_id"/>
-                        </group>
-                    </sheet>
-                    <footer>
-                        <button string="Consolidate" name="action_consolidate" type="object" class="btn-primary"/>
-                        <button string="Cancel" class="btn-secondary" special="cancel"/>
-                    </footer>
-                </form>
-            </field>
-        </record>
-
-        <!-- Consolidate Recipe Action -->
-        <record id="action_consolidate_recipe_wizard" model="ir.actions.act_window">
-            <field name="name">Consolidate Recipe</field>
-            <field name="res_model">recipe.consolidate.wizard</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
-        </record>
-
         <!-- Recipe Action -->
         <record id="action_recipe" model="ir.actions.act_window">
             <field name="name">Recipes</field>
@@ -236,11 +220,86 @@
             <field name="target">new</field>
         </record>
 
+        <!-- UOM Tree View -->
+        <record id="view_recipe_uom_tree" model="ir.ui.view">
+            <field name="name">recipe.uom.tree</field>
+            <field name="model">recipe.uom</field>
+            <field name="arch" type="xml">
+                <list string="Units of Measure" sample="1">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="description"/>
+                    <field name="active"/>
+                    <field name="is_global"/>
+                    <field name="recipe_id"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- UOM Form View -->
+        <record id="view_recipe_uom_form" model="ir.ui.view">
+            <field name="name">recipe.uom.form</field>
+            <field name="model">recipe.uom</field>
+            <field name="arch" type="xml">
+                <form string="Unit of Measure">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="active"/>
+                                <field name="is_global" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="recipe_id"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description" placeholder="Description of the unit..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- UOM Search View -->
+        <record id="view_recipe_uom_search" model="ir.ui.view">
+            <field name="name">recipe.uom.search</field>
+            <field name="model">recipe.uom</field>
+            <field name="arch" type="xml">
+                <search string="Search UOM">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="recipe_id"/>
+                    <separator/>
+                    <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- UOM Action -->
+        <record id="action_recipe_uom" model="ir.actions.act_window">
+            <field name="name">Units of Measure</field>
+            <field name="res_model">recipe.uom</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_recipe_uom_search"/>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first unit of measure!
+                </p>
+                <p>
+                    Define custom units of measure for your recipes. You can manage units like cups, grams, liters, etc.
+                </p>
+            </field>
+        </record>
+
         <!-- Menu Items -->
         <menuitem id="menu_recipe_root" name="Recipes" sequence="10"/>
         <menuitem id="menu_recipe_recipes" name="All Recipes" parent="menu_recipe_root" action="action_recipe" sequence="10"/>
         <menuitem id="menu_recipe_import" name="Import Recipe" parent="menu_recipe_root" action="action_import_recipe" sequence="20"/>
-        <menuitem id="menu_recipe_consolidate" name="Consolidate Recipe" parent="menu_recipe_root" action="action_consolidate_recipe_wizard" sequence="30"/>
+        <menuitem id="menu_recipe_uom" name="Units of Measure" parent="menu_recipe_root" action="action_recipe_uom" sequence="30"/>
 
     </data>
 </odoo>

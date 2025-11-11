@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Caterer Tree View -->
+        <record id="view_caterer_list_tree" model="ir.ui.view">
+            <field name="name">caterer.list.tree</field>
+            <field name="model">caterer.list</field>
+            <field name="arch" type="xml">
+                <list string="Caterers" sample="1">
+                    <field name="name"/>
+                    <field name="source_recipe_ids" widget="many2many_tags"/>
+                    <field name="ingredient_ids" widget="statinfo" string="Ingredients"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Caterer Form View -->
+        <record id="view_caterer_list_form" model="ir.ui.view">
+            <field name="name">caterer.list.form</field>
+            <field name="model">caterer.list</field>
+            <field name="arch" type="xml">
+                <form string="Caterer">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Caterer Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="source_recipe_ids" widget="many2many_tags" options="{'color_field': 'id'}" string="Source Recipes"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Ingredients">
+                                <field name="ingredient_ids">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="quantity"/>
+                                        <field name="unit"/>
+                                        <field name="notes"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes" placeholder="Additional notes..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Caterer Search View -->
+        <record id="view_caterer_list_search" model="ir.ui.view">
+            <field name="name">caterer.list.search</field>
+            <field name="model">caterer.list</field>
+            <field name="arch" type="xml">
+                <search string="Search Caterers">
+                    <field name="name"/>
+                    <field name="source_recipe_ids"/>
+                    <separator/>
+                    <filter string="Group by Source Recipes" name="group_source_recipes" context="{'group_by': 'source_recipe_ids'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Caterer Wizard View -->
+        <record id="view_caterer_list_wizard_form" model="ir.ui.view">
+            <field name="name">caterer.list.wizard.form</field>
+            <field name="model">caterer.list.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create Caterer">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="recipe_id" invisible="1"/>
+                            <field name="recipe_ids" widget="many2many_tags"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Create Caterer" name="action_consolidate" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Caterer Action -->
+        <record id="action_caterer_list" model="ir.actions.act_window">
+            <field name="name">Caterers</field>
+            <field name="res_model">caterer.list</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_caterer_list_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first caterer!
+                </p>
+                <p>
+                    Combine ingredients from multiple recipes into a single consolidated list.
+                </p>
+            </field>
+        </record>
+
+        <!-- Create Caterer Action -->
+        <record id="action_create_caterer_list_wizard" model="ir.actions.act_window">
+            <field name="name">Create Caterer</field>
+            <field name="res_model">caterer.list.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu Items -->
+        <menuitem id="menu_caterer_list_root" name="Caterers" sequence="15"/>
+        <menuitem id="menu_caterer_list_lists" name="All Caterers" parent="menu_caterer_list_root" action="action_caterer_list" sequence="10"/>
+        <menuitem id="menu_caterer_list_create" name="Create Caterer" parent="menu_caterer_list_root" action="action_create_caterer_list_wizard" sequence="20"/>
+
+    </data>
+</odoo>
+

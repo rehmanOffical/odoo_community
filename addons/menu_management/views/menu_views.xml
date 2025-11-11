@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Actions -->
+    <record id="action_menu_item" model="ir.actions.act_window">
+        <field name="name">Menu Items</field>
+        <field name="res_model">menu.item</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <!-- Views: Category -->
     <record id="view_menu_category_tree" model="ir.ui.view">
         <field name="name">menu.category.tree</field>
@@ -107,6 +114,7 @@
                 <field name="name"/>
                 <field name="code"/>
                 <field name="category_id"/>
+                <field name="recipe_id"/>
                 <field name="price"/>
                 <field name="uom_id"/>
                 <field name="serving_size"/>
@@ -128,12 +136,16 @@
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
                             <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
                         </button>
+                        <button name="action_open_recipe" type="object" class="oe_stat_button" icon="fa-book" invisible="not recipe_id">
+                            <field name="recipe_id" widget="statinfo" string="Recipe"/>
+                        </button>
                     </div>
                     <group>
                         <group>
                             <field name="name"/>
                             <field name="code"/>
                             <field name="category_id"/>
+                            <field name="recipe_id"/>
                             <field name="sequence"/>
                             <field name="image_1920" widget="image" class="oe_avatar"/>
                         </group>
@@ -247,12 +259,6 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="action_menu_item" model="ir.actions.act_window">
-        <field name="name">Menu Items</field>
-        <field name="res_model">menu.item</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
     <record id="action_menu_allergen" model="ir.actions.act_window">
         <field name="name">Allergens</field>
         <field name="res_model">menu.allergen</field>
@@ -272,4 +278,18 @@
     <menuitem id="menu_config" name="Configuration" parent="menu_root" sequence="30"/>
     <menuitem id="menu_allergen" name="Allergens" parent="menu_config" action="action_menu_allergen" sequence="10"/>
     <menuitem id="menu_dietary_tag" name="Dietary Tags" parent="menu_config" action="action_menu_dietary_tag" sequence="20"/>
+
+    <!-- Inherit Recipe Form View to add Menu Items button -->
+    <record id="view_recipe_form_inherit_menu_items" model="ir.ui.view">
+        <field name="name">recipe.form.inherit.menu.items</field>
+        <field name="model">recipe.recipe</field>
+        <field name="inherit_id" ref="recipe.view_recipe_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_menu_items" type="object" class="oe_stat_button" icon="fa-cutlery" invisible="menu_item_count == 0">
+                    <field name="menu_item_count" widget="statinfo" string="Menu Items"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
 </odoo>

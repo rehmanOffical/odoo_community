@@ -6,7 +6,7 @@
     'category': 'Website',
     'author': 'Your Company',
     'license': 'LGPL-3',
-    'depends': ['base', 'website', 'uom'],
+    'depends': ['base', 'website', 'uom', 'recipe'],
     'data': [
         'security/ir.model.access.csv',
         'views/menu_views.xml',
