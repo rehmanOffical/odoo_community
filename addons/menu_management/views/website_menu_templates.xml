@@ -8,45 +8,3126 @@
         <field name="arch" type="xml">
             <t t-name="menu_management.menu_public_page">
                 <t t-call="website.layout">
-                    <div id="wrap" class="oe_structure">
-                        <section class="s_cover pb-5 pt-5 text-center">
-                            <h1>Our Menu</h1>
+                        <div id="wrap" class="oe_structure menu-page-wrapper">
+                            <!-- Hero Section -->
+                            <section class="menu-hero-section">
+                                <div class="menu-hero-overlay"></div>
+                                <div class="container menu-hero-content">
+                                    <div class="hero-header">
+                                        <h1 class="menu-hero-title">🍽️ Our Exquisite Menu</h1>
+                                        <a href="/menu/cart" class="cart-icon-link" title="View Cart">
+                                            <i class="fa fa-shopping-cart"></i>
+                                            <span class="cart-badge" id="cart-icon-count">0</span>
+                                        </a>
+                                    </div>
+                                    <p class="menu-hero-subtitle">Discover a world of flavors crafted with passion</p>
+                                    <div class="menu-hero-stats">
+                                        <div class="stat-item">
+                                            <span class="stat-number" id="total-items">0</span>
+                                            <span class="stat-label">Menu Items</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-number" id="total-categories">0</span>
+                                            <span class="stat-label">Categories</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- Filters Section -->
+                            <section class="menu-filters-section">
+                                <div class="container">
+                                    <div class="filters-wrapper">
+                                        <h3 class="filters-title">
+                                            <i class="fa fa-filter"></i> Filter by Preferences
+                                        </h3>
+                                        <div class="filter-buttons">
+                                            <button type="button" class="filter-btn active" data-filter="all">
+                                                <i class="fa fa-th"></i> All Items
+                                            </button>
+                                            <button type="button" class="filter-btn" data-filter="vegetarian">
+                                                <i class="fa fa-leaf"></i> Vegetarian
+                                            </button>
+                                            <button type="button" class="filter-btn" data-filter="vegan">
+                                                <i class="fa fa-seedling"></i> Vegan
+                                            </button>
+                                            <button type="button" class="filter-btn" data-filter="halal">
+                                                <i class="fa fa-star"></i> Halal
+                                            </button>
+                                            <button type="button" class="filter-btn" data-filter="gluten-free">
+                                                <i class="fa fa-wheat"></i> Gluten Free
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                         </section>
-                        <section class="pt-3 pb-5">
+
+                            <!-- Menu Content -->
+                            <section class="menu-content-section">
                             <div class="container">
+                                    <!-- Menu Categories -->
                                 <t t-foreach="request.env['menu.category'].sudo().search([('active','=',True)], order='sequence,name')" t-as="cat">
-                                    <h3 t-esc="cat.name"/>
-                                    <div class="row">
-                                        <t t-foreach="request.env['menu.item'].sudo().search([('active','=',True),('category_id','=',cat.id)], order='sequence,name')" t-as="item">
-                                            <div class="col-md-4 mb-4">
-                                                <div class="card h-100">
-                                                    <t t-if="item.image_1920">
-                                                        <img t-att-src="'data:image/png;base64,%s' % item.image_1920" class="card-img-top"/>
+                                        <div class="category-section" t-att-data-category-id="cat.id">
+                                            <div class="category-header">
+                                                <div class="category-header-content">
+                                                    <h2 class="category-title">
+                                                        <t t-esc="cat.name"/>
+                                                    </h2>
+                                                    <t t-if="cat.description">
+                                                        <p class="category-description"><t t-esc="cat.description"/></p>
                                                     </t>
-                                                    <div class="card-body">
-                                                        <h5 class="card-title" t-esc="item.name"/>
-                                                        <p class="card-text" t-esc="item.description or ''"/>
-                                                        <p class="fw-bold" t-esc="(item.price and ('$ %.2f' % item.price)) or ''"/>
+                                                </div>
+                                                <t t-if="cat.image_1920">
+                                                    <div class="category-image-wrapper">
+                                                        <img t-att-src="'data:image/png;base64,%s' % cat.image_1920" 
+                                                             class="category-image"
+                                                             t-att-alt="cat.name"/>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                            
+                                            <div class="menu-items-grid">
+                                                <t t-foreach="request.env['menu.item'].sudo().search([('active','=',True),('available','=',True),('category_id','=',cat.id)], order='sequence,name')" t-as="item">
+                                                    <div class="menu-item-card" 
+                                                         t-att-class="{'vegetarian-filter': item.is_vegetarian, 'vegan-filter': item.is_vegan, 'halal-filter': item.is_halal, 'gluten-free-filter': item.is_gluten_free}"
+                                                         t-att-data-item-id="item.id">
+                                                        <!-- Card Image Section -->
+                                                        <div class="menu-item-image-wrapper">
+                                                            <t t-if="item.image_1920">
+                                                                <img t-att-src="'data:image/png;base64,%s' % item.image_1920" 
+                                                                     class="menu-item-image"
+                                                                     t-att-alt="item.name"/>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <div class="menu-item-image-placeholder">
+                                                                    <i class="fa fa-cutlery"></i>
+                                                                </div>
+                                                            </t>
+                                                            
+                                                            <!-- Price Badge -->
+                                                            <div class="price-badge">
+                                                                <span class="price-symbol">$</span>
+                                                                <span class="price-amount" t-esc="item.price"/>
+                                                            </div>
+                                                            
+                                                            <!-- Status Badges -->
+                                                            <div class="status-badges">
+                                                                <t t-if="item.is_featured">
+                                                                    <span class="badge badge-featured">
+                                                                        <i class="fa fa-star"></i> Featured
+                                                                    </span>
+                                                                </t>
+                                                                <t t-if="item.is_new">
+                                                                    <span class="badge badge-new">
+                                                                        <i class="fa fa-sparkles"></i> New
+                                                                    </span>
+                                                                </t>
+                                                                <t t-if="item.is_popular">
+                                                                    <span class="badge badge-popular">
+                                                                        <i class="fa fa-fire"></i> Popular
+                                                                    </span>
+                                                                </t>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Card Content -->
+                                                        <div class="menu-item-content">
+                                                            <!-- Header -->
+                                                            <div class="menu-item-header">
+                                                                <h3 class="menu-item-name">
+                                                                    <t t-esc="item.name"/>
+                                                                </h3>
+                                                                <t t-if="item.code">
+                                                                    <span class="menu-item-code">#<t t-esc="item.code"/></span>
+                                                                </t>
+                                                            </div>
+
+                                                            <!-- Description -->
+                                                            <t t-if="item.short_description">
+                                                                <p class="menu-item-description">
+                                                                    <t t-esc="item.short_description"/>
+                                                                </p>
+                                                            </t>
+
+                                                            <!-- Dietary Info Row -->
+                                                            <div class="dietary-info-row">
+                                                                <div class="dietary-badges">
+                                                                    <t t-if="item.is_vegetarian">
+                                                                        <span class="dietary-badge vegetarian">
+                                                                            <i class="fa fa-leaf"></i> Veg
+                                                                        </span>
+                                                                    </t>
+                                                                    <t t-if="item.is_vegan">
+                                                                        <span class="dietary-badge vegan">
+                                                                            <i class="fa fa-seedling"></i> Vegan
+                                                                        </span>
+                                                                    </t>
+                                                                    <t t-if="item.is_halal">
+                                                                        <span class="dietary-badge halal">
+                                                                            <i class="fa fa-star"></i> Halal
+                                                                        </span>
+                                                                    </t>
+                                                                    <t t-if="item.is_gluten_free">
+                                                                        <span class="dietary-badge gluten-free">
+                                                                            <i class="fa fa-check-circle"></i> GF
+                                                                        </span>
+                                                                    </t>
+                                                                    <t t-foreach="item.dietary_tag_ids" t-as="tag">
+                                                                        <span class="dietary-badge custom">
+                                                                            <t t-esc="tag.name"/>
+                                                                        </span>
+                                                                    </t>
+                                                                </div>
+                                                                
+                                                                <!-- Spice Level -->
+                                                                <div class="spice-level">
+                                                                    <span class="spice-label">Spice:</span>
+                                                                    <div class="spice-indicator" t-att-data-level="item.spice_level">
+                                                                        <span class="spice-dot" t-if="item.spice_level == 'none'"></span>
+                                                                        <span class="spice-dot" t-if="item.spice_level == 'mild'"></span>
+                                                                        <span class="spice-dot active" t-if="item.spice_level == 'mild'"></span>
+                                                                        <span class="spice-dot active" t-if="item.spice_level == 'medium'"></span>
+                                                                        <span class="spice-dot active" t-if="item.spice_level == 'hot'"></span>
+                                                                        <span class="spice-dot active" t-if="item.spice_level == 'hot'"></span>
+                                                                        <span class="spice-dot active" t-if="item.spice_level == 'extra_hot'"></span>
+                                                                        <span class="spice-label-text" t-esc="item.spice_level.replace('_', ' ').title()"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Quick Info -->
+                                                            <div class="quick-info">
+                                                                <t t-if="item.serving_size">
+                                                                    <div class="info-item">
+                                                                        <i class="fa fa-users"></i>
+                                                                        <span>Serves <t t-esc="item.serving_size"/></span>
+                                                                    </div>
+                                                                </t>
+                                                                <t t-if="item.total_time">
+                                                                    <div class="info-item">
+                                                                        <i class="fa fa-clock"></i>
+                                                                        <span><t t-esc="item.total_time"/> min</span>
+                                                                    </div>
+                                                                </t>
+                                                                <t t-if="item.calories">
+                                                                    <div class="info-item">
+                                                                        <i class="fa fa-fire"></i>
+                                                                        <span><t t-esc="item.calories"/> cal</span>
+                                                                    </div>
+                                                                </t>
+                                                            </div>
+
+                                                            <!-- Price and Add to Cart Section -->
+                                                            <div class="cart-section">
+                                                                <div class="price-display">
+                                                                    <span class="price-label">Price:</span>
+                                                                    <span class="price-value">
+                                                                        <span class="currency">$</span>
+                                                                        <span class="amount" t-esc="item.price"/>
+                                                                    </span>
+                                                                    <t t-if="item.uom_id">
+                                                                        <span class="price-unit">/ <t t-esc="item.uom_id.name"/></span>
+                                                                    </t>
+                                                                </div>
+                                                                
+                                                                <!-- Quantity Selector and Add to Cart -->
+                                                                <div class="add-to-cart-wrapper">
+                                                                    <div class="quantity-selector">
+                                                                        <button class="qty-btn qty-minus" t-att-data-item-id="item.id" onclick="decreaseQuantity(this)">
+                                                                            <i class="fa fa-minus"></i>
+                                                                        </button>
+                                                                        <input type="number" 
+                                                                               class="qty-input" 
+                                                                               t-att-id="'qty-' + str(item.id)"
+                                                                               t-att-data-item-id="item.id"
+                                                                               value="1" 
+                                                                               min="1" 
+                                                                               t-att-max="item.max_order_qty if item.max_order_qty else ''"
+                                                                               onchange="updateQuantity(this)"/>
+                                                                        <button class="qty-btn qty-plus" t-att-data-item-id="item.id" onclick="increaseQuantity(this)">
+                                                                            <i class="fa fa-plus"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                    <button class="btn-add-to-cart" 
+                                                                            t-att-data-item-id="item.id"
+                                                                            t-att-data-item-name="item.name"
+                                                                            t-att-data-item-price="item.price"
+                                                                            onclick="addToCart(this)">
+                                                                        <i class="fa fa-shopping-cart"></i>
+                                                                        <span>Add to Cart</span>
+                                                                        <span class="cart-loading" style="display: none;">
+                                                                            <i class="fa fa-spinner fa-spin"></i>
+                                                                        </span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Expandable Details Button -->
+                                                            <button class="btn-details" t-att-data-item-id="item.id" onclick="toggleDetails(this)">
+                                                                <span class="btn-text">View Details</span>
+                                                                <i class="fa fa-chevron-down"></i>
+                                                            </button>
+
+                                                            <!-- Expandable Details Content -->
+                                                            <div class="menu-item-details" t-att-id="'details-' + str(item.id)" style="display: none;">
+                                                                <!-- Full Description -->
+                                                                <t t-if="item.description">
+                                                                    <div class="detail-section">
+                                                                        <h4><i class="fa fa-align-left"></i> Description</h4>
+                                                                        <div class="detail-content" t-raw="item.description"/>
+                                                                    </div>
+                                                                </t>
+
+                                                                <!-- Ingredients -->
+                                                                <t t-if="item.ingredients">
+                                                                    <div class="detail-section">
+                                                                        <h4><i class="fa fa-list"></i> Ingredients</h4>
+                                                                        <div class="detail-content" t-raw="item.ingredients"/>
+                                                                    </div>
+                                                                </t>
+
+                                                                <!-- Nutrition Details -->
+                                                                <t t-if="item.calories or item.protein or item.carbs or item.fat">
+                                                                    <div class="detail-section">
+                                                                        <h4><i class="fa fa-chart-pie"></i> Nutrition Facts</h4>
+                                                                        <div class="nutrition-grid">
+                                                                            <t t-if="item.calories">
+                                                                                <div class="nutrition-item">
+                                                                                    <span class="nutrition-label">Calories</span>
+                                                                                    <span class="nutrition-value"><t t-esc="item.calories"/> cal</span>
+                                                                                </div>
+                                                                            </t>
+                                                                            <t t-if="item.protein">
+                                                                                <div class="nutrition-item">
+                                                                                    <span class="nutrition-label">Protein</span>
+                                                                                    <span class="nutrition-value"><t t-esc="item.protein"/>g</span>
+                                                                                </div>
+                                                                            </t>
+                                                                            <t t-if="item.carbs">
+                                                                                <div class="nutrition-item">
+                                                                                    <span class="nutrition-label">Carbs</span>
+                                                                                    <span class="nutrition-value"><t t-esc="item.carbs"/>g</span>
+                                                                                </div>
+                                                                            </t>
+                                                                            <t t-if="item.fat">
+                                                                                <div class="nutrition-item">
+                                                                                    <span class="nutrition-label">Fat</span>
+                                                                                    <span class="nutrition-value"><t t-esc="item.fat"/>g</span>
+                                                                                </div>
+                                                                            </t>
+                                                                        </div>
+                                                                    </div>
+                                                                </t>
+
+                                                                <!-- Timing Info -->
+                                                                <t t-if="item.prep_time or item.cooking_time">
+                                                                    <div class="detail-section">
+                                                                        <h4><i class="fa fa-clock"></i> Preparation Time</h4>
+                                                                        <div class="timing-info">
+                                                                            <t t-if="item.prep_time">
+                                                                                <div class="timing-item">
+                                                                                    <span class="timing-label">Prep:</span>
+                                                                                    <span class="timing-value"><t t-esc="item.prep_time"/> min</span>
+                                                                                </div>
+                                                                            </t>
+                                                                            <t t-if="item.cooking_time">
+                                                                                <div class="timing-item">
+                                                                                    <span class="timing-label">Cook:</span>
+                                                                                    <span class="timing-value"><t t-esc="item.cooking_time"/> min</span>
+                                                                                </div>
+                                                                            </t>
+                                                                        </div>
+                                                                    </div>
+                                                                </t>
+
+                                                                <!-- Allergens Warning -->
+                                                                <t t-if="item.allergen_ids">
+                                                                    <div class="detail-section allergen-warning">
+                                                                        <h4><i class="fa fa-exclamation-triangle"></i> Allergen Information</h4>
+                                                                        <div class="allergen-list">
+                                                                            <t t-foreach="item.allergen_ids" t-as="allergen">
+                                                                                <span class="allergen-tag">
+                                                                                    <i class="fa fa-exclamation-circle"></i>
+                                                                                    <t t-esc="allergen.name"/>
+                                                                                    <t t-if="allergen.description">
+                                                                                        <span class="allergen-desc"> - <t t-esc="allergen.description"/></span>
+                                                                                    </t>
+                                                                                </span>
+                                                                            </t>
                                                     </div>
                                                 </div>
+                                                                </t>
+
+                                                                <!-- Additional Info -->
+                                                                <t t-if="item.customer_notes or item.preparation_notes">
+                                                                    <div class="detail-section">
+                                                                        <h4><i class="fa fa-info-circle"></i> Additional Information</h4>
+                                                                        <t t-if="item.customer_notes">
+                                                                            <div class="info-box customer-notes">
+                                                                                <strong>For Customers:</strong>
+                                                                                <p><t t-esc="item.customer_notes"/></p>
                                             </div>
                                         </t>
                                     </div>
                                 </t>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </t>
+
+                                    <!-- Empty State -->
+                                    <div class="empty-state" id="no-results" style="display: none;">
+                                        <div class="empty-state-icon">
+                                            <i class="fa fa-search"></i>
+                                        </div>
+                                        <h3>No items found</h3>
+                                        <p>Try adjusting your filters to see more options</p>
+                                        <button class="btn-reset-filters" onclick="clearFilters()">
+                                            <i class="fa fa-times"></i> Clear Filters
+                                        </button>
+                                    </div>
                             </div>
                         </section>
                     </div>
+
+                        <!-- Custom Styles -->
+                        <style>
+                            .menu-page-wrapper {
+                                background: #f8f9fa;
+                                min-height: 100vh;
+                            }
+
+                            /* Hero Section */
+                            .menu-hero-section {
+                                position: relative;
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+                                padding: 80px 0 60px;
+                                overflow: hidden;
+                                color: white;
+                            }
+                            
+                            .menu-hero-overlay {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                right: 0;
+                                bottom: 0;
+                                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+                                background-size: cover;
+                            }
+
+                            .menu-hero-content {
+                                position: relative;
+                                z-index: 1;
+                                text-align: center;
+                            }
+
+                            .hero-header {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                gap: 2rem;
+                                margin-bottom: 1rem;
+                                position: relative;
+                            }
+
+                            .cart-icon-link {
+                                position: absolute;
+                                right: 0;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                color: white;
+                                font-size: 1.5rem;
+                                text-decoration: none;
+                                background: rgba(255,255,255,0.2);
+                                padding: 12px 16px;
+                                border-radius: 50px;
+                                transition: all 0.3s ease;
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                            }
+
+                            .cart-icon-link:hover {
+                                background: rgba(255,255,255,0.3);
+                                transform: translateY(-50%) scale(1.1);
+                            }
+
+                            .cart-badge {
+                                background: #ff4444;
+                                color: white;
+                                border-radius: 50%;
+                                width: 24px;
+                                height: 24px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 0.75rem;
+                                font-weight: 700;
+                                position: absolute;
+                                top: -5px;
+                                right: -5px;
+                            }
+
+                            .menu-hero-title {
+                                font-size: 3.5rem;
+                                font-weight: 700;
+                                margin: 0;
+                                text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+                            }
+
+                            .menu-hero-subtitle {
+                                font-size: 1.3rem;
+                                margin-bottom: 2rem;
+                                opacity: 0.95;
+                            }
+
+                            .menu-hero-stats {
+                                display: flex;
+                                justify-content: center;
+                                gap: 3rem;
+                                margin-top: 2rem;
+                            }
+
+                            .stat-item {
+                                text-align: center;
+                            }
+
+                            .stat-number {
+                                display: block;
+                                font-size: 2.5rem;
+                                font-weight: 700;
+                                line-height: 1;
+                            }
+
+                            .stat-label {
+                                display: block;
+                                font-size: 0.9rem;
+                                opacity: 0.9;
+                                margin-top: 0.5rem;
+                            }
+
+                            /* Filters Section */
+                            .menu-filters-section {
+                                background: white;
+                                padding: 2rem 0;
+                                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                                position: sticky;
+                                top: 0;
+                                z-index: 100;
+                            }
+
+                            .filters-wrapper {
+                                text-align: center;
+                            }
+
+                            .filters-title {
+                                font-size: 1.2rem;
+                                margin-bottom: 1rem;
+                                color: #333;
+                            }
+
+                            .filter-buttons {
+                                display: flex;
+                                justify-content: center;
+                                flex-wrap: wrap;
+                                gap: 0.75rem;
+                            }
+
+                            .filter-btn {
+                                padding: 0.75rem 1.5rem;
+                                border: 2px solid #e0e0e0;
+                                background: white;
+                                border-radius: 50px;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                font-weight: 500;
+                                color: #666;
+                            }
+
+                            .filter-btn:hover {
+                                border-color: #667eea;
+                                color: #667eea;
+                                transform: translateY(-2px);
+                            }
+
+                            .filter-btn.active {
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                border-color: #667eea;
+                                color: white;
+                                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                            }
+
+                            /* Category Section */
+                            .category-section {
+                                margin: 4rem 0;
+                            }
+
+                            .category-header {
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                margin-bottom: 2.5rem;
+                                padding-bottom: 1rem;
+                                border-bottom: 3px solid #667eea;
+                            }
+
+                            .category-title {
+                                font-size: 2.5rem;
+                                font-weight: 700;
+                                color: #333;
+                                margin: 0;
+                            }
+
+                            .category-description {
+                                color: #666;
+                                margin-top: 0.5rem;
+                                font-size: 1.1rem;
+                            }
+
+                            .category-image-wrapper {
+                                width: 80px;
+                                height: 80px;
+                                border-radius: 50%;
+                                overflow: hidden;
+                                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                            }
+
+                            .category-image {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            }
+
+                            /* Menu Items Grid */
+                            .menu-items-grid {
+                                display: grid;
+                                grid-template-columns: repeat(3, 1fr);
+                                gap: 1.5rem;
+                            }
+
+                            /* Menu Item Card */
+                            .menu-item-card {
+                                background: white;
+                                border-radius: 15px;
+                                overflow: hidden;
+                                box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+                                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                                position: relative;
+                            }
+
+                            .menu-item-card:hover {
+                                transform: translateY(-10px);
+                                box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+                            }
+
+                            .menu-item-card.hidden {
+                                display: none;
+                            }
+
+                            /* Image Section */
+                            .menu-item-image-wrapper {
+                                position: relative;
+                                height: 200px;
+                                overflow: hidden;
+                                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                            }
+
+                            .menu-item-image {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                transition: transform 0.5s ease;
+                            }
+
+                            .menu-item-card:hover .menu-item-image {
+                                transform: scale(1.1);
+                            }
+
+                            .menu-item-image-placeholder {
+                                width: 100%;
+                                height: 100%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: #ccc;
+                                font-size: 2.5rem;
+                            }
+
+                            /* Price Badge */
+                            .price-badge {
+                                position: absolute;
+                                bottom: 15px;
+                                right: 15px;
+                                background: rgba(255,255,255,0.95);
+                                backdrop-filter: blur(10px);
+                                padding: 8px 14px;
+                                border-radius: 50px;
+                                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                                font-weight: 700;
+                                font-size: 1.1rem;
+                                color: #667eea;
+                            }
+
+                            .price-symbol {
+                                font-size: 0.8rem;
+                                vertical-align: top;
+                            }
+
+                            .price-amount {
+                                font-size: 1.2rem;
+                            }
+
+                            /* Status Badges */
+                            .status-badges {
+                                position: absolute;
+                                top: 12px;
+                                left: 12px;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 0.4rem;
+                            }
+
+                            .status-badges .badge {
+                                padding: 4px 10px;
+                                border-radius: 15px;
+                                font-size: 0.65rem;
+                                font-weight: 600;
+                                backdrop-filter: blur(10px);
+                            }
+
+                            .badge-featured {
+                                background: rgba(220, 53, 69, 0.9);
+                                color: white;
+                            }
+
+                            .badge-new {
+                                background: rgba(40, 167, 69, 0.9);
+                                color: white;
+                            }
+
+                            .badge-popular {
+                                background: rgba(255, 193, 7, 0.9);
+                                color: #333;
+                            }
+
+                            /* Card Content */
+                            .menu-item-content {
+                                padding: 1rem;
+                            }
+
+                            .menu-item-header {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: flex-start;
+                                margin-bottom: 0.5rem;
+                            }
+
+                            .menu-item-name {
+                                font-size: 1.1rem;
+                                font-weight: 700;
+                                color: #333;
+                                margin: 0;
+                                flex: 1;
+                                line-height: 1.3;
+                            }
+
+                            .menu-item-code {
+                                font-size: 0.75rem;
+                                color: #999;
+                                font-weight: 500;
+                                margin-left: 0.5rem;
+                            }
+
+                            .menu-item-description {
+                                color: #666;
+                                font-size: 0.85rem;
+                                line-height: 1.5;
+                                margin-bottom: 0.75rem;
+                                min-height: 38px;
+                            }
+
+                            /* Dietary Info */
+                            .dietary-info-row {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                margin-bottom: 0.75rem;
+                                flex-wrap: wrap;
+                                gap: 0.4rem;
+                            }
+
+                            .dietary-badges {
+                                display: flex;
+                                flex-wrap: wrap;
+                                gap: 0.5rem;
+                            }
+
+                            .dietary-badge {
+                                padding: 3px 8px;
+                                border-radius: 12px;
+                                font-size: 0.7rem;
+                                font-weight: 600;
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 3px;
+                            }
+
+                            .dietary-badge.vegetarian {
+                                background: #d4edda;
+                                color: #155724;
+                            }
+
+                            .dietary-badge.vegan {
+                                background: #d1ecf1;
+                                color: #0c5460;
+                            }
+
+                            .dietary-badge.halal {
+                                background: #cce5ff;
+                                color: #004085;
+                            }
+
+                            .dietary-badge.gluten-free {
+                                background: #fff3cd;
+                                color: #856404;
+                            }
+
+                            .dietary-badge.custom {
+                                background: #e2e3e5;
+                                color: #383d41;
+                            }
+
+                            /* Spice Level */
+                            .spice-level {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                            }
+
+                            .spice-label {
+                                font-size: 0.75rem;
+                                color: #666;
+                            }
+
+                            .spice-indicator {
+                                display: flex;
+                                gap: 4px;
+                                align-items: center;
+                            }
+
+                            .spice-dot {
+                                width: 8px;
+                                height: 8px;
+                                border-radius: 50%;
+                                background: #ddd;
+                                transition: all 0.3s ease;
+                            }
+
+                            .spice-dot.active {
+                                background: #f44336;
+                                box-shadow: 0 0 8px rgba(244, 67, 54, 0.5);
+                            }
+
+                            .spice-label-text {
+                                font-size: 0.7rem;
+                                color: #666;
+                                margin-left: 0.25rem;
+                                text-transform: capitalize;
+                            }
+
+                            /* Quick Info */
+                            .quick-info {
+                                display: flex;
+                                gap: 1rem;
+                                margin-bottom: 1rem;
+                                padding-top: 1rem;
+                                border-top: 1px solid #eee;
+                                flex-wrap: wrap;
+                            }
+
+                            .info-item {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.4rem;
+                                font-size: 0.75rem;
+                                color: #666;
+                            }
+
+                            .info-item i {
+                                color: #667eea;
+                            }
+
+                            /* Cart Section */
+                            .cart-section {
+                                margin-top: 1rem;
+                                padding-top: 1rem;
+                                border-top: 2px solid #f0f0f0;
+                            }
+
+                            .price-display {
+                                display: flex;
+                                align-items: baseline;
+                                justify-content: space-between;
+                                margin-bottom: 0.75rem;
+                                padding: 0.6rem;
+                                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                                border-radius: 8px;
+                            }
+
+                            .price-label {
+                                font-size: 0.8rem;
+                                color: #666;
+                                font-weight: 500;
+                            }
+
+                            .price-value {
+                                display: flex;
+                                align-items: baseline;
+                                gap: 2px;
+                                font-size: 1.4rem;
+                                font-weight: 700;
+                                color: #667eea;
+                            }
+
+                            .currency {
+                                font-size: 1rem;
+                                vertical-align: baseline;
+                            }
+
+                            .amount {
+                                font-size: 1.4rem;
+                            }
+
+                            .price-unit {
+                                font-size: 0.85rem;
+                                color: #999;
+                                font-weight: 400;
+                                margin-left: 0.25rem;
+                            }
+
+                            .add-to-cart-wrapper {
+                                display: flex;
+                                gap: 0.75rem;
+                                align-items: center;
+                            }
+
+                            .quantity-selector {
+                                display: flex;
+                                align-items: center;
+                                border: 2px solid #e0e0e0;
+                                border-radius: 10px;
+                                overflow: hidden;
+                                background: white;
+                            }
+
+                            .qty-btn {
+                                width: 32px;
+                                height: 32px;
+                                border: none;
+                                background: #f8f9fa;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                transition: all 0.3s ease;
+                                color: #667eea;
+                                font-weight: 600;
+                                font-size: 0.85rem;
+                            }
+
+                            .qty-btn:hover {
+                                background: #667eea;
+                                color: white;
+                            }
+
+                            .qty-btn:active {
+                                transform: scale(0.95);
+                            }
+
+                            .qty-input {
+                                width: 50px;
+                                height: 32px;
+                                border: none;
+                                text-align: center;
+                                font-size: 0.9rem;
+                                font-weight: 600;
+                                color: #333;
+                                background: white;
+                                -moz-appearance: textfield;
+                            }
+
+                            .qty-input::-webkit-outer-spin-button,
+                            .qty-input::-webkit-inner-spin-button {
+                                -webkit-appearance: none;
+                                margin: 0;
+                            }
+
+                            .qty-input:focus {
+                                outline: none;
+                                background: #f8f9fa;
+                            }
+
+                            .btn-add-to-cart {
+                                flex: 1;
+                                padding: 10px 16px;
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                font-size: 0.9rem;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 0.4rem;
+                                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+                                position: relative;
+                                overflow: hidden;
+                            }
+
+                            .btn-add-to-cart::before {
+                                content: '';
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                width: 0;
+                                height: 0;
+                                border-radius: 50%;
+                                background: rgba(255, 255, 255, 0.3);
+                                transform: translate(-50%, -50%);
+                                transition: width 0.6s, height 0.6s;
+                            }
+
+                            .btn-add-to-cart:hover::before {
+                                width: 300px;
+                                height: 300px;
+                            }
+
+                            .btn-add-to-cart:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+                            }
+
+                            .btn-add-to-cart:active {
+                                transform: translateY(0);
+                            }
+
+                            .btn-add-to-cart.added {
+                                background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                                animation: cartSuccess 0.5s ease;
+                            }
+
+                            @keyframes cartSuccess {
+                                0% { transform: scale(1); }
+                                50% { transform: scale(1.05); }
+                                100% { transform: scale(1); }
+                            }
+
+                            .btn-add-to-cart i {
+                                font-size: 1.1rem;
+                            }
+
+                            .cart-loading {
+                                position: absolute;
+                            }
+
+                            /* Details Button */
+                            .btn-details {
+                                width: 100%;
+                                padding: 8px;
+                                background: transparent;
+                                color: #667eea;
+                                border: 2px solid #667eea;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                font-size: 0.85rem;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 0.4rem;
+                                margin-top: 0.5rem;
+                            }
+
+                            .btn-details:hover {
+                                background: #667eea;
+                                color: white;
+                                transform: translateY(-2px);
+                            }
+
+                            .btn-details.expanded i {
+                                transform: rotate(180deg);
+                            }
+
+                            /* Expandable Details */
+                            .menu-item-details {
+                                margin-top: 1rem;
+                                padding-top: 1rem;
+                                border-top: 2px solid #eee;
+                                animation: slideDown 0.3s ease;
+                            }
+
+                            @keyframes slideDown {
+                                from {
+                                    opacity: 0;
+                                    transform: translateY(-10px);
+                                }
+                                to {
+                                    opacity: 1;
+                                    transform: translateY(0);
+                                }
+                            }
+
+                            .detail-section {
+                                margin-bottom: 1.5rem;
+                            }
+
+                            .detail-section h4 {
+                                font-size: 1rem;
+                                color: #667eea;
+                                margin-bottom: 0.75rem;
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                            }
+
+                            .detail-content {
+                                color: #555;
+                                line-height: 1.7;
+                                font-size: 0.9rem;
+                            }
+
+                            .nutrition-grid {
+                                display: grid;
+                                grid-template-columns: repeat(2, 1fr);
+                                gap: 1rem;
+                            }
+
+                            .nutrition-item {
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 0.75rem;
+                                background: #f8f9fa;
+                                border-radius: 8px;
+                            }
+
+                            .nutrition-label {
+                                color: #666;
+                                font-weight: 500;
+                            }
+
+                            .nutrition-value {
+                                color: #333;
+                                font-weight: 700;
+                            }
+
+                            .timing-info {
+                                display: flex;
+                                gap: 2rem;
+                            }
+
+                            .timing-item {
+                                display: flex;
+                                gap: 0.5rem;
+                            }
+
+                            .timing-label {
+                                color: #666;
+                                font-weight: 500;
+                            }
+
+                            .timing-value {
+                                color: #333;
+                                font-weight: 700;
+                            }
+
+                            .allergen-warning {
+                                background: #fff3cd;
+                                padding: 1rem;
+                                border-radius: 8px;
+                                border-left: 4px solid #ffc107;
+                            }
+
+                            .allergen-list {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 0.5rem;
+                            }
+
+                            .allergen-tag {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                color: #856404;
+                                font-weight: 500;
+                            }
+
+                            .allergen-desc {
+                                color: #666;
+                                font-size: 0.9rem;
+                            }
+
+                            .info-box {
+                                padding: 1rem;
+                                background: #f8f9fa;
+                                border-radius: 8px;
+                                margin-top: 0.5rem;
+                            }
+
+                            .info-box strong {
+                                color: #667eea;
+                            }
+
+                            /* Empty State */
+                            .empty-state {
+                                text-align: center;
+                                padding: 4rem 2rem;
+                            }
+
+                            .empty-state-icon {
+                                font-size: 4rem;
+                                color: #ddd;
+                                margin-bottom: 1rem;
+                            }
+
+                            .empty-state h3 {
+                                color: #666;
+                                margin-bottom: 0.5rem;
+                            }
+
+                            .empty-state p {
+                                color: #999;
+                                margin-bottom: 1.5rem;
+                            }
+
+                            .btn-reset-filters {
+                                padding: 0.75rem 2rem;
+                                background: #667eea;
+                                color: white;
+                                border: none;
+                                border-radius: 25px;
+                                cursor: pointer;
+                                font-weight: 600;
+                                transition: all 0.3s ease;
+                            }
+
+                            .btn-reset-filters:hover {
+                                background: #764ba2;
+                                transform: translateY(-2px);
+                            }
+
+                            /* Responsive */
+                            @media (max-width: 992px) {
+                                .menu-items-grid {
+                                    grid-template-columns: repeat(2, 1fr);
+                                }
+                            }
+
+                            @media (max-width: 768px) {
+                                .menu-hero-title {
+                                    font-size: 2rem;
+                                }
+
+                                .menu-hero-stats {
+                                    gap: 1.5rem;
+                                }
+
+                                .menu-items-grid {
+                                    grid-template-columns: 1fr;
+                                }
+
+                                .category-header {
+                                    flex-direction: column;
+                                    align-items: flex-start;
+                                }
+
+                                .dietary-info-row {
+                                    flex-direction: column;
+                                    align-items: flex-start;
+                                }
+
+                                .nutrition-grid {
+                                    grid-template-columns: 1fr;
+                                }
+
+                                .add-to-cart-wrapper {
+                                    flex-direction: column;
+                                }
+
+                                .quantity-selector {
+                                    width: 100%;
+                                    justify-content: center;
+                                }
+
+                                .btn-add-to-cart {
+                                    width: 100%;
+                                }
+
+                                .price-display {
+                                    flex-direction: column;
+                                    align-items: flex-start;
+                                    gap: 0.5rem;
+                                }
+
+                                .cart-notification {
+                                    right: 10px;
+                                    left: 10px;
+                                    min-width: auto;
+                                }
+                            }
+                        </style>
+
+                        <!-- JavaScript -->
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // Count items and categories
+                                const categories = document.querySelectorAll('.category-section');
+                                const items = document.querySelectorAll('.menu-item-card');
+                                document.getElementById('total-categories').textContent = categories.length;
+                                document.getElementById('total-items').textContent = items.length;
+
+                                // Filter functionality
+                                const filterButtons = document.querySelectorAll('.filter-btn');
+                                const menuItems = document.querySelectorAll('.menu-item-card');
+
+                                filterButtons.forEach(button => {
+                                    button.addEventListener('click', function() {
+                                        const filter = this.getAttribute('data-filter');
+                                        
+                                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                                        this.classList.add('active');
+
+                                        let visibleCount = 0;
+                                        menuItems.forEach(item => {
+                                            if (filter === 'all') {
+                                                item.classList.remove('hidden');
+                                                visibleCount++;
+                                            } else {
+                                                const hasClass = item.classList.contains(filter + '-filter');
+                                                if (hasClass) {
+                                                    item.classList.remove('hidden');
+                                                    visibleCount++;
+                                                } else {
+                                                    item.classList.add('hidden');
+                                                }
+                                            }
+                                        });
+
+                                        const noResults = document.getElementById('no-results');
+                                        if (visibleCount === 0) {
+                                            noResults.style.display = 'block';
+                                        } else {
+                                            noResults.style.display = 'none';
+                                        }
+                                    });
+                                });
+                            });
+
+                            function toggleDetails(button) {
+                                const itemId = button.getAttribute('data-item-id');
+                                const detailsId = 'details-' + itemId;
+                                const details = document.getElementById(detailsId);
+                                
+                                if (details &amp;&amp; details.style.display === 'none') {
+                                    details.style.display = 'block';
+                                    button.classList.add('expanded');
+                                    button.querySelector('.btn-text').textContent = 'Hide Details';
+                                } else if (details) {
+                                    details.style.display = 'none';
+                                    button.classList.remove('expanded');
+                                    button.querySelector('.btn-text').textContent = 'View Details';
+                                }
+                            }
+
+                            function clearFilters() {
+                                document.querySelectorAll('.filter-btn').forEach(btn => {
+                                    btn.classList.remove('active');
+                                    if (btn.getAttribute('data-filter') === 'all') {
+                                        btn.classList.add('active');
+                                    }
+                                });
+                                document.querySelectorAll('.menu-item-card').forEach(item => item.classList.remove('hidden'));
+                                document.getElementById('no-results').style.display = 'none';
+                            }
+
+                            // Quantity Control Functions
+                            function increaseQuantity(button) {
+                                const itemId = button.getAttribute('data-item-id');
+                                const input = document.getElementById('qty-' + itemId);
+                                const maxQty = parseInt(input.getAttribute('max')) || 999;
+                                let currentQty = parseInt(input.value) || 1;
+                                
+                                if (currentQty &lt; maxQty) {
+                                    currentQty++;
+                                    input.value = currentQty;
+                                }
+                            }
+
+                            function decreaseQuantity(button) {
+                                const itemId = button.getAttribute('data-item-id');
+                                const input = document.getElementById('qty-' + itemId);
+                                let currentQty = parseInt(input.value) || 1;
+                                
+                                if (currentQty &gt; 1) {
+                                    currentQty--;
+                                    input.value = currentQty;
+                                }
+                            }
+
+                            function updateQuantity(input) {
+                                const minQty = parseInt(input.getAttribute('min')) || 1;
+                                const maxQty = parseInt(input.getAttribute('max')) || 999;
+                                let value = parseInt(input.value) || minQty;
+                                
+                                if (value &lt; minQty) {
+                                    value = minQty;
+                                } else if (value &gt; maxQty) {
+                                    value = maxQty;
+                                }
+                                
+                                input.value = value;
+                            }
+
+                            // Cart Management Functions
+                            function getCart() {
+                                const cart = localStorage.getItem('menu_cart');
+                                return cart ? JSON.parse(cart) : [];
+                            }
+
+                            function saveCart(cart) {
+                                localStorage.setItem('menu_cart', JSON.stringify(cart));
+                                updateCartIcon();
+                            }
+
+                            function updateCartIcon() {
+                                const cart = getCart();
+                                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                                const cartIcons = document.querySelectorAll('#cart-icon-count, #header-cart-count, #header-cart-count-mobile, .cart-icon-count');
+                                cartIcons.forEach(function(icon) {
+                                    icon.textContent = totalItems;
+                                    icon.style.display = totalItems > 0 ? 'block' : 'none';
+                                });
+                            }
+
+                            // Add to Cart Function
+                            function addToCart(button) {
+                                const itemId = button.getAttribute('data-item-id');
+                                const itemName = button.getAttribute('data-item-name');
+                                const itemPrice = parseFloat(button.getAttribute('data-item-price'));
+                                const qtyInput = document.getElementById('qty-' + itemId);
+                                const quantity = parseInt(qtyInput.value) || 1;
+                                
+                                // Show loading state
+                                const loading = button.querySelector('.cart-loading');
+                                const buttonText = button.querySelector('span:not(.cart-loading)');
+                                const buttonIcon = button.querySelector('i');
+                                
+                                button.disabled = true;
+                                buttonText.style.display = 'none';
+                                buttonIcon.style.display = 'none';
+                                loading.style.display = 'inline-block';
+                                
+                                // Get current cart
+                                let cart = getCart();
+                                
+                                // Check if item already exists in cart (compare as string for consistency)
+                                const itemIdStr = String(itemId);
+                                const existingItemIndex = cart.findIndex(function(item) {
+                                    return String(item.id) === itemIdStr || item.id == itemId;
+                                });
+                                
+                                if (existingItemIndex !== -1) {
+                                    // Update quantity if item exists
+                                    cart[existingItemIndex].quantity += quantity;
+                                } else {
+                                    // Add new item to cart
+                                    // Store ID as string for consistency
+                                    cart.push({
+                                        id: String(itemId),
+                                        name: itemName,
+                                        price: itemPrice,
+                                        quantity: quantity
+                                    });
+                                }
+                                
+                                // Save cart to localStorage
+                                saveCart(cart);
+                                
+                                // Reset button state
+                                setTimeout(() => {
+                                    button.disabled = false;
+                                    loading.style.display = 'none';
+                                    buttonText.style.display = 'inline';
+                                    buttonIcon.style.display = 'inline';
+                                    
+                                    // Show success animation
+                                    button.classList.add('added');
+                                    buttonText.textContent = 'Added!';
+                                    buttonIcon.className = 'fa fa-check';
+                                    
+                                    // Show notification
+                                    showCartNotification(itemName, quantity, itemPrice);
+                                    
+                                    // Reset button after 2 seconds
+                                    setTimeout(() => {
+                                        button.classList.remove('added');
+                                        buttonText.textContent = 'Add to Cart';
+                                        buttonIcon.className = 'fa fa-shopping-cart';
+                                    }, 2000);
+                                }, 300);
+                            }
+
+                            // Initialize cart icon on page load
+                            if (document.readyState === 'loading') {
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    updateCartIcon();
+                                });
+                            } else {
+                                updateCartIcon();
+                            }
+
+                            // Cart Notification
+                            function showCartNotification(itemName, quantity, price) {
+                                // Create notification element using DOM methods
+                                const notification = document.createElement('div');
+                                notification.className = 'cart-notification';
+                                
+                                const content = document.createElement('div');
+                                content.className = 'notification-content';
+                                
+                                const icon = document.createElement('i');
+                                icon.className = 'fa fa-check-circle';
+                                
+                                const textDiv = document.createElement('div');
+                                textDiv.className = 'notification-text';
+                                
+                                const strong = document.createElement('strong');
+                                strong.textContent = 'Added to Cart!';
+                                
+                                const span = document.createElement('span');
+                                span.textContent = quantity + 'x ' + itemName;
+                                
+                                const priceDiv = document.createElement('div');
+                                priceDiv.className = 'notification-price';
+                                priceDiv.textContent = '$' + (price * quantity).toFixed(2);
+                                
+                                textDiv.appendChild(strong);
+                                textDiv.appendChild(span);
+                                content.appendChild(icon);
+                                content.appendChild(textDiv);
+                                content.appendChild(priceDiv);
+                                notification.appendChild(content);
+                                
+                                // Add styles if not already added
+                                if (!document.getElementById('cart-notification-styles')) {
+                                    const style = document.createElement('style');
+                                    style.id = 'cart-notification-styles';
+                                    style.textContent = `
+                                        .cart-notification {
+                                            position: fixed;
+                                            top: 20px;
+                                            right: 20px;
+                                            background: white;
+                                            border-radius: 12px;
+                                            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+                                            padding: 1rem 1.5rem;
+                                            z-index: 10000;
+                                            animation: slideInRight 0.3s ease;
+                                            min-width: 300px;
+                                        }
+                                        @keyframes slideInRight {
+                                            from {
+                                                transform: translateX(400px);
+                                                opacity: 0;
+                                            }
+                                            to {
+                                                transform: translateX(0);
+                                                opacity: 1;
+                                            }
+                                        }
+                                        .notification-content {
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 1rem;
+                                        }
+                                        .notification-content i {
+                                            color: #28a745;
+                                            font-size: 1.5rem;
+                                        }
+                                        .notification-text {
+                                            flex: 1;
+                                            display: flex;
+                                            flex-direction: column;
+                                        }
+                                        .notification-text strong {
+                                            color: #333;
+                                            font-size: 0.9rem;
+                                        }
+                                        .notification-text span {
+                                            color: #666;
+                                            font-size: 0.85rem;
+                                        }
+                                        .notification-price {
+                                            color: #667eea;
+                                            font-weight: 700;
+                                            font-size: 1.1rem;
+                                        }
+                                    `;
+                                    document.head.appendChild(style);
+                                }
+                                
+                                document.body.appendChild(notification);
+                                
+                                // Remove notification after 3 seconds
+                                setTimeout(() => {
+                                    notification.style.animation = 'slideInRight 0.3s ease reverse';
+                                    setTimeout(() => {
+                                        notification.remove();
+                                    }, 300);
+                                }, 3000);
+                            }
+                        </script>
                 </t>
             </t>
         </field>
     </record>
 
-    <!-- Website page that points to the QWeb view -->
-    <record id="menu_public_page" model="website.page">
-        <field name="name">Our Menu</field>
-        <field name="url">/our-menu</field>
-        <field name="view_id" ref="menu_public_page_view"/>
-        <field name="is_published">True</field>
-    </record>
+        <!-- Website page that points to the QWeb view -->
+        <record id="menu_public_page" model="website.page">
+            <field name="name">Our Menu</field>
+            <field name="url">/our-menu</field>
+            <field name="view_id" ref="menu_public_page_view"/>
+            <field name="is_published">True</field>
+        </record>
+
+        <!-- Cart Page View -->
+        <record id="cart_page_view" model="ir.ui.view">
+            <field name="name">menu.cart.page</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="menu_management.cart_page">
+                    <t t-call="website.layout">
+                        <div class="oe_structure cart-page-wrapper">
+                            <!-- Cart Header -->
+                            <section class="cart-header-section">
+                                <div class="container">
+                                    <h1 class="cart-title">
+                                        <i class="fa fa-shopping-cart"></i> Shopping Cart
+                                    </h1>
+                                    <p class="cart-subtitle">Review your selected items</p>
+                                </div>
+                            </section>
+
+                            <!-- Cart Content -->
+                            <section class="cart-content-section">
+                                <div class="container">
+                                    <div class="cart-wrapper">
+                                        <!-- Cart Items -->
+                                        <div class="cart-items-container">
+                                            <div id="cart-items-list">
+                                                <!-- Items will be loaded here by JavaScript -->
+                                            </div>
+                                            
+                                            <!-- Empty Cart State -->
+                                            <div id="empty-cart" class="empty-cart-state" style="display: none;">
+                                                <div class="empty-cart-icon">
+                                                    <i class="fa fa-shopping-cart"></i>
+                                                </div>
+                                                <h3>Your cart is empty</h3>
+                                                <p>Add some delicious items from our menu!</p>
+                                                <a href="/our-menu" class="btn-browse-menu">
+                                                    <i class="fa fa-arrow-left"></i> Browse Menu
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Cart Summary -->
+                                        <div class="cart-summary-container">
+                                            <div class="cart-summary-card">
+                                                <h3 class="summary-title">Order Summary</h3>
+                                                
+                                                <div class="summary-row">
+                                                    <span>Subtotal:</span>
+                                                    <span id="cart-subtotal">$0.00</span>
+                                                </div>
+                                                
+                                                <div class="summary-row">
+                                                    <span>Tax:</span>
+                                                    <span id="cart-tax">$0.00</span>
+                                                </div>
+                                                
+                                                <div class="summary-divider"></div>
+                                                
+                                                <div class="summary-row total">
+                                                    <span>Total:</span>
+                                                    <span id="cart-total">$0.00</span>
+                                                </div>
+                                                
+                                                <button class="btn-checkout" id="btn-checkout" onclick="proceedToCheckout()">
+                                                    <i class="fa fa-credit-card"></i> Proceed to Checkout
+                                                </button>
+                                                
+                                                <a href="/our-menu" class="btn-continue-shopping">
+                                                    <i class="fa fa-arrow-left"></i> Continue Shopping
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Cart Styles -->
+                        <style>
+                            .cart-page-wrapper {
+                                background: #f8f9fa;
+                                min-height: 100vh;
+                                padding-bottom: 3rem;
+                            }
+
+                            .cart-header-section {
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                padding: 3rem 0;
+                                color: white;
+                                text-align: center;
+                            }
+
+                            .cart-title {
+                                font-size: 2.5rem;
+                                font-weight: 700;
+                                margin-bottom: 0.5rem;
+                            }
+
+                            .cart-subtitle {
+                                font-size: 1.1rem;
+                                opacity: 0.9;
+                            }
+
+                            .cart-content-section {
+                                padding: 2rem 0;
+                            }
+
+                            .cart-wrapper {
+                                display: grid;
+                                grid-template-columns: 2fr 1fr;
+                                gap: 2rem;
+                            }
+
+                            .cart-items-container {
+                                background: white;
+                                border-radius: 15px;
+                                padding: 1.5rem;
+                                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                            }
+
+                            .cart-item {
+                                display: flex;
+                                gap: 1rem;
+                                padding: 1rem;
+                                border-bottom: 1px solid #eee;
+                                align-items: center;
+                            }
+
+                            .cart-item:last-child {
+                                border-bottom: none;
+                            }
+
+                            .cart-item-image {
+                                width: 80px;
+                                height: 80px;
+                                border-radius: 10px;
+                                object-fit: cover;
+                                background: #f0f0f0;
+                            }
+
+                            .cart-item-details {
+                                flex: 1;
+                            }
+
+                            .cart-item-name {
+                                font-size: 1.1rem;
+                                font-weight: 600;
+                                color: #333;
+                                margin-bottom: 0.25rem;
+                            }
+
+                            .cart-item-price {
+                                color: #667eea;
+                                font-weight: 600;
+                                font-size: 0.95rem;
+                            }
+
+                            .cart-item-controls {
+                                display: flex;
+                                align-items: center;
+                                gap: 1rem;
+                            }
+
+                            .cart-item-qty {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                border: 1px solid #ddd;
+                                border-radius: 8px;
+                                padding: 0.25rem;
+                            }
+
+                            .cart-qty-btn {
+                                width: 28px;
+                                height: 28px;
+                                border: none;
+                                background: #f8f9fa;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: #667eea;
+                            }
+
+                            .cart-qty-btn:hover {
+                                background: #667eea;
+                                color: white;
+                            }
+
+                            .cart-qty-input {
+                                width: 50px;
+                                border: none;
+                                text-align: center;
+                                font-weight: 600;
+                                font-size: 1rem;
+                                background: transparent;
+                                color: #333;
+                                padding: 0;
+                                -moz-appearance: textfield;
+                            }
+
+                            .cart-qty-input::-webkit-outer-spin-button,
+                            .cart-qty-input::-webkit-inner-spin-button {
+                                -webkit-appearance: none;
+                                margin: 0;
+                            }
+
+                            .cart-qty-input:focus {
+                                outline: none;
+                                background: #f8f9fa;
+                                border-radius: 4px;
+                            }
+
+                            .cart-item-total {
+                                font-size: 1.2rem;
+                                font-weight: 700;
+                                color: #333;
+                                min-width: 80px;
+                                text-align: right;
+                            }
+
+                            .cart-item-remove {
+                                background: #f8f9fa;
+                                border: none;
+                                width: 32px;
+                                height: 32px;
+                                border-radius: 50%;
+                                cursor: pointer;
+                                color: #dc3545;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                transition: all 0.3s ease;
+                            }
+
+                            .cart-item-remove:hover {
+                                background: #dc3545;
+                                color: white;
+                            }
+
+                            .cart-summary-card {
+                                background: white;
+                                border-radius: 15px;
+                                padding: 1.5rem;
+                                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                                position: sticky;
+                                top: 100px;
+                            }
+
+                            .summary-title {
+                                font-size: 1.3rem;
+                                font-weight: 700;
+                                margin-bottom: 1rem;
+                                color: #333;
+                            }
+
+                            .summary-row {
+                                display: flex;
+                                justify-content: space-between;
+                                margin-bottom: 0.75rem;
+                                font-size: 0.95rem;
+                            }
+
+                            .summary-row.total {
+                                font-size: 1.3rem;
+                                font-weight: 700;
+                                color: #667eea;
+                            }
+
+                            .summary-divider {
+                                height: 1px;
+                                background: #eee;
+                                margin: 1rem 0;
+                            }
+
+                            .btn-checkout {
+                                width: 100%;
+                                padding: 12px;
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                color: white;
+                                border: none;
+                                border-radius: 10px;
+                                font-weight: 600;
+                                font-size: 1rem;
+                                cursor: pointer;
+                                margin-top: 1rem;
+                                transition: all 0.3s ease;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 0.5rem;
+                            }
+
+                            .btn-checkout:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+                            }
+
+                            .btn-checkout:disabled {
+                                opacity: 0.5;
+                                cursor: not-allowed;
+                            }
+
+                            .btn-continue-shopping {
+                                display: block;
+                                text-align: center;
+                                margin-top: 1rem;
+                                color: #667eea;
+                                text-decoration: none;
+                                font-weight: 500;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 0.5rem;
+                            }
+
+                            .btn-continue-shopping:hover {
+                                color: #764ba2;
+                            }
+
+                            .empty-cart-state {
+                                text-align: center;
+                                padding: 4rem 2rem;
+                            }
+
+                            .empty-cart-icon {
+                                font-size: 5rem;
+                                color: #ddd;
+                                margin-bottom: 1rem;
+                            }
+
+                            .empty-cart-state h3 {
+                                color: #666;
+                                margin-bottom: 0.5rem;
+                            }
+
+                            .empty-cart-state p {
+                                color: #999;
+                                margin-bottom: 2rem;
+                            }
+
+                            .btn-browse-menu {
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                padding: 12px 24px;
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                color: white;
+                                text-decoration: none;
+                                border-radius: 25px;
+                                font-weight: 600;
+                                transition: all 0.3s ease;
+                            }
+
+                            .btn-browse-menu:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+                            }
+
+                            @media (max-width: 992px) {
+                                .cart-wrapper {
+                                    grid-template-columns: 1fr;
+                                }
+
+                                .cart-summary-card {
+                                    position: static;
+                                }
+                            }
+                        </style>
+
+                        <!-- Cart JavaScript -->
+                        <script>
+                            // Cart Management Functions (shared with menu page)
+                            function getCart() {
+                                const cart = localStorage.getItem('menu_cart');
+                                return cart ? JSON.parse(cart) : [];
+                            }
+
+                            function saveCart(cart) {
+                                localStorage.setItem('menu_cart', JSON.stringify(cart));
+                                updateCartIcon();
+                            }
+
+                            function updateCartIcon() {
+                                const cart = getCart();
+                                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                                const cartIcons = document.querySelectorAll('#cart-icon-count, #header-cart-count, #header-cart-count-mobile, .cart-icon-count');
+                                cartIcons.forEach(function(icon) {
+                                    icon.textContent = totalItems;
+                                    icon.style.display = totalItems > 0 ? 'block' : 'none';
+                                });
+                            }
+
+                            function loadCart() {
+                                try {
+                                    const cart = getCart();
+                                    const itemsList = document.getElementById('cart-items-list');
+                                    const emptyCart = document.getElementById('empty-cart');
+                                    
+                                    if (!itemsList || !emptyCart) {
+                                        console.error('Cart page elements not found');
+                                        return;
+                                    }
+                                    
+                                    if (!cart || cart.length === 0) {
+                                        itemsList.innerHTML = '';
+                                        emptyCart.style.display = 'block';
+                                        updateCartSummary([]);
+                                        return;
+                                    }
+                                    
+                                    emptyCart.style.display = 'none';
+                                    
+                                    // Fetch menu items to get images and details
+                                    const itemsHtml = cart.map(function(item, index) {
+                                        const itemDiv = document.createElement('div');
+                                        itemDiv.className = 'cart-item';
+                                        itemDiv.setAttribute('data-item-id', item.id);
+                                        
+                                        const imageWrapper = document.createElement('div');
+                                        imageWrapper.className = 'cart-item-image-wrapper';
+                                        const imageDiv = document.createElement('div');
+                                        imageDiv.className = 'cart-item-image';
+                                        imageDiv.style.cssText = 'background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); display: flex; align-items: center; justify-content: center; color: #ccc;';
+                                        const icon = document.createElement('i');
+                                        icon.className = 'fa fa-cutlery';
+                                        imageDiv.appendChild(icon);
+                                        imageWrapper.appendChild(imageDiv);
+                                        
+                                        const details = document.createElement('div');
+                                        details.className = 'cart-item-details';
+                                        const nameDiv = document.createElement('div');
+                                        nameDiv.className = 'cart-item-name';
+                                        nameDiv.textContent = item.name;
+                                        const priceDiv = document.createElement('div');
+                                        priceDiv.className = 'cart-item-price';
+                                        priceDiv.textContent = '$' + item.price.toFixed(2) + ' each';
+                                        details.appendChild(nameDiv);
+                                        details.appendChild(priceDiv);
+                                        
+                                        const controls = document.createElement('div');
+                                        controls.className = 'cart-item-controls';
+                                        
+                                        const qtyDiv = document.createElement('div');
+                                        qtyDiv.className = 'cart-item-qty';
+                                        const minusBtn = document.createElement('button');
+                                        minusBtn.className = 'cart-qty-btn';
+                                        minusBtn.type = 'button';
+                                        minusBtn.setAttribute('data-item-id', item.id);
+                                        minusBtn.setAttribute('data-action', 'decrease');
+                                        const minusIcon = document.createElement('i');
+                                        minusIcon.className = 'fa fa-minus';
+                                        minusBtn.appendChild(minusIcon);
+                                        
+                                        const qtyInput = document.createElement('input');
+                                        qtyInput.type = 'text';
+                                        qtyInput.className = 'cart-qty-input';
+                                        qtyInput.value = String(item.quantity || 1);
+                                        qtyInput.setAttribute('readonly', 'readonly');
+                                        qtyInput.setAttribute('data-item-id', item.id);
+                                        qtyInput.style.pointerEvents = 'none';
+                                        qtyInput.style.display = 'block';
+                                        qtyInput.style.minWidth = '50px';
+                                        
+                                        const plusBtn = document.createElement('button');
+                                        plusBtn.className = 'cart-qty-btn';
+                                        plusBtn.type = 'button';
+                                        plusBtn.setAttribute('data-item-id', item.id);
+                                        plusBtn.setAttribute('data-action', 'increase');
+                                        const plusIcon = document.createElement('i');
+                                        plusIcon.className = 'fa fa-plus';
+                                        plusBtn.appendChild(plusIcon);
+                                        
+                                        qtyDiv.appendChild(minusBtn);
+                                        qtyDiv.appendChild(qtyInput);
+                                        qtyDiv.appendChild(plusBtn);
+                                        
+                                        const totalDiv = document.createElement('div');
+                                        totalDiv.className = 'cart-item-total';
+                                        totalDiv.textContent = '$' + (item.price * item.quantity).toFixed(2);
+                                        
+                                        const removeBtn = document.createElement('button');
+                                        removeBtn.className = 'cart-item-remove';
+                                        removeBtn.type = 'button';
+                                        removeBtn.setAttribute('data-item-id', item.id);
+                                        removeBtn.title = 'Remove';
+                                        const trashIcon = document.createElement('i');
+                                        trashIcon.className = 'fa fa-trash';
+                                        removeBtn.appendChild(trashIcon);
+                                        
+                                        controls.appendChild(qtyDiv);
+                                        controls.appendChild(totalDiv);
+                                        controls.appendChild(removeBtn);
+                                        
+                                        itemDiv.appendChild(imageWrapper);
+                                        itemDiv.appendChild(details);
+                                        itemDiv.appendChild(controls);
+                                        
+                                        return itemDiv.outerHTML;
+                                    }).join('');
+                                
+                                    itemsList.innerHTML = itemsHtml;
+                                    updateCartSummary(cart);
+                                    
+                                    // Re-attach event listeners after innerHTML (since innerHTML removes event listeners)
+                                    attachCartEventListeners();
+                                } catch (error) {
+                                    console.error('Error loading cart:', error);
+                                    const itemsList = document.getElementById('cart-items-list');
+                                    const emptyCart = document.getElementById('empty-cart');
+                                    if (itemsList) itemsList.innerHTML = '';
+                                    if (emptyCart) emptyCart.style.display = 'block';
+                                }
+                            }
+
+                            // Attach event listeners using event delegation
+                            function attachCartEventListeners() {
+                                const itemsList = document.getElementById('cart-items-list');
+                                if (!itemsList) return;
+                                
+                                // Use event delegation for remove buttons
+                                itemsList.addEventListener('click', function(e) {
+                                    const removeBtn = e.target.closest('.cart-item-remove');
+                                    if (removeBtn) {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        const itemId = removeBtn.getAttribute('data-item-id');
+                                        if (itemId) {
+                                            removeFromCart(itemId);
+                                        }
+                                    }
+                                    
+                                    // Handle quantity buttons
+                                    const qtyBtn = e.target.closest('.cart-qty-btn');
+                                    if (qtyBtn) {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        const itemId = qtyBtn.getAttribute('data-item-id');
+                                        const action = qtyBtn.getAttribute('data-action');
+                                        if (itemId &amp;&amp; action) {
+                                            const change = action === 'increase' ? 1 : -1;
+                                            updateCartItemQty(itemId, change);
+                                        }
+                                    }
+                                    
+                                    // Handle quantity input changes
+                                    if (e.target.classList.contains('cart-qty-input')) {
+                                        const itemId = e.target.getAttribute('data-item-id');
+                                        const newValue = e.target.value;
+                                        if (itemId) {
+                                            updateCartItemQty(itemId, 0, newValue);
+                                        }
+                                    }
+                                });
+                            }
+
+                            function updateCartItemQty(itemId, change, newValue) {
+                                try {
+                                    let cart = getCart();
+                                    const itemIndex = cart.findIndex(function(item) {
+                                        return item.id == itemId || item.id === itemId;
+                                    });
+                                    
+                                    if (itemIndex === -1) {
+                                        console.error('Item not found in cart:', itemId);
+                                        return;
+                                    }
+                                    
+                                    if (newValue !== undefined &amp;&amp; newValue !== null) {
+                                        const qty = parseInt(newValue) || 1;
+                                        if (qty &lt; 1) {
+                                            removeFromCart(itemId);
+                                            return;
+                                        }
+                                        cart[itemIndex].quantity = qty;
+                                    } else {
+                                        cart[itemIndex].quantity = (cart[itemIndex].quantity || 1) + change;
+                                        if (cart[itemIndex].quantity &lt; 1) {
+                                            removeFromCart(itemId);
+                                            return;
+                                        }
+                                    }
+                                    
+                                    saveCart(cart);
+                                    // Update the input value immediately before reloading
+                                    const qtyInput = document.querySelector('.cart-qty-input[data-item-id="' + itemId + '"]');
+                                    if (qtyInput) {
+                                        qtyInput.value = String(cart[itemIndex].quantity);
+                                    }
+                                    loadCart();
+                                } catch (error) {
+                                    console.error('Error updating cart item quantity:', error);
+                                }
+                            }
+
+                            function removeFromCart(itemId) {
+                                try {
+                                    if (!itemId) {
+                                        console.error('No item ID provided for removal');
+                                        return;
+                                    }
+                                    
+                                    let cart = getCart();
+                                    if (!cart || cart.length === 0) {
+                                        console.log('Cart is already empty');
+                                        return;
+                                    }
+                                    
+                                    const initialLength = cart.length;
+                                    // Convert itemId to string for consistent comparison
+                                    const itemIdStr = String(itemId);
+                                    
+                                    // Filter out the item to remove
+                                    cart = cart.filter(function(item) {
+                                        // Keep items that DON'T match the itemId
+                                        // Return false to REMOVE, true to KEEP
+                                        const itemIdCompare = String(item.id);
+                                        return itemIdCompare !== itemIdStr;
+                                    });
+                                    
+                                    if (cart.length === initialLength) {
+                                        console.warn('Item not found in cart. ItemId:', itemId, 'Cart items:', cart.map(function(i) { return i.id; }));
+                                        alert('Item could not be removed. Please try again.');
+                                        return;
+                                    }
+                                    
+                                    saveCart(cart);
+                                    loadCart();
+                                    updateCartIcon();
+                                    
+                                    // Show a brief confirmation
+                                    console.log('Item removed successfully. Remaining items:', cart.length);
+                                } catch (error) {
+                                    console.error('Error removing item from cart:', error);
+                                    alert('An error occurred while removing the item. Please try again.');
+                                }
+                            }
+
+                            function updateCartSummary(cart) {
+                                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                                const tax = subtotal * 0.1; // 10% tax (adjust as needed)
+                                const total = subtotal + tax;
+                                
+                                document.getElementById('cart-subtotal').textContent = '$' + subtotal.toFixed(2);
+                                document.getElementById('cart-tax').textContent = '$' + tax.toFixed(2);
+                                document.getElementById('cart-total').textContent = '$' + total.toFixed(2);
+                                
+                                const checkoutBtn = document.getElementById('btn-checkout');
+                                checkoutBtn.disabled = cart.length === 0;
+                            }
+
+                            function proceedToCheckout() {
+                                const cart = getCart();
+                                if (cart.length === 0) {
+                                    alert('Your cart is empty!');
+                                    return;
+                                }
+                                // Redirect to checkout page
+                                window.location.href = '/menu/checkout';
+                            }
+
+                            // Load cart when page loads
+                            if (document.readyState === 'loading') {
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    attachCartEventListeners();
+                                    loadCart();
+                                    updateCartIcon();
+                                });
+                            } else {
+                                attachCartEventListeners();
+                                loadCart();
+                                updateCartIcon();
+                            }
+                        </script>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!-- Cart Page -->
+        <record id="cart_page" model="website.page">
+            <field name="name">Shopping Cart</field>
+            <field name="url">/menu/cart</field>
+            <field name="view_id" ref="cart_page_view"/>
+            <field name="is_published">True</field>
+        </record>
+
+        <!-- Checkout Page View -->
+        <record id="checkout_page_view" model="ir.ui.view">
+            <field name="name">menu.checkout.page</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="menu_management.checkout_page">
+                    <t t-call="website.layout">
+                        <div class="oe_structure checkout-page-wrapper">
+                            <!-- Checkout Header -->
+                            <section class="checkout-header-section">
+                                <div class="container">
+                                    <h1 class="checkout-title">
+                                        <i class="fa fa-shopping-bag"></i> Checkout
+                                    </h1>
+                                    <p class="checkout-subtitle">Complete your order</p>
+                                </div>
+                            </section>
+
+                            <!-- Checkout Content -->
+                            <section class="checkout-content-section">
+                                <div class="container">
+                                    <div class="checkout-wrapper">
+                                        <!-- Order Summary -->
+                                        <div class="checkout-summary-container">
+                                            <div class="checkout-summary-card">
+                                                <h3 class="summary-title">
+                                                    <i class="fa fa-list"></i> Order Summary
+                                                </h3>
+                                                <div id="checkout-items-list">
+                                                    <!-- Items will be loaded here by JavaScript -->
+                                                </div>
+                                                <div class="summary-divider"></div>
+                                                <div class="summary-row">
+                                                    <span>Subtotal:</span>
+                                                    <span id="checkout-subtotal">$0.00</span>
+                                                </div>
+                                                <div class="summary-row">
+                                                    <span>Delivery Charge:</span>
+                                                    <span id="checkout-delivery">$<t t-esc="delivery_charge or 200"/>.00</span>
+                                                    <t t-set="delivery_charge_val" t-value="delivery_charge or 200"/>
+                                                    <input type="hidden" id="delivery-charge-value" t-att-value="delivery_charge_val"/>
+                                                </div>
+                                                <div class="summary-divider"></div>
+                                                <div class="summary-row total">
+                                                    <span>Total:</span>
+                                                    <span id="checkout-total">$0.00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Checkout Form -->
+                                        <div class="checkout-form-container">
+                                            <form id="checkout-form" method="post" action="/menu/checkout/process">
+                                                <input type="hidden" id="cart-data-input" name="cart_data" value=""/>
+                                                <!-- Customer Information -->
+                                                <div class="form-section">
+                                                    <h3 class="form-section-title">
+                                                        <i class="fa fa-user"></i> Customer Information
+                                                    </h3>
+                                                    <div class="form-row">
+                                                        <div class="form-group">
+                                                            <label for="customer_name">Full Name <span class="required">*</span></label>
+                                                            <input type="text" id="customer_name" name="customer_name" class="form-control" required="required" placeholder="Enter your full name"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group">
+                                                            <label for="customer_email">Email <span class="required">*</span></label>
+                                                            <input type="email" id="customer_email" name="customer_email" class="form-control" required="required" placeholder="your.email@example.com"/>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="customer_phone">Phone <span class="required">*</span></label>
+                                                            <input type="tel" id="customer_phone" name="customer_phone" class="form-control" required="required" placeholder="+1 234 567 8900"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Delivery Address -->
+                                                <div class="form-section">
+                                                    <h3 class="form-section-title">
+                                                        <i class="fa fa-map-marker"></i> Delivery Address
+                                                    </h3>
+                                                    <div class="form-row">
+                                                        <div class="form-group">
+                                                            <label for="delivery_address">Street Address <span class="required">*</span></label>
+                                                            <input type="text" id="delivery_address" name="delivery_address" class="form-control" required="required" placeholder="123 Main Street"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group">
+                                                            <label for="delivery_city">City <span class="required">*</span></label>
+                                                            <input type="text" id="delivery_city" name="delivery_city" class="form-control" required="required" placeholder="City"/>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="delivery_state">State/Province <span class="required">*</span></label>
+                                                            <input type="text" id="delivery_state" name="delivery_state" class="form-control" required="required" placeholder="State"/>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="delivery_zip">ZIP/Postal Code <span class="required">*</span></label>
+                                                            <input type="text" id="delivery_zip" name="delivery_zip" class="form-control" required="required" placeholder="12345"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Delivery Date & Time -->
+                                                <div class="form-section">
+                                                    <h3 class="form-section-title">
+                                                        <i class="fa fa-calendar"></i> Delivery Date &amp; Time
+                                                    </h3>
+                                                    <div class="form-row">
+                                                        <div class="form-group">
+                                                            <label for="delivery_date">Delivery Date <span class="required">*</span></label>
+                                                            <input type="date" id="delivery_date" name="delivery_date" class="form-control" required="required"/>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="delivery_time">Preferred Time <span class="required">*</span></label>
+                                                            <select id="delivery_time" name="delivery_time" class="form-control" required="required">
+                                                                <option value="">Select time</option>
+                                                                <option value="09:00-11:00">09:00 AM - 11:00 AM</option>
+                                                                <option value="11:00-13:00">11:00 AM - 01:00 PM</option>
+                                                                <option value="13:00-15:00">01:00 PM - 03:00 PM</option>
+                                                                <option value="15:00-17:00">03:00 PM - 05:00 PM</option>
+                                                                <option value="17:00-19:00">05:00 PM - 07:00 PM</option>
+                                                                <option value="19:00-21:00">07:00 PM - 09:00 PM</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Special Instructions -->
+                                                <div class="form-section">
+                                                    <h3 class="form-section-title">
+                                                        <i class="fa fa-comment"></i> Special Instructions
+                                                    </h3>
+                                                    <div class="form-row">
+                                                        <div class="form-group">
+                                                            <label for="special_instructions">Additional Notes (Optional)</label>
+                                                            <textarea id="special_instructions" name="special_instructions" class="form-control" rows="4" placeholder="Any special delivery instructions or notes..."></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Submit Button -->
+                                                <div class="form-actions">
+                                                    <a href="/menu/cart" class="btn-back">
+                                                        <i class="fa fa-arrow-left"></i> Back to Cart
+                                                    </a>
+                                                    <button type="submit" class="btn-submit-order" id="btn-submit-order">
+                                                        <i class="fa fa-check"></i> Complete Order
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Checkout Styles -->
+                        <style>
+                            .checkout-page-wrapper {
+                                background: #f8f9fa;
+                                min-height: 100vh;
+                                padding-bottom: 3rem;
+                            }
+
+                            .checkout-header-section {
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                padding: 3rem 0;
+                                color: white;
+                                text-align: center;
+                            }
+
+                            .checkout-title {
+                                font-size: 2.5rem;
+                                font-weight: 700;
+                                margin-bottom: 0.5rem;
+                            }
+
+                            .checkout-subtitle {
+                                font-size: 1.1rem;
+                                opacity: 0.9;
+                            }
+
+                            .checkout-content-section {
+                                padding: 2rem 0;
+                            }
+
+                            .checkout-wrapper {
+                                display: grid;
+                                grid-template-columns: 1fr 2fr;
+                                gap: 2rem;
+                            }
+
+                            .checkout-summary-card {
+                                background: white;
+                                border-radius: 15px;
+                                padding: 1.5rem;
+                                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                                position: sticky;
+                                top: 100px;
+                                max-height: 80vh;
+                                overflow-y: auto;
+                            }
+
+                            .checkout-summary-card .summary-title {
+                                font-size: 1.3rem;
+                                font-weight: 700;
+                                margin-bottom: 1rem;
+                                color: #333;
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                            }
+
+                            .checkout-item {
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 0.75rem 0;
+                                border-bottom: 1px solid #eee;
+                            }
+
+                            .checkout-item:last-child {
+                                border-bottom: none;
+                            }
+
+                            .checkout-item-name {
+                                font-weight: 600;
+                                color: #333;
+                            }
+
+                            .checkout-item-qty {
+                                color: #666;
+                                font-size: 0.9rem;
+                            }
+
+                            .checkout-item-price {
+                                font-weight: 600;
+                                color: #667eea;
+                            }
+
+                            .checkout-form-container {
+                                background: white;
+                                border-radius: 15px;
+                                padding: 2rem;
+                                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                            }
+
+                            .form-section {
+                                margin-bottom: 2rem;
+                                padding-bottom: 2rem;
+                                border-bottom: 1px solid #eee;
+                            }
+
+                            .form-section:last-child {
+                                border-bottom: none;
+                            }
+
+                            .form-section-title {
+                                font-size: 1.3rem;
+                                font-weight: 700;
+                                margin-bottom: 1.5rem;
+                                color: #333;
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                            }
+
+                            .form-row {
+                                display: grid;
+                                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                                gap: 1rem;
+                                margin-bottom: 1rem;
+                            }
+
+                            .form-group {
+                                display: flex;
+                                flex-direction: column;
+                            }
+
+                            .form-group label {
+                                font-weight: 600;
+                                margin-bottom: 0.5rem;
+                                color: #333;
+                                font-size: 0.95rem;
+                            }
+
+                            .required {
+                                color: #dc3545;
+                            }
+
+                            .form-control {
+                                padding: 0.75rem;
+                                border: 1px solid #ddd;
+                                border-radius: 8px;
+                                font-size: 1rem;
+                                transition: all 0.3s ease;
+                            }
+
+                            .form-control:focus {
+                                outline: none;
+                                border-color: #667eea;
+                                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+                            }
+
+                            .form-actions {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                margin-top: 2rem;
+                                padding-top: 2rem;
+                                border-top: 1px solid #eee;
+                            }
+
+                            .btn-back {
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                padding: 12px 24px;
+                                color: #667eea;
+                                text-decoration: none;
+                                font-weight: 600;
+                                border-radius: 8px;
+                                transition: all 0.3s ease;
+                            }
+
+                            .btn-back:hover {
+                                color: #764ba2;
+                                background: #f8f9fa;
+                            }
+
+                            .btn-submit-order {
+                                padding: 14px 32px;
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                font-size: 1rem;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                            }
+
+                            .btn-submit-order:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+                            }
+
+                            .btn-submit-order:disabled {
+                                opacity: 0.5;
+                                cursor: not-allowed;
+                            }
+
+                            @media (max-width: 992px) {
+                                .checkout-wrapper {
+                                    grid-template-columns: 1fr;
+                                }
+
+                                .checkout-summary-card {
+                                    position: static;
+                                }
+                            }
+                        </style>
+
+                        <!-- Checkout JavaScript -->
+                        <script>
+                            // Cart helper function
+                            function getCart() {
+                                const cart = localStorage.getItem('menu_cart');
+                                return cart ? JSON.parse(cart) : [];
+                            }
+
+                            // Set minimum date to today
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const deliveryDateInput = document.getElementById('delivery_date');
+                                if (deliveryDateInput) {
+                                    const today = new Date().toISOString().split('T')[0];
+                                    deliveryDateInput.setAttribute('min', today);
+                                }
+                                
+                                loadCheckoutItems();
+                            });
+
+                            function loadCheckoutItems() {
+                                try {
+                                    const cart = getCart();
+                                    const itemsList = document.getElementById('checkout-items-list');
+                                    const deliveryChargeInput = document.getElementById('delivery-charge-value');
+                                    const deliveryCharge = deliveryChargeInput ? parseFloat(deliveryChargeInput.value) : 200;
+                                    
+                                    console.log('Cart items:', cart);
+                                    console.log('Delivery charge:', deliveryCharge);
+                                    
+                                    if (!itemsList) {
+                                        console.error('Items list element not found');
+                                        return;
+                                    }
+                                    
+                                    if (!cart || cart.length === 0) {
+                                        itemsList.innerHTML = '&lt;p&gt;No items in cart&lt;/p&gt;';
+                                        window.location.href = '/menu/cart';
+                                        return;
+                                    }
+                                    
+                                    const itemsHtml = cart.map(function(item) {
+                                        const itemName = item.name || 'Unknown Item';
+                                        const itemPrice = parseFloat(item.price) || 0;
+                                        const itemQty = parseInt(item.quantity) || 1;
+                                        const itemTotal = itemPrice * itemQty;
+                                        
+                                        return `
+                                            &lt;div class="checkout-item"&gt;
+                                                &lt;div&gt;
+                                                    &lt;div class="checkout-item-name"&gt;${itemName}&lt;/div&gt;
+                                                    &lt;div class="checkout-item-qty"&gt;Qty: ${itemQty}&lt;/div&gt;
+                                                &lt;/div&gt;
+                                                &lt;div class="checkout-item-price"&gt;$${itemTotal.toFixed(2)}&lt;/div&gt;
+                                            &lt;/div&gt;
+                                        `;
+                                    }).join('');
+                                    
+                                    itemsList.innerHTML = itemsHtml;
+                                    
+                                    // Calculate totals
+                                    const subtotal = cart.reduce(function(sum, item) {
+                                        const price = parseFloat(item.price) || 0;
+                                        const qty = parseInt(item.quantity) || 1;
+                                        return sum + (price * qty);
+                                    }, 0);
+                                    
+                                    const total = subtotal + deliveryCharge;
+                                    
+                                    console.log('Subtotal:', subtotal);
+                                    console.log('Total:', total);
+                                    
+                                    const subtotalElement = document.getElementById('checkout-subtotal');
+                                    const totalElement = document.getElementById('checkout-total');
+                                    
+                                    if (subtotalElement) {
+                                        subtotalElement.textContent = '$' + subtotal.toFixed(2);
+                                    }
+                                    if (totalElement) {
+                                        totalElement.textContent = '$' + total.toFixed(2);
+                                    }
+                                } catch (error) {
+                                    console.error('Error loading checkout items:', error);
+                                }
+                            }
+
+                            // Form validation and submit
+                            const checkoutForm = document.getElementById('checkout-form');
+                            if (checkoutForm) {
+                                checkoutForm.addEventListener('submit', function(e) {
+                                    const cart = getCart();
+                                    if (cart.length === 0) {
+                                        e.preventDefault();
+                                        alert('Your cart is empty!');
+                                        window.location.href = '/menu/cart';
+                                        return false;
+                                    }
+                                    
+                                    // Add cart data to form before submission
+                                    const cartDataInput = document.getElementById('cart-data-input');
+                                    if (cartDataInput) {
+                                        cartDataInput.value = JSON.stringify(cart);
+                                    }
+                                    
+                                    return true;
+                                });
+                            }
+                        </script>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!-- Checkout Page -->
+        <record id="checkout_page" model="website.page">
+            <field name="name">Checkout</field>
+            <field name="url">/menu/checkout</field>
+            <field name="view_id" ref="checkout_page_view"/>
+            <field name="is_published">True</field>
+        </record>
+
+        <!-- Checkout Confirmation Page View -->
+        <record id="checkout_confirmation_view" model="ir.ui.view">
+            <field name="name">menu.checkout.confirmation</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="menu_management.checkout_confirmation">
+                    <t t-call="website.layout">
+                        <div class="oe_structure confirmation-page-wrapper">
+                            <!-- Confirmation Header -->
+                            <section class="confirmation-header-section">
+                                <div class="container">
+                                    <div class="confirmation-icon">
+                                        <i class="fa fa-check-circle"></i>
+                                    </div>
+                                    <h1 class="confirmation-title">Order Confirmed!</h1>
+                                    <p class="confirmation-subtitle">Thank you for your order. We'll prepare it with care.</p>
+                                </div>
+                            </section>
+
+                            <!-- Confirmation Content -->
+                            <section class="confirmation-content-section">
+                                <div class="container">
+                                    <div class="confirmation-wrapper">
+                                        <div class="confirmation-card">
+                                            <h3 class="confirmation-card-title">
+                                                <i class="fa fa-info-circle"></i> Order Details
+                                            </h3>
+                                            
+                                            <t t-set="order_data" t-value="order_data or {}"/>
+                                            <div class="confirmation-details">
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Order Number:</span>
+                                                    <span class="detail-value" t-esc="order_data.get('order_name') or 'N/A'"/>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Order Date:</span>
+                                                    <span class="detail-value" t-esc="order_data.get('order_date') or 'N/A'"/>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Total Amount:</span>
+                                                    <span class="detail-value" style="font-weight: 700; color: #667eea;">$<t t-esc="order_data.get('total_amount') or 0"/></span>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Customer Name:</span>
+                                                    <span class="detail-value" t-esc="order_data.get('customer_name') or 'N/A'"/>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Email:</span>
+                                                    <span class="detail-value" t-esc="order_data.get('customer_email') or 'N/A'"/>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Phone:</span>
+                                                    <span class="detail-value" t-esc="order_data.get('customer_phone') or 'N/A'"/>
+                                                </div>
+                                            </div>
+
+                                            <h3 class="confirmation-card-title">
+                                                <i class="fa fa-map-marker"></i> Delivery Information
+                                            </h3>
+                                            
+                                            <div class="confirmation-details">
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Address:</span>
+                                                    <span class="detail-value" t-esc="order_data.get('delivery_address') or 'N/A'"/>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">City:</span>
+                                                    <span class="detail-value" t-esc="order_data.get('delivery_city') or 'N/A'"/>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">State:</span>
+                                                    <span class="detail-value" t-esc="order_data.get('delivery_state') or 'N/A'"/>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">ZIP Code:</span>
+                                                    <span class="detail-value" t-esc="order_data.get('delivery_zip') or 'N/A'"/>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Delivery Date:</span>
+                                                    <span class="detail-value" t-esc="order_data.get('delivery_date') or 'N/A'"/>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Delivery Time:</span>
+                                                    <span class="detail-value" t-esc="order_data.get('delivery_time') or 'N/A'"/>
+                                                </div>
+                                                <t t-if="order_data.get('special_instructions')">
+                                                    <div class="detail-row">
+                                                        <span class="detail-label">Special Instructions:</span>
+                                                        <span class="detail-value" t-esc="order_data.get('special_instructions')"/>
+                                                    </div>
+                                                </t>
+                                            </div>
+
+                                            <div class="confirmation-actions">
+                                                <a href="/our-menu" class="btn-continue-shopping">
+                                                    <i class="fa fa-arrow-left"></i> Continue Shopping
+                                                </a>
+                                                <button type="button" class="btn-print" onclick="window.print()">
+                                                    <i class="fa fa-print"></i> Print Order
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Confirmation Styles -->
+                        <style>
+                            .confirmation-page-wrapper {
+                                background: #f8f9fa;
+                                min-height: 100vh;
+                                padding-bottom: 3rem;
+                            }
+
+                            .confirmation-header-section {
+                                background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                                padding: 4rem 0;
+                                color: white;
+                                text-align: center;
+                            }
+
+                            .confirmation-icon {
+                                font-size: 5rem;
+                                margin-bottom: 1rem;
+                                animation: scaleIn 0.5s ease;
+                            }
+
+                            @keyframes scaleIn {
+                                from {
+                                    transform: scale(0);
+                                }
+                                to {
+                                    transform: scale(1);
+                                }
+                            }
+
+                            .confirmation-title {
+                                font-size: 2.5rem;
+                                font-weight: 700;
+                                margin-bottom: 0.5rem;
+                            }
+
+                            .confirmation-subtitle {
+                                font-size: 1.2rem;
+                                opacity: 0.9;
+                            }
+
+                            .confirmation-content-section {
+                                padding: 2rem 0;
+                            }
+
+                            .confirmation-wrapper {
+                                max-width: 800px;
+                                margin: 0 auto;
+                            }
+
+                            .confirmation-card {
+                                background: white;
+                                border-radius: 15px;
+                                padding: 2rem;
+                                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                            }
+
+                            .confirmation-card-title {
+                                font-size: 1.3rem;
+                                font-weight: 700;
+                                margin: 2rem 0 1rem 0;
+                                color: #333;
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                            }
+
+                            .confirmation-card-title:first-child {
+                                margin-top: 0;
+                            }
+
+                            .confirmation-details {
+                                margin-bottom: 1rem;
+                            }
+
+                            .detail-row {
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 0.75rem 0;
+                                border-bottom: 1px solid #eee;
+                            }
+
+                            .detail-row:last-child {
+                                border-bottom: none;
+                            }
+
+                            .detail-label {
+                                font-weight: 600;
+                                color: #666;
+                            }
+
+                            .detail-value {
+                                color: #333;
+                                text-align: right;
+                            }
+
+                            .confirmation-actions {
+                                display: flex;
+                                justify-content: space-between;
+                                gap: 1rem;
+                                margin-top: 2rem;
+                                padding-top: 2rem;
+                                border-top: 1px solid #eee;
+                            }
+
+                            .btn-continue-shopping {
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                padding: 12px 24px;
+                                background: #f8f9fa;
+                                color: #667eea;
+                                text-decoration: none;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                transition: all 0.3s ease;
+                            }
+
+                            .btn-continue-shopping:hover {
+                                background: #667eea;
+                                color: white;
+                            }
+
+                            .btn-print {
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                padding: 12px 24px;
+                                background: #667eea;
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                            }
+
+                            .btn-print:hover {
+                                background: #764ba2;
+                            }
+                        </style>
+
+                        <!-- Clear cart on confirmation page -->
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // Clear cart after order confirmation
+                                localStorage.removeItem('menu_cart');
+                                // Update cart icon
+                                if (typeof updateCartIcon === 'function') {
+                                    updateCartIcon();
+                                }
+                            });
+                        </script>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!-- Checkout Confirmation Page -->
+        <record id="checkout_confirmation_page" model="website.page">
+            <field name="name">Order Confirmation</field>
+            <field name="url">/menu/checkout/confirmation</field>
+            <field name="view_id" ref="checkout_confirmation_view"/>
+            <field name="is_published">True</field>
+        </record>
+
+        <!-- Header Cart Icon Template -->
+        <template id="header_cart_icon" inherit_id="website.template_header_default">
+            <xpath expr="//t[@t-call='website.placeholder_header_search_box']" position="before">
+                <li class="nav-item">
+                    <a href="/menu/cart" class="nav-link position-relative" title="Shopping Cart" style="padding: 0.5rem 1rem;">
+                        <i class="fa fa-shopping-cart" style="font-size: 1.2rem;"></i>
+                        <span class="cart-icon-count badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill" id="header-cart-count" style="display: none; font-size: 0.7rem; padding: 0.2em 0.5em;">0</span>
+                    </a>
+                </li>
+            </xpath>
+        </template>
+
+        <!-- Header Cart Icon for Hamburger Menu -->
+        <template id="header_cart_icon_hamburger" inherit_id="website.template_header_hamburger">
+            <xpath expr="//t[@t-call='portal.placeholder_user_sign_in']" position="before">
+                <li class="nav-item">
+                    <a href="/menu/cart" class="nav-link d-flex align-items-center" title="Shopping Cart">
+                        <i class="fa fa-shopping-cart me-2"></i>
+                        <span>Cart</span>
+                        <span class="cart-icon-count badge bg-danger ms-2" id="header-cart-count-mobile" style="display: none;">0</span>
+                    </a>
+                </li>
+            </xpath>
+        </template>
+
+        <!-- Global Cart Icon Update Script -->
+        <template id="global_cart_icon_script" inherit_id="website.layout">
+            <xpath expr="//head" position="inside">
+                <script>
+                    // Global cart icon update function
+                    (function() {
+                        function updateAllCartIcons() {
+                            try {
+                                const cart = localStorage.getItem('menu_cart');
+                                const cartData = cart ? JSON.parse(cart) : [];
+                                const totalItems = cartData.reduce(function(sum, item) {
+                                    return sum + (item.quantity || 0);
+                                }, 0);
+                                
+                                // Update all cart icon badges
+                                const cartBadges = document.querySelectorAll('#cart-icon-count, #header-cart-count, #header-cart-count-mobile, .cart-icon-count');
+                                cartBadges.forEach(function(badge) {
+                                    badge.textContent = totalItems;
+                                    if (totalItems > 0) {
+                                        badge.style.display = 'block';
+                                    } else {
+                                        badge.style.display = 'none';
+                                    }
+                                });
+                            } catch (e) {
+                                console.error('Error updating cart icons:', e);
+                            }
+                        }
+
+                        // Update on page load
+                        if (document.readyState === 'loading') {
+                            document.addEventListener('DOMContentLoaded', updateAllCartIcons);
+                        } else {
+                            updateAllCartIcons();
+                        }
+
+                        // Listen for storage changes (when cart is updated in another tab/window)
+                        window.addEventListener('storage', function(e) {
+                            if (e.key === 'menu_cart') {
+                                updateAllCartIcons();
+                            }
+                        });
+
+                        // Update periodically (in case localStorage is updated directly)
+                        setInterval(updateAllCartIcons, 1000);
+                    })();
+                </script>
+            </xpath>
+        </template>
     </data>
 </odoo>
