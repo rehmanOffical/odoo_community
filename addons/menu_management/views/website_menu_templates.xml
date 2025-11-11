@@ -2348,6 +2348,7 @@
                                         <!-- Checkout Form -->
                                         <div class="checkout-form-container">
                                             <form id="checkout-form" method="post" action="/menu/checkout/process">
+                                                <input type="hidden" id="cart-data-input" name="cart_data" value=""/>
                                                 <!-- Customer Information -->
                                                 <div class="form-section">
                                                     <h3 class="form-section-title">
@@ -2746,7 +2747,7 @@
                                 }
                             }
 
-                            // Form validation
+                            // Form validation and submit
                             const checkoutForm = document.getElementById('checkout-form');
                             if (checkoutForm) {
                                 checkoutForm.addEventListener('submit', function(e) {
@@ -2756,6 +2757,12 @@
                                         alert('Your cart is empty!');
                                         window.location.href = '/menu/cart';
                                         return false;
+                                    }
+                                    
+                                    // Add cart data to form before submission
+                                    const cartDataInput = document.getElementById('cart-data-input');
+                                    if (cartDataInput) {
+                                        cartDataInput.value = JSON.stringify(cart);
                                     }
                                     
                                     return true;
@@ -2803,22 +2810,31 @@
                                                 <i class="fa fa-info-circle"></i> Order Details
                                             </h3>
                                             
+                                            <t t-set="order_data" t-value="order_data or {}"/>
                                             <div class="confirmation-details">
                                                 <div class="detail-row">
+                                                    <span class="detail-label">Order Number:</span>
+                                                    <span class="detail-value" t-esc="order_data.get('order_name') or 'N/A'"/>
+                                                </div>
+                                                <div class="detail-row">
                                                     <span class="detail-label">Order Date:</span>
-                                                    <span class="detail-value" t-esc="order_data.get('order_date', 'N/A')"/>
+                                                    <span class="detail-value" t-esc="order_data.get('order_date') or 'N/A'"/>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Total Amount:</span>
+                                                    <span class="detail-value" style="font-weight: 700; color: #667eea;">$<t t-esc="order_data.get('total_amount') or 0"/></span>
                                                 </div>
                                                 <div class="detail-row">
                                                     <span class="detail-label">Customer Name:</span>
-                                                    <span class="detail-value" t-esc="order_data.get('customer_name', 'N/A')"/>
+                                                    <span class="detail-value" t-esc="order_data.get('customer_name') or 'N/A'"/>
                                                 </div>
                                                 <div class="detail-row">
                                                     <span class="detail-label">Email:</span>
-                                                    <span class="detail-value" t-esc="order_data.get('customer_email', 'N/A')"/>
+                                                    <span class="detail-value" t-esc="order_data.get('customer_email') or 'N/A'"/>
                                                 </div>
                                                 <div class="detail-row">
                                                     <span class="detail-label">Phone:</span>
-                                                    <span class="detail-value" t-esc="order_data.get('customer_phone', 'N/A')"/>
+                                                    <span class="detail-value" t-esc="order_data.get('customer_phone') or 'N/A'"/>
                                                 </div>
                                             </div>
 
@@ -2829,27 +2845,27 @@
                                             <div class="confirmation-details">
                                                 <div class="detail-row">
                                                     <span class="detail-label">Address:</span>
-                                                    <span class="detail-value" t-esc="order_data.get('delivery_address', 'N/A')"/>
+                                                    <span class="detail-value" t-esc="order_data.get('delivery_address') or 'N/A'"/>
                                                 </div>
                                                 <div class="detail-row">
                                                     <span class="detail-label">City:</span>
-                                                    <span class="detail-value" t-esc="order_data.get('delivery_city', 'N/A')"/>
+                                                    <span class="detail-value" t-esc="order_data.get('delivery_city') or 'N/A'"/>
                                                 </div>
                                                 <div class="detail-row">
                                                     <span class="detail-label">State:</span>
-                                                    <span class="detail-value" t-esc="order_data.get('delivery_state', 'N/A')"/>
+                                                    <span class="detail-value" t-esc="order_data.get('delivery_state') or 'N/A'"/>
                                                 </div>
                                                 <div class="detail-row">
                                                     <span class="detail-label">ZIP Code:</span>
-                                                    <span class="detail-value" t-esc="order_data.get('delivery_zip', 'N/A')"/>
+                                                    <span class="detail-value" t-esc="order_data.get('delivery_zip') or 'N/A'"/>
                                                 </div>
                                                 <div class="detail-row">
                                                     <span class="detail-label">Delivery Date:</span>
-                                                    <span class="detail-value" t-esc="order_data.get('delivery_date', 'N/A')"/>
+                                                    <span class="detail-value" t-esc="order_data.get('delivery_date') or 'N/A'"/>
                                                 </div>
                                                 <div class="detail-row">
                                                     <span class="detail-label">Delivery Time:</span>
-                                                    <span class="detail-value" t-esc="order_data.get('delivery_time', 'N/A')"/>
+                                                    <span class="detail-value" t-esc="order_data.get('delivery_time') or 'N/A'"/>
                                                 </div>
                                                 <t t-if="order_data.get('special_instructions')">
                                                     <div class="detail-row">
