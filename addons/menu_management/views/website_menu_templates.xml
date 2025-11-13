@@ -21,16 +21,6 @@
                                         </a>
                                     </div>
                                     <p class="menu-hero-subtitle">Discover a world of flavors crafted with passion</p>
-                                    <div class="menu-hero-stats">
-                                        <div class="stat-item">
-                                            <span class="stat-number" id="total-items">0</span>
-                                            <span class="stat-label">Menu Items</span>
-                                        </div>
-                                        <div class="stat-item">
-                                            <span class="stat-number" id="total-categories">0</span>
-                                            <span class="stat-label">Categories</span>
-                                        </div>
-                                    </div>
                                 </div>
                         </section>
 
@@ -485,30 +475,6 @@
                                 opacity: 0.95;
                             }
 
-                            .menu-hero-stats {
-                                display: flex;
-                                justify-content: center;
-                                gap: 3rem;
-                                margin-top: 2rem;
-                            }
-
-                            .stat-item {
-                                text-align: center;
-                            }
-
-                            .stat-number {
-                                display: block;
-                                font-size: 2.5rem;
-                                font-weight: 700;
-                                line-height: 1;
-                            }
-
-                            .stat-label {
-                                display: block;
-                                font-size: 0.9rem;
-                                opacity: 0.9;
-                                margin-top: 0.5rem;
-                            }
 
                             /* Filters Section */
                             .menu-filters-section {
@@ -1235,10 +1201,6 @@
                                     font-size: 2rem;
                                 }
 
-                                .menu-hero-stats {
-                                    gap: 1.5rem;
-                                }
-
                                 .menu-items-grid {
                                     grid-template-columns: 1fr;
                                 }
@@ -1287,12 +1249,6 @@
                         <!-- JavaScript -->
                         <script>
                             document.addEventListener('DOMContentLoaded', function() {
-                                // Count items and categories
-                                const categories = document.querySelectorAll('.category-section');
-                                const items = document.querySelectorAll('.menu-item-card');
-                                document.getElementById('total-categories').textContent = categories.length;
-                                document.getElementById('total-items').textContent = items.length;
-
                                 // Filter functionality
                                 const filterButtons = document.querySelectorAll('.filter-btn');
                                 const menuItems = document.querySelectorAll('.menu-item-card');
