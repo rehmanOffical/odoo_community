@@ -17,14 +17,16 @@
     """,
     'author': 'Your Company',
     'website': 'https://www.yourcompany.com',
-    'depends': ['base'],
+    'depends': ['base', 'sale'],
     'data': [
         'security/ir.model.access.csv',
         'views/recipe_views.xml',
+        'views/sale_order_views.xml',
         'data/recipe_data.xml',
     ],
     'installable': True,
     'application': True,
     'auto_install': False,
     'license': 'LGPL-3',
+    'post_init_hook': 'post_init_hook',
 }

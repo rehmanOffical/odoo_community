@@ -624,7 +624,7 @@ class MenuCartController(http.Controller):
             'order_data': order_data,
         })
 
-    @http.route('/menu/cart/clear', type='json', auth='public', website=True, methods=['POST'], csrf=False)
+    @http.route('/menu/cart/clear', type='jsonrpc', auth='public', website=True, methods=['POST'], csrf=False)
     def clear_cart(self, **kwargs):
         """Clear the cart (handled by JavaScript localStorage)"""
         return {'success': True}
