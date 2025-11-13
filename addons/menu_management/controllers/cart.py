@@ -23,10 +23,74 @@ class MenuCartController(http.Controller):
             'line': line,
         })
 
+    def _safe_get(self, data, key, default=''):
+        """Safely get value from data (handles both dict and list cases)"""
+        if isinstance(data, dict):
+            value = data.get(key, default)
+            # If value is a list, get first element
+            if isinstance(value, list):
+                value = value[0] if value else default
+            # Convert to string if not already
+            if value and not isinstance(value, str):
+                value = str(value)
+            return value if value else default
+        elif isinstance(data, list):
+            # If data is a list, try to find the key in list items
+            for item in data:
+                if isinstance(item, dict) and key in item:
+                    value = item[key]
+                    if isinstance(value, list):
+                        value = value[0] if value else default
+                    if value and not isinstance(value, str):
+                        value = str(value)
+                    return value if value else default
+            return default
+        return default
+
     @http.route('/menu/cart', type='http', auth='public', website=True, sitemap=False)
     def cart(self, **kwargs):
         """Display the shopping cart page"""
         return request.render('menu_management.cart_page', {})
+
+    @http.route('/about-us', type='http', auth='public', website=True, sitemap=True)
+    def about_us(self, **kwargs):
+        """Display the about us page"""
+        return request.render('menu_management.about_us_page', {})
+
+    @http.route('/services', type='http', auth='public', website=True, sitemap=True)
+    def services(self, **kwargs):
+        """Display the services page"""
+        return request.render('menu_management.services_page', {})
+
+    @http.route('/catering-menu', type='http', auth='public', website=True, sitemap=True)
+    def catering_menu(self, **kwargs):
+        """Display the catering menu page"""
+        return request.render('menu_management.catering_menu_page', {})
+
+    @http.route('/pricing', type='http', auth='public', website=True, sitemap=True)
+    def pricing(self, **kwargs):
+        """Display the pricing page"""
+        return request.render('menu_management.pricing_page', {})
+
+    @http.route('/booking', type='http', auth='public', website=True, sitemap=True)
+    def booking(self, **kwargs):
+        """Display the booking page"""
+        return request.render('menu_management.booking_page', {})
+
+    @http.route('/testimonials', type='http', auth='public', website=True, sitemap=True)
+    def testimonials(self, **kwargs):
+        """Display the testimonials page"""
+        return request.render('menu_management.testimonials_page', {})
+
+    @http.route('/faq', type='http', auth='public', website=True, sitemap=True)
+    def faq(self, **kwargs):
+        """Display the FAQ page"""
+        return request.render('menu_management.faq_page', {})
+
+    @http.route('/contact', type='http', auth='public', website=True, sitemap=True)
+    def contact(self, **kwargs):
+        """Display the contact page"""
+        return request.render('menu_management.contact_page', {})
 
     @http.route('/menu/checkout', type='http', auth='public', website=True, sitemap=False)
     def checkout(self, **kwargs):
@@ -43,35 +107,78 @@ class MenuCartController(http.Controller):
             return request.redirect('/menu/cart')
 
         try:
-            # Get form data
-            customer_name = post.get('customer_name', '').strip()
-            customer_email = post.get('customer_email', '').strip()
-            customer_phone = post.get('customer_phone', '').strip()
-            delivery_address = post.get('delivery_address', '').strip()
-            delivery_city = post.get('delivery_city', '').strip()
-            delivery_state = post.get('delivery_state', '').strip()
-            delivery_zip = post.get('delivery_zip', '').strip()
-            delivery_date = post.get('delivery_date', '').strip()
-            delivery_time = post.get('delivery_time', '').strip()
-            special_instructions = post.get('special_instructions', '').strip()
-            serving_count = post.get('serving_count', '').strip()
-            service_type = post.get('service_type', '').strip()
+            # Get form data using safe get method
+            customer_name = self._safe_get(post, 'customer_name', '').strip()
+            customer_email = self._safe_get(post, 'customer_email', '').strip()
+            customer_phone = self._safe_get(post, 'customer_phone', '').strip()
+            delivery_address = self._safe_get(
+                post, 'delivery_address', '').strip()
+            delivery_city = self._safe_get(post, 'delivery_city', '').strip()
+            delivery_state = self._safe_get(post, 'delivery_state', '').strip()
+            delivery_zip = self._safe_get(post, 'delivery_zip', '').strip()
+            delivery_date = self._safe_get(post, 'delivery_date', '').strip()
+            delivery_time = self._safe_get(post, 'delivery_time', '').strip()
+            special_instructions = self._safe_get(
+                post, 'special_instructions', '').strip()
+            serving_count = self._safe_get(post, 'serving_count', '').strip()
+            service_type = self._safe_get(post, 'service_type', '').strip()
 
             # Get cart data from request (passed via hidden field or session)
-            cart_data_json = post.get('cart_data', '[]')
+            cart_data_raw = self._safe_get(post, 'cart_data', '[]')
+
+            # Log the raw cart data for debugging
+            self._log_message(
+                name='Menu Checkout Debug',
+                level='info',
+                message=f'cart_data_raw type: {type(cart_data_raw)}, value: {str(cart_data_raw)[:500]}',
+                func='process_checkout'
+            )
+
+            # Handle case where cart_data might be a list (if multiple values with same name)
+            if isinstance(cart_data_raw, list):
+                cart_data_json = cart_data_raw[0] if cart_data_raw else '[]'
+            else:
+                cart_data_json = str(cart_data_raw) if cart_data_raw else '[]'
+
             try:
                 cart_data = json.loads(
-                    cart_data_json) if cart_data_json else []
-            except Exception as e:
+                    cart_data_json) if cart_data_json and cart_data_json != '[]' else []
+                # Ensure cart_data is a list
+                if not isinstance(cart_data, list):
+                    if isinstance(cart_data, dict):
+                        # If it's a dict, try to get the items
+                        cart_data = cart_data.get('items', []) if isinstance(
+                            cart_data.get('items'), list) else []
+                    else:
+                        cart_data = []
+
+                # Log parsed cart data for debugging
+                self._log_message(
+                    name='Menu Checkout Debug',
+                    level='info',
+                    message=f'cart_data type: {type(cart_data)}, length: {len(cart_data) if isinstance(cart_data, list) else "N/A"}',
+                    func='process_checkout'
+                )
+            except (json.JSONDecodeError, ValueError, TypeError) as e:
                 self._log_message(
                     name='Menu Checkout',
                     level='error',
-                    message=f'Error parsing cart data: {str(e)}',
+                    message=f'Error parsing cart data: {str(e)}, cart_data_json: {cart_data_json[:200] if len(str(cart_data_json)) > 200 else cart_data_json}',
                     func='process_checkout'
                 )
                 cart_data = []
 
             if not cart_data:
+                return request.redirect('/menu/cart')
+
+            # Validate cart_data structure
+            if not isinstance(cart_data, list):
+                self._log_message(
+                    name='Menu Checkout',
+                    level='error',
+                    message=f'Invalid cart_data type: {type(cart_data)}, expected list',
+                    func='process_checkout'
+                )
                 return request.redirect('/menu/cart')
 
             # Create or get partner
@@ -241,6 +348,16 @@ class MenuCartController(http.Controller):
             except Exception:
                 sales_user_id = request.env.user.id
 
+        # Parse delivery_date if provided
+        delivery_date_parsed = False
+        if delivery_date:
+            try:
+                delivery_date_parsed = datetime.strptime(
+                    delivery_date, '%Y-%m-%d').date()
+            except (ValueError, TypeError):
+                # If parsing fails, keep it as False
+                pass
+
         # Create sales order with proper context
         order_vals = {
             'partner_id': partner.id,
@@ -249,6 +366,14 @@ class MenuCartController(http.Controller):
             'state': 'draft',  # Explicitly set to draft
             'user_id': sales_user_id,
         }
+
+        # Add delivery_date if available
+        if delivery_date_parsed:
+            order_vals['delivery_date'] = delivery_date_parsed
+
+        # Add delivery_time if available
+        if delivery_time:
+            order_vals['delivery_time'] = delivery_time
 
         # Add team_id if available (makes order visible to sales team)
         if team_id:
@@ -279,14 +404,57 @@ class MenuCartController(http.Controller):
 
         # Add order lines
         delivery_charge = 200.0  # Hardcoded delivery charge
+
+        # Ensure cart_data is a list
+        if not isinstance(cart_data, list):
+            self._log_message(
+                name='Menu Checkout',
+                level='error',
+                message=f'cart_data is not a list: {type(cart_data)}',
+                func='_create_sale_order'
+            )
+            cart_data = []
+
         for item_data in cart_data:
             try:
-                menu_item_id = item_data.get('id')
-                quantity = float(item_data.get('quantity', 1))
-                price = float(item_data.get('price', 0))
-
-                if not menu_item_id:
+                # Ensure item_data is a dictionary
+                if not isinstance(item_data, dict):
+                    self._log_message(
+                        name='Menu Checkout',
+                        level='error',
+                        message=f'item_data is not a dict: {type(item_data)}, value: {item_data}',
+                        func='_create_sale_order'
+                    )
                     continue
+
+                # Safely get values from item_data
+                menu_item_id = item_data.get('id') if isinstance(
+                    item_data, dict) else None
+                if not menu_item_id:
+                    self._log_message(
+                        name='Menu Checkout',
+                        level='warning',
+                        message=f'item_data missing id: {item_data}',
+                        func='_create_sale_order'
+                    )
+                    continue
+
+                # Safely get quantity and price
+                quantity_val = item_data.get(
+                    'quantity', 1) if isinstance(item_data, dict) else 1
+                price_val = item_data.get('price', 0) if isinstance(
+                    item_data, dict) else 0
+
+                # Convert to float safely
+                try:
+                    quantity = float(quantity_val) if quantity_val else 1.0
+                except (ValueError, TypeError):
+                    quantity = 1.0
+
+                try:
+                    price = float(price_val) if price_val else 0.0
+                except (ValueError, TypeError):
+                    price = 0.0
 
                 menu_item = menu_item_obj.browse(int(menu_item_id))
                 if not menu_item.exists():
@@ -309,10 +477,12 @@ class MenuCartController(http.Controller):
                 request.env['sale.order.line'].sudo().create(line_vals)
             except Exception as e:
                 # Log error but continue with other items
+                item_id = item_data.get('id', 'unknown') if isinstance(
+                    item_data, dict) else 'unknown'
                 self._log_message(
                     name='Menu Checkout Line Error',
                     level='error',
-                    message=f'Error creating order line for item {item_data.get("id")}: {str(e)}',
+                    message=f'Error creating order line for item {item_id}: {str(e)}\nTraceback: {traceback.format_exc()}',
                     func='_create_sale_order'
                 )
                 continue

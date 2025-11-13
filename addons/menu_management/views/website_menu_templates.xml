@@ -32,11 +32,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            </section>
+                        </section>
 
                             <!-- Filters Section -->
                             <section class="menu-filters-section">
-                                <div class="container">
+                            <div class="container">
                                     <div class="filters-wrapper">
                                         <h3 class="filters-title">
                                             <i class="fa fa-filter"></i> Filter by Preferences
@@ -93,7 +93,7 @@
                                                          t-att-data-item-id="item.id">
                                                         <!-- Card Image Section -->
                                                         <div class="menu-item-image-wrapper">
-                                                            <t t-if="item.image_1920">
+                                                    <t t-if="item.image_1920">
                                                                 <img t-att-src="'data:image/png;base64,%s' % item.image_1920" 
                                                                      class="menu-item-image"
                                                                      t-att-alt="item.name"/>
@@ -101,14 +101,14 @@
                                                             <t t-else="">
                                                                 <div class="menu-item-image-placeholder">
                                                                     <i class="fa fa-cutlery"></i>
-                                                                </div>
+                                                    </div>
                                                             </t>
                                                             
                                                             <!-- Price Badge -->
                                                             <div class="price-badge">
                                                                 <span class="price-symbol">$</span>
                                                                 <span class="price-amount" t-esc="item.price"/>
-                                                            </div>
+                                                </div>
                                                             
                                                             <!-- Status Badges -->
                                                             <div class="status-badges">
@@ -127,7 +127,7 @@
                                                                         <i class="fa fa-fire"></i> Popular
                                                                     </span>
                                                                 </t>
-                                                            </div>
+                                            </div>
                                                         </div>
 
                                                         <!-- Card Content -->
@@ -139,8 +139,8 @@
                                                                 </h3>
                                                                 <t t-if="item.code">
                                                                     <span class="menu-item-code">#<t t-esc="item.code"/></span>
-                                                                </t>
-                                                            </div>
+                                        </t>
+                                    </div>
 
                                                             <!-- Description -->
                                                             <t t-if="item.short_description">
@@ -1599,13 +1599,13 @@
         </field>
     </record>
 
-        <!-- Website page that points to the QWeb view -->
-        <record id="menu_public_page" model="website.page">
-            <field name="name">Our Menu</field>
-            <field name="url">/our-menu</field>
-            <field name="view_id" ref="menu_public_page_view"/>
-            <field name="is_published">True</field>
-        </record>
+    <!-- Website page that points to the QWeb view -->
+    <record id="menu_public_page" model="website.page">
+        <field name="name">Our Menu</field>
+        <field name="url">/our-menu</field>
+        <field name="view_id" ref="menu_public_page_view"/>
+        <field name="is_published">True</field>
+    </record>
 
         <!-- Cart Page View -->
         <record id="cart_page_view" model="ir.ui.view">
@@ -3161,5 +3161,2072 @@
                 </script>
             </xpath>
         </template>
+
+        <!-- Custom Homepage Template -->
+        <template id="custom_homepage" inherit_id="website.homepage" name="Custom Homepage">
+            <xpath expr="//div[@id='wrap']" position="replace">
+                <div id="wrap" class="oe_structure custom-homepage-wrapper">
+                    <style>
+                        .custom-homepage-wrapper {
+                            margin: 0;
+                            padding: 0;
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                            overflow-x: hidden;
+                        }
+                        
+                        /* Hero Section */
+                        .homepage-hero {
+                            position: relative;
+                            min-height: 95vh;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+                            background-size: 400% 400%;
+                            animation: gradientShift 15s ease infinite;
+                            overflow: hidden;
+                        }
+                        
+                        @keyframes gradientShift {
+                            0% { background-position: 0% 50%; }
+                            50% { background-position: 100% 50%; }
+                            100% { background-position: 0% 50%; }
+                        }
+                        
+                        .hero-overlay {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            background: rgba(0, 0, 0, 0.25);
+                            z-index: 1;
+                        }
+                        
+                        .hero-content {
+                            position: relative;
+                            z-index: 2;
+                            text-align: center;
+                            color: white;
+                            padding: 3rem 2rem;
+                            max-width: 1200px;
+                            margin: 0 auto;
+                        }
+                        
+                        .hero-title {
+                            font-size: 5rem;
+                            font-weight: 900;
+                            margin-bottom: 1.5rem;
+                            text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.4);
+                            animation: fadeInUp 1s ease;
+                            letter-spacing: -1px;
+                        }
+                        
+                        .hero-subtitle {
+                            font-size: 1.8rem;
+                            margin-bottom: 1rem;
+                            opacity: 0.98;
+                            font-weight: 400;
+                            animation: fadeInUp 1.2s ease;
+                        }
+                        
+                        .hero-description {
+                            font-size: 1.3rem;
+                            margin-bottom: 3rem;
+                            opacity: 0.95;
+                            line-height: 1.8;
+                            animation: fadeInUp 1.3s ease;
+                        }
+                        
+                        .hero-buttons {
+                            display: flex;
+                            gap: 1.5rem;
+                            justify-content: center;
+                            flex-wrap: wrap;
+                            animation: fadeInUp 1.4s ease;
+                        }
+                        
+                        .hero-btn {
+                            padding: 1.2rem 3rem;
+                            font-size: 1.15rem;
+                            font-weight: 600;
+                            border: none;
+                            border-radius: 50px;
+                            cursor: pointer;
+                            text-decoration: none;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+                        }
+                        
+                        .hero-btn-primary {
+                            background: white;
+                            color: #667eea;
+                        }
+                        
+                        .hero-btn-primary:hover {
+                            transform: translateY(-4px) scale(1.05);
+                            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+                        }
+                        
+                        .hero-btn-secondary {
+                            background: transparent;
+                            color: white;
+                            border: 3px solid white;
+                        }
+                        
+                        .hero-btn-secondary:hover {
+                            background: white;
+                            color: #667eea;
+                            transform: translateY(-4px) scale(1.05);
+                        }
+                        
+                        @keyframes fadeInUp {
+                            from {
+                                opacity: 0;
+                                transform: translateY(40px);
+                            }
+                            to {
+                                opacity: 1;
+                                transform: translateY(0);
+                            }
+                        }
+                        
+                        /* Stats Section */
+                        .stats-section {
+                            padding: 5rem 2rem;
+                            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+                            border-top: 1px solid #e0e0e0;
+                            position: relative;
+                            overflow: hidden;
+                        }
+                        
+                        .stats-section::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            height: 4px;
+                            background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+                        }
+                        
+                        .stats-container {
+                            max-width: 1200px;
+                            margin: 0 auto;
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                            gap: 2.5rem;
+                        }
+                        
+                        .stat-card {
+                            text-align: center;
+                            padding: 3rem 2rem;
+                            background: white;
+                            border-radius: 20px;
+                            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+                            transition: all 0.4s ease;
+                            border: 2px solid transparent;
+                            position: relative;
+                            overflow: hidden;
+                        }
+                        
+                        .stat-card::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            height: 4px;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            transform: scaleX(0);
+                            transition: transform 0.4s ease;
+                        }
+                        
+                        .stat-card:hover {
+                            transform: translateY(-10px);
+                            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+                            border-color: #667eea;
+                        }
+                        
+                        .stat-card:hover::before {
+                            transform: scaleX(1);
+                        }
+                        
+                        .stat-icon {
+                            font-size: 3rem;
+                            margin-bottom: 1rem;
+                            display: block;
+                            opacity: 0.8;
+                        }
+                        
+                        .stat-number {
+                            font-size: 4rem;
+                            font-weight: 900;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            background-clip: text;
+                            margin-bottom: 0.8rem;
+                            line-height: 1;
+                        }
+                        
+                        .stat-label {
+                            font-size: 1.2rem;
+                            color: #555;
+                            font-weight: 600;
+                            letter-spacing: 0.5px;
+                        }
+                        
+                        /* Features Section */
+                        .features-section {
+                            padding: 6rem 2rem;
+                            background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+                        }
+                        
+                        .features-container {
+                            max-width: 1200px;
+                            margin: 0 auto;
+                        }
+                        
+                        .features-title {
+                            text-align: center;
+                            font-size: 3rem;
+                            font-weight: 800;
+                            color: #333;
+                            margin-bottom: 1rem;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            background-clip: text;
+                        }
+                        
+                        .features-subtitle {
+                            text-align: center;
+                            font-size: 1.3rem;
+                            color: #666;
+                            margin-bottom: 4rem;
+                        }
+                        
+                        .features-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                            gap: 2.5rem;
+                            margin-top: 3rem;
+                        }
+                        
+                        .feature-card {
+                            background: white;
+                            padding: 3rem 2.5rem;
+                            border-radius: 20px;
+                            text-align: center;
+                            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+                            transition: all 0.4s ease;
+                            border: 1px solid #f0f0f0;
+                        }
+                        
+                        .feature-card:hover {
+                            transform: translateY(-12px);
+                            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+                            border-color: #667eea;
+                        }
+                        
+                        .feature-icon {
+                            font-size: 4.5rem;
+                            margin-bottom: 1.5rem;
+                            display: block;
+                        }
+                        
+                        .feature-title {
+                            font-size: 1.6rem;
+                            font-weight: 700;
+                            color: #333;
+                            margin-bottom: 1rem;
+                        }
+                        
+                        .feature-description {
+                            color: #666;
+                            line-height: 1.8;
+                            font-size: 1.05rem;
+                        }
+                        
+                        /* Process Section */
+                        .process-section {
+                            padding: 6rem 2rem;
+                            background: white;
+                        }
+                        
+                        .process-container {
+                            max-width: 1200px;
+                            margin: 0 auto;
+                        }
+                        
+                        .process-title {
+                            text-align: center;
+                            font-size: 3rem;
+                            font-weight: 800;
+                            color: #333;
+                            margin-bottom: 1rem;
+                        }
+                        
+                        .process-subtitle {
+                            text-align: center;
+                            font-size: 1.3rem;
+                            color: #666;
+                            margin-bottom: 4rem;
+                        }
+                        
+                        .process-steps {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                            gap: 2rem;
+                            position: relative;
+                        }
+                        
+                        .process-step {
+                            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+                            padding: 2.5rem;
+                            border-radius: 20px;
+                            text-align: center;
+                            position: relative;
+                            border: 2px solid #e0e0e0;
+                            transition: all 0.3s ease;
+                        }
+                        
+                        .process-step:hover {
+                            border-color: #667eea;
+                            transform: translateY(-5px);
+                            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+                        }
+                        
+                        .step-number {
+                            width: 60px;
+                            height: 60px;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 1.8rem;
+                            font-weight: 800;
+                            margin: 0 auto 1.5rem;
+                            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+                        }
+                        
+                        .step-title {
+                            font-size: 1.4rem;
+                            font-weight: 700;
+                            color: #333;
+                            margin-bottom: 1rem;
+                        }
+                        
+                        .step-description {
+                            color: #666;
+                            line-height: 1.7;
+                            font-size: 1rem;
+                        }
+                        
+                        /* Services Preview Section */
+                        .services-preview-section {
+                            padding: 6rem 2rem;
+                            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+                        }
+                        
+                        .services-preview-container {
+                            max-width: 1200px;
+                            margin: 0 auto;
+                        }
+                        
+                        .section-title {
+                            text-align: center;
+                            font-size: 3rem;
+                            font-weight: 800;
+                            color: #333;
+                            margin-bottom: 1rem;
+                        }
+                        
+                        .section-subtitle {
+                            text-align: center;
+                            font-size: 1.3rem;
+                            color: #666;
+                            margin-bottom: 4rem;
+                        }
+                        
+                        .services-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                            gap: 2.5rem;
+                            margin-bottom: 3rem;
+                        }
+                        
+                        .service-card {
+                            background: white;
+                            padding: 2.5rem;
+                            border-radius: 20px;
+                            border-left: 5px solid #667eea;
+                            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+                            transition: all 0.3s ease;
+                        }
+                        
+                        .service-card:hover {
+                            transform: translateX(10px);
+                            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.2);
+                        }
+                        
+                        .service-card-title {
+                            font-size: 1.6rem;
+                            color: #667eea;
+                            margin-bottom: 1rem;
+                            font-weight: 700;
+                        }
+                        
+                        .service-card-description {
+                            color: #666;
+                            line-height: 1.8;
+                            margin-bottom: 1.5rem;
+                            font-size: 1.05rem;
+                        }
+                        
+                        .service-list {
+                            list-style: none;
+                            padding: 0;
+                            color: #555;
+                            line-height: 2.2;
+                            font-size: 1rem;
+                        }
+                        
+                        .service-list li:before {
+                            content: "✓ ";
+                            color: #667eea;
+                            font-weight: 700;
+                            margin-right: 0.5rem;
+                        }
+                        
+                        /* Testimonials Preview */
+                        .testimonials-preview {
+                            padding: 6rem 2rem;
+                            background: white;
+                        }
+                        
+                        .testimonials-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                            gap: 2rem;
+                            max-width: 1200px;
+                            margin: 0 auto;
+                        }
+                        
+                        .testimonial-card {
+                            background: #f8f9fa;
+                            padding: 2.5rem;
+                            border-radius: 20px;
+                            border-top: 4px solid #667eea;
+                            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+                        }
+                        
+                        .testimonial-text {
+                            font-size: 1.1rem;
+                            line-height: 1.8;
+                            color: #555;
+                            font-style: italic;
+                            margin-bottom: 1.5rem;
+                        }
+                        
+                        .testimonial-author {
+                            font-weight: 700;
+                            color: #333;
+                            font-size: 1.1rem;
+                        }
+                        
+                        /* CTA Section */
+                        .cta-section {
+                            padding: 6rem 2rem;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            text-align: center;
+                            color: white;
+                            position: relative;
+                            overflow: hidden;
+                        }
+                        
+                        .cta-section::before {
+                            content: '';
+                            position: absolute;
+                            top: -50%;
+                            right: -50%;
+                            width: 200%;
+                            height: 200%;
+                            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+                            animation: rotate 20s linear infinite;
+                        }
+                        
+                        @keyframes rotate {
+                            from { transform: rotate(0deg); }
+                            to { transform: rotate(360deg); }
+                        }
+                        
+                        .cta-container {
+                            max-width: 900px;
+                            margin: 0 auto;
+                            position: relative;
+                            z-index: 2;
+                        }
+                        
+                        .cta-title {
+                            font-size: 3rem;
+                            font-weight: 800;
+                            margin-bottom: 1.5rem;
+                            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+                        }
+                        
+                        .cta-text {
+                            font-size: 1.3rem;
+                            margin-bottom: 3rem;
+                            opacity: 0.98;
+                            line-height: 1.8;
+                        }
+                        
+                        .cta-buttons {
+                            display: flex;
+                            gap: 1.5rem;
+                            justify-content: center;
+                            flex-wrap: wrap;
+                        }
+                        
+                        .cta-button {
+                            padding: 1.3rem 3.5rem;
+                            font-size: 1.2rem;
+                            font-weight: 600;
+                            background: white;
+                            color: #667eea;
+                            border: none;
+                            border-radius: 50px;
+                            cursor: pointer;
+                            text-decoration: none;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+                        }
+                        
+                        .cta-button:hover {
+                            transform: translateY(-4px) scale(1.05);
+                            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+                        }
+                        
+                        /* Quick Links Section */
+                        .quick-links-section {
+                            padding: 6rem 2rem;
+                            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+                            position: relative;
+                        }
+                        
+                        .quick-links-container {
+                            max-width: 1200px;
+                            margin: 0 auto;
+                        }
+                        
+                        .quick-links-title {
+                            text-align: center;
+                            font-size: 3rem;
+                            font-weight: 800;
+                            color: #333;
+                            margin-bottom: 1rem;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            background-clip: text;
+                        }
+                        
+                        .quick-links-subtitle {
+                            text-align: center;
+                            font-size: 1.3rem;
+                            color: #666;
+                            margin-bottom: 4rem;
+                            max-width: 700px;
+                            margin-left: auto;
+                            margin-right: auto;
+                        }
+                        
+                        .quick-link-card {
+                            transition: all 0.4s ease;
+                            text-decoration: none;
+                            color: white;
+                            position: relative;
+                            overflow: hidden;
+                        }
+                        
+                        .quick-link-card::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: -100%;
+                            width: 100%;
+                            height: 100%;
+                            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                            transition: left 0.5s ease;
+                        }
+                        
+                        .quick-link-card:hover::before {
+                            left: 100%;
+                        }
+                        
+                        .quick-link-card:hover {
+                            transform: translateY(-10px) scale(1.03);
+                            box-shadow: 0 20px 50px rgba(0,0,0,0.3) !important;
+                        }
+                        
+                        /* Responsive Design */
+                        @media (max-width: 768px) {
+                            .hero-title {
+                                font-size: 2.8rem;
+                            }
+                            
+                            .hero-subtitle {
+                                font-size: 1.3rem;
+                            }
+                            
+                            .hero-description {
+                                font-size: 1.1rem;
+                            }
+                            
+                            .hero-buttons {
+                                flex-direction: column;
+                                align-items: center;
+                            }
+                            
+                            .hero-btn {
+                                width: 100%;
+                                max-width: 300px;
+                                justify-content: center;
+                            }
+                            
+                            .features-grid,
+                            .services-grid,
+                            .process-steps,
+                            .testimonials-grid {
+                                grid-template-columns: 1fr;
+                            }
+                            
+                            .quick-links-section div[style*="grid-template-columns"] {
+                                grid-template-columns: 1fr !important;
+                            }
+                            
+                            .features-title,
+                            .section-title,
+                            .process-title,
+                            .cta-title {
+                                font-size: 2.2rem;
+                            }
+                            
+                            .stat-number {
+                                font-size: 2.5rem;
+                            }
+                        }
+                    </style>
+                    
+                    <!-- Hero Section -->
+                    <section class="homepage-hero">
+                        <div class="hero-overlay"></div>
+                        <div class="hero-content">
+                            <h1 class="hero-title">🍽️ Food Temptations</h1>
+                            <p class="hero-subtitle">Food Is Happiness</p>
+                            <p class="hero-description">Markham's Premier Halal Catering Service<br/>Specializing in South Asian &amp; Middle Eastern Muslim Cuisine</p>
+                            <div class="hero-buttons">
+                                <a href="/our-menu" class="hero-btn hero-btn-primary">
+                                    <i class="fa fa-utensils"></i> View Menu
+                                </a>
+                                <a href="/booking" class="hero-btn hero-btn-primary">
+                                    <i class="fa fa-calendar-check"></i> Book Now
+                                </a>
+                                <a href="/services" class="hero-btn hero-btn-secondary">
+                                    <i class="fa fa-info-circle"></i> Our Services
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Features Section -->
+                    <section class="features-section">
+                        <div class="features-container">
+                            <h2 class="features-title">Why Choose Food Temptations?</h2>
+                            <p class="features-subtitle">Markham's Trusted Halal Catering Service</p>
+                            <div class="features-grid">
+                                <div class="feature-card">
+                                    <div class="feature-icon">🕌</div>
+                                    <h3 class="feature-title">Halal Certified</h3>
+                                    <p class="feature-description">All our ingredients and preparation methods strictly adhere to Islamic dietary guidelines. Certified halal meats from trusted suppliers with full traceability.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">👨‍🍳</div>
+                                    <h3 class="feature-title">Authentic Recipes</h3>
+                                    <p class="feature-description">Traditional family recipes passed down through generations. Authentic South Asian and Middle Eastern flavors that bring the taste of home to your event.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">🥬</div>
+                                    <h3 class="feature-title">Fresh Ingredients</h3>
+                                    <p class="feature-description">We source the finest local and imported ingredients daily to ensure every dish is fresh, flavorful, and of the highest quality.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">⭐</div>
+                                    <h3 class="feature-title">Professional Service</h3>
+                                    <p class="feature-description">Experienced, courteous staff dedicated to making your event memorable. From intimate gatherings to large-scale events, we deliver excellence.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">🤝</div>
+                                    <h3 class="feature-title">Community Focus</h3>
+                                    <p class="feature-description">Proud to serve families, mosques, churches, and community organizations throughout the Greater Toronto Area with dedication and care.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <div class="feature-icon">🎯</div>
+                                    <h3 class="feature-title">Custom Packages</h3>
+                                    <p class="feature-description">Tailored menus to suit your specific needs, dietary restrictions, and budget. Flexible packages for events of all sizes (10-500+ guests).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- How It Works Section -->
+                    <section class="process-section">
+                        <div class="process-container">
+                            <h2 class="process-title">How It Works</h2>
+                            <p class="process-subtitle">Simple Steps to Your Perfect Event</p>
+                            <div class="process-steps">
+                                <div class="process-step">
+                                    <div class="step-number">1</div>
+                                    <h3 class="step-title">Browse &amp; Select</h3>
+                                    <p class="step-description">Explore our extensive menu online or contact us for a consultation. Choose from our pre-designed packages or create a custom menu.</p>
+                                </div>
+                                <div class="process-step">
+                                    <div class="step-number">2</div>
+                                    <h3 class="step-title">Get a Quote</h3>
+                                    <p class="step-description">Provide us with your event details (date, time, number of guests, location) and we'll provide you with a detailed quote within 24 hours.</p>
+                                </div>
+                                <div class="process-step">
+                                    <div class="step-number">3</div>
+                                    <h3 class="step-title">Confirm &amp; Plan</h3>
+                                    <p class="step-description">Once you confirm, we'll work with you to finalize all details, including menu selections, dietary requirements, and service preferences.</p>
+                                </div>
+                                <div class="process-step">
+                                    <div class="step-number">4</div>
+                                    <h3 class="step-title">Enjoy Your Event</h3>
+                                    <p class="step-description">On the day of your event, our team arrives on time, sets up professionally, and ensures everything runs smoothly so you can enjoy your celebration.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Services Preview Section -->
+                    <section class="services-preview-section">
+                        <div class="services-preview-container">
+                            <h2 class="section-title">Our Catering Services</h2>
+                            <p class="section-subtitle">Professional Catering for Every Occasion</p>
+                            <div class="services-grid">
+                                <div class="service-card">
+                                    <h3 class="service-card-title">Home-Based Events</h3>
+                                    <p class="service-card-description">Perfect for intimate gatherings, family celebrations, and small parties (10-50 guests). We bring the restaurant experience to your home.</p>
+                                    <ul class="service-list">
+                                        <li>Dinner parties &amp; family gatherings</li>
+                                        <li>Birthday celebrations</li>
+                                        <li>Engagement parties</li>
+                                        <li>Aqiqah ceremonies</li>
+                                        <li>Small Iftar gatherings</li>
+                                        <li>Anniversary celebrations</li>
+                                    </ul>
+                                </div>
+                                <div class="service-card">
+                                    <h3 class="service-card-title">Large-Scale Events</h3>
+                                    <p class="service-card-description">Professional catering for community gatherings and major celebrations (50-500+ guests). Full-service event management available.</p>
+                                    <ul class="service-list">
+                                        <li>Mosque events &amp; Iftar programs</li>
+                                        <li>Wedding receptions</li>
+                                        <li>Corporate Iftar events</li>
+                                        <li>Fundraising dinners</li>
+                                        <li>Religious celebrations</li>
+                                        <li>Community festivals</li>
+                                    </ul>
+                                </div>
+                                <div class="service-card">
+                                    <h3 class="service-card-title">Service Options</h3>
+                                    <p class="service-card-description">Flexible service options to meet your specific needs and budget. We adapt to your requirements.</p>
+                                    <ul class="service-list">
+                                        <li>Full-Service Catering (setup &amp; serving)</li>
+                                        <li>Drop-Off Catering (ready to serve)</li>
+                                        <li>Buffet Service (self-serve style)</li>
+                                        <li>Plated Service (formal dining)</li>
+                                        <li>Custom Packages (tailored to you)</li>
+                                        <li>Equipment rental available</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div style="text-align: center; margin-top: 3rem;">
+                                <a href="/services" class="hero-btn hero-btn-primary" style="text-decoration: none;">
+                                    <i class="fa fa-arrow-right"></i> View All Services
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Testimonials Preview -->
+                    <section class="testimonials-preview">
+                        <div class="testimonials-grid">
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">"Food Temptations catered our mosque's Iftar program for 300 guests. The food was absolutely delicious, authentic, and the service was professional. Highly recommended!"</p>
+                                <div class="testimonial-author">— Mosque Committee, Markham</div>
+                            </div>
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">"We used Food Temptations for our daughter's engagement party. The biryani and kebabs were outstanding! Our guests are still talking about it. Thank you!"</p>
+                                <div class="testimonial-author">— A. Khan, Family Event</div>
+                            </div>
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">"Professional, reliable, and the food quality is exceptional. They handled our corporate Iftar event flawlessly. Will definitely use them again."</p>
+                                <div class="testimonial-author">— Corporate Client, GTA</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 3rem;">
+                            <a href="/testimonials" class="hero-btn hero-btn-primary" style="text-decoration: none;">
+                                <i class="fa fa-star"></i> Read More Testimonials
+                            </a>
+                        </div>
+                    </section>
+                    
+                    <!-- Quick Links Section -->
+                    <section class="quick-links-section">
+                        <div class="quick-links-container">
+                            <h2 class="quick-links-title">Discover Food Temptations</h2>
+                            <p class="quick-links-subtitle">Explore our comprehensive services, authentic menus, and exceptional catering solutions designed to make your event unforgettable</p>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem;">
+                                <a href="/about-us" class="quick-link-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2.5rem; border-radius: 20px; text-align: center; text-decoration: none; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+                                    <div style="font-size: 3rem; margin-bottom: 1rem;">📖</div>
+                                    <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 700;">About Us</h3>
+                                    <p style="opacity: 0.95; font-size: 1rem;">Learn about our story</p>
+                                </a>
+                                <a href="/services" class="quick-link-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2.5rem; border-radius: 20px; text-align: center; text-decoration: none; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+                                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+                                    <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 700;">Services</h3>
+                                    <p style="opacity: 0.95; font-size: 1rem;">Event catering options</p>
+                                </a>
+                                <a href="/catering-menu" class="quick-link-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2.5rem; border-radius: 20px; text-align: center; text-decoration: none; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+                                    <div style="font-size: 3rem; margin-bottom: 1rem;">🍽️</div>
+                                    <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 700;">Catering Menu</h3>
+                                    <p style="opacity: 0.95; font-size: 1rem;">View our full menu</p>
+                                </a>
+                                <a href="/pricing" class="quick-link-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2.5rem; border-radius: 20px; text-align: center; text-decoration: none; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+                                    <div style="font-size: 3rem; margin-bottom: 1rem;">💰</div>
+                                    <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 700;">Pricing</h3>
+                                    <p style="opacity: 0.95; font-size: 1rem;">Package options</p>
+                                </a>
+                                <a href="/booking" class="quick-link-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2.5rem; border-radius: 20px; text-align: center; text-decoration: none; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+                                    <div style="font-size: 3rem; margin-bottom: 1rem;">📅</div>
+                                    <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 700;">Booking</h3>
+                                    <p style="opacity: 0.95; font-size: 1rem;">Book your event</p>
+                                </a>
+                                <a href="/testimonials" class="quick-link-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2.5rem; border-radius: 20px; text-align: center; text-decoration: none; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+                                    <div style="font-size: 3rem; margin-bottom: 1rem;">⭐</div>
+                                    <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 700;">Testimonials</h3>
+                                    <p style="opacity: 0.95; font-size: 1rem;">Client reviews</p>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- CTA Section -->
+                    <section class="cta-section">
+                        <div class="cta-container">
+                            <h2 class="cta-title">Ready to Plan Your Event?</h2>
+                            <p class="cta-text">From intimate home gatherings to large-scale community events, we bring authentic South Asian and Middle Eastern flavors to your special occasions. Contact us today for a free consultation and let us make your event unforgettable!</p>
+                            <div class="cta-buttons">
+                                <a href="/booking" class="cta-button">
+                                    <i class="fa fa-calendar-check"></i> Book Now
+                                </a>
+                                <a href="/contact" class="hero-btn hero-btn-secondary" style="text-decoration: none;">
+                                    <i class="fa fa-phone"></i> Contact Us
+                                </a>
+                                <a href="/our-menu" class="hero-btn hero-btn-secondary" style="text-decoration: none;">
+                                    <i class="fa fa-utensils"></i> View Menu
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Stats Section -->
+                    <section class="stats-section">
+                        <div class="stats-container">
+                            <div class="stat-card">
+                                <div class="stat-icon">🎉</div>
+                                <div class="stat-number">500+</div>
+                                <div class="stat-label">Events Catered</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">👥</div>
+                                <div class="stat-number">10-500+</div>
+                                <div class="stat-label">Guest Capacity</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">🕌</div>
+                                <div class="stat-number">100%</div>
+                                <div class="stat-label">Halal Certified</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">⭐</div>
+                                <div class="stat-number">5+</div>
+                                <div class="stat-label">Years Experience</div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </xpath>
+        </template>
+
+        <!-- About Us Page -->
+        <record id="about_us_page" model="ir.ui.view">
+            <field name="name">menu.about.us.page</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="menu_management.about_us_page">
+                    <t t-call="website.layout">
+                        <div id="wrap" class="oe_structure">
+                            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 3rem 2rem;">
+                                <div style="text-align: center; margin-bottom: 4rem;">
+                                    <h1 style="font-size: 3rem; font-weight: 800; color: #333; margin-bottom: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">About Food Temptations</h1>
+                                    <p style="font-size: 1.3rem; color: #666; max-width: 800px; margin: 0 auto;">Markham's Premier Halal Catering Service</p>
+                                </div>
+
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem; border-radius: 15px; margin-bottom: 3rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                                    <h2 style="font-size: 2rem; margin-bottom: 1.5rem; text-align: center;">Food Is Happiness</h2>
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; text-align: center;">
+                                        <div>
+                                            <p style="font-size: 1.1rem; opacity: 0.95;"><strong>Location:</strong><br/>Markham, Ontario, Canada</p>
+                                        </div>
+                                        <div>
+                                            <p style="font-size: 1.1rem; opacity: 0.95;"><strong>Specialty:</strong><br/>South Asian &amp; Middle Eastern Muslim Cuisine</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 3rem;">
+                                    <h2 style="font-size: 2.2rem; color: #333; margin-bottom: 1.5rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem;">Our Story</h2>
+                                    <p style="font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 1.5rem;">
+                                        Food Temptations is Markham's premier halal catering service, specializing in authentic South Asian and Middle Eastern cuisine for events of all sizes. From intimate home gatherings to large-scale community events, we bring the rich flavors and traditions of Muslim cuisine to your special occasions.
+                                    </p>
+                                    <p style="font-size: 1.1rem; line-height: 1.8; color: #555;">
+                                        Our commitment to quality, authenticity, and exceptional service has made us the trusted choice for families, mosques, churches, and community organizations throughout the Greater Toronto Area.
+                                    </p>
+                                </div>
+
+                                <div style="margin-bottom: 3rem;">
+                                    <h2 style="font-size: 2.2rem; color: #333; margin-bottom: 1.5rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem;">Our Values</h2>
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+                                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-left: 4px solid #667eea;">
+                                            <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 0.5rem;">🕌 Halal Certified</h3>
+                                            <p style="color: #666; line-height: 1.6;">All our ingredients and preparation methods strictly adhere to Islamic dietary guidelines</p>
+                                        </div>
+                                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-left: 4px solid #667eea;">
+                                            <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 0.5rem;">👨‍🍳 Authentic Recipes</h3>
+                                            <p style="color: #666; line-height: 1.6;">Traditional family recipes passed down through generations</p>
+                                        </div>
+                                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-left: 4px solid #667eea;">
+                                            <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 0.5rem;">🥬 Fresh Ingredients</h3>
+                                            <p style="color: #666; line-height: 1.6;">We source the finest local and imported ingredients</p>
+                                        </div>
+                                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-left: 4px solid #667eea;">
+                                            <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 0.5rem;">⭐ Professional Service</h3>
+                                            <p style="color: #666; line-height: 1.6;">Experienced staff dedicated to making your event memorable</p>
+                                        </div>
+                                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-left: 4px solid #667eea;">
+                                            <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 0.5rem;">🤝 Community Focus</h3>
+                                            <p style="color: #666; line-height: 1.6;">Proud to serve our diverse GTA community</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!-- Services Page -->
+        <record id="services_page" model="ir.ui.view">
+            <field name="name">menu.services.page</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="menu_management.services_page">
+                    <t t-call="website.layout">
+                        <div id="wrap" class="oe_structure">
+                            <style>
+                                .services-page-hero {
+                                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                    color: white;
+                                    padding: 5rem 2rem;
+                                    text-align: center;
+                                    margin-bottom: 4rem;
+                                }
+                                
+                                .services-page-hero h1 {
+                                    font-size: 3.5rem;
+                                    font-weight: 900;
+                                    margin-bottom: 1rem;
+                                    text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+                                }
+                                
+                                .services-page-hero p {
+                                    font-size: 1.4rem;
+                                    opacity: 0.95;
+                                    max-width: 800px;
+                                    margin: 0 auto;
+                                }
+                                
+                                .service-category {
+                                    margin-bottom: 5rem;
+                                    padding: 0 2rem;
+                                }
+                                
+                                .service-category-header {
+                                    text-align: center;
+                                    margin-bottom: 3rem;
+                                }
+                                
+                                .service-category-title {
+                                    font-size: 2.8rem;
+                                    font-weight: 800;
+                                    color: #333;
+                                    margin-bottom: 1rem;
+                                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                    -webkit-background-clip: text;
+                                    -webkit-text-fill-color: transparent;
+                                    background-clip: text;
+                                }
+                                
+                                .service-category-description {
+                                    font-size: 1.2rem;
+                                    color: #666;
+                                    max-width: 700px;
+                                    margin: 0 auto;
+                                }
+                                
+                                .service-items-grid {
+                                    display: grid;
+                                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                                    gap: 1.5rem;
+                                    max-width: 1200px;
+                                    margin: 0 auto;
+                                }
+                                
+                                .service-item-card {
+                                    background: white;
+                                    padding: 2rem;
+                                    border-radius: 15px;
+                                    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+                                    text-align: center;
+                                    transition: all 0.3s ease;
+                                    border: 2px solid transparent;
+                                }
+                                
+                                .service-item-card:hover {
+                                    transform: translateY(-8px);
+                                    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.2);
+                                    border-color: #667eea;
+                                }
+                                
+                                .service-item-icon {
+                                    font-size: 2.5rem;
+                                    margin-bottom: 1rem;
+                                }
+                                
+                                .service-item-name {
+                                    font-size: 1.2rem;
+                                    font-weight: 600;
+                                    color: #333;
+                                    margin-bottom: 0.5rem;
+                                }
+                                
+                                .service-item-detail {
+                                    font-size: 0.95rem;
+                                    color: #666;
+                                }
+                                
+                                .service-options-section {
+                                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                    color: white;
+                                    padding: 5rem 2rem;
+                                    border-radius: 20px;
+                                    margin: 4rem 2rem;
+                                    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+                                }
+                                
+                                .service-options-title {
+                                    font-size: 2.8rem;
+                                    font-weight: 800;
+                                    text-align: center;
+                                    margin-bottom: 3rem;
+                                    text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+                                }
+                                
+                                .service-options-grid {
+                                    display: grid;
+                                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                                    gap: 2rem;
+                                    max-width: 1200px;
+                                    margin: 0 auto;
+                                }
+                                
+                                .service-option-card {
+                                    background: rgba(255,255,255,0.15);
+                                    backdrop-filter: blur(10px);
+                                    padding: 2.5rem;
+                                    border-radius: 20px;
+                                    border: 2px solid rgba(255,255,255,0.2);
+                                    transition: all 0.3s ease;
+                                }
+                                
+                                .service-option-card:hover {
+                                    background: rgba(255,255,255,0.25);
+                                    transform: translateY(-5px);
+                                    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                                }
+                                
+                                .service-option-icon {
+                                    font-size: 3rem;
+                                    margin-bottom: 1rem;
+                                }
+                                
+                                .service-option-title {
+                                    font-size: 1.5rem;
+                                    font-weight: 700;
+                                    margin-bottom: 1rem;
+                                }
+                                
+                                .service-option-description {
+                                    font-size: 1.05rem;
+                                    opacity: 0.95;
+                                    line-height: 1.7;
+                                }
+                                
+                                @media (max-width: 768px) {
+                                    .services-page-hero h1 {
+                                        font-size: 2.5rem;
+                                    }
+                                    
+                                    .service-category-title {
+                                        font-size: 2.2rem;
+                                    }
+                                    
+                                    .service-items-grid {
+                                        grid-template-columns: 1fr;
+                                    }
+                                }
+                            </style>
+                            
+                            <div class="services-page-hero">
+                                <h1>Our Catering Services</h1>
+                                <p>Professional Catering Solutions for Every Occasion</p>
+                            </div>
+                            
+                            <div class="service-category">
+                                <div class="service-category-header">
+                                    <h2 class="service-category-title">🏠 Home-Based Events</h2>
+                                    <p class="service-category-description">Perfect for intimate gatherings, family celebrations, and small parties (10-50 guests). We bring the restaurant experience to your home.</p>
+                                </div>
+                                <div class="service-items-grid">
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">🍽️</div>
+                                        <div class="service-item-name">Dinner Parties</div>
+                                        <div class="service-item-detail">10-50 guests</div>
+                                    </div>
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">🎂</div>
+                                        <div class="service-item-name">Birthday Celebrations</div>
+                                        <div class="service-item-detail">Family &amp; friends</div>
+                                    </div>
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">💍</div>
+                                        <div class="service-item-name">Engagement Parties</div>
+                                        <div class="service-item-detail">Special occasions</div>
+                                    </div>
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">👶</div>
+                                        <div class="service-item-name">Aqiqah Ceremonies</div>
+                                        <div class="service-item-detail">Religious celebrations</div>
+                                    </div>
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">🌙</div>
+                                        <div class="service-item-name">Small Iftar Gatherings</div>
+                                        <div class="service-item-detail">Ramadan events</div>
+                                    </div>
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">💑</div>
+                                        <div class="service-item-name">Anniversary Celebrations</div>
+                                        <div class="service-item-detail">Milestone events</div>
+                                    </div>
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">👨‍👩‍👧‍👦</div>
+                                        <div class="service-item-name">Family Reunions</div>
+                                        <div class="service-item-detail">Intimate gatherings</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="service-category">
+                                <div class="service-category-header">
+                                    <h2 class="service-category-title">🏛️ Large-Scale Events</h2>
+                                    <p class="service-category-description">Professional catering for community gatherings and major celebrations (50-500+ guests). Full-service event management available.</p>
+                                </div>
+                                <div class="service-items-grid">
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">🕌</div>
+                                        <div class="service-item-name">Mosque Events</div>
+                                        <div class="service-item-detail">Iftar programs &amp; religious events</div>
+                                    </div>
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">⛪</div>
+                                        <div class="service-item-name">Church Community Dinners</div>
+                                        <div class="service-item-detail">Community gatherings</div>
+                                    </div>
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">🏛️</div>
+                                        <div class="service-item-name">Community Hall Events</div>
+                                        <div class="service-item-detail">Large venues</div>
+                                    </div>
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">💒</div>
+                                        <div class="service-item-name">Wedding Receptions</div>
+                                        <div class="service-item-detail">100-500+ guests</div>
+                                    </div>
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">🏢</div>
+                                        <div class="service-item-name">Corporate Iftar Events</div>
+                                        <div class="service-item-detail">Business gatherings</div>
+                                    </div>
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">💰</div>
+                                        <div class="service-item-name">Fundraising Dinners</div>
+                                        <div class="service-item-detail">Charity events</div>
+                                    </div>
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">🎊</div>
+                                        <div class="service-item-name">Religious Celebrations</div>
+                                        <div class="service-item-detail">Eid, Milad &amp; more</div>
+                                    </div>
+                                    <div class="service-item-card">
+                                        <div class="service-item-icon">🎪</div>
+                                        <div class="service-item-name">Cultural Festivals</div>
+                                        <div class="service-item-detail">Community festivals</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="service-options-section">
+                                <h2 class="service-options-title">Service Options</h2>
+                                <div class="service-options-grid">
+                                    <div class="service-option-card">
+                                        <div class="service-option-icon">👨‍🍳</div>
+                                        <h3 class="service-option-title">Full-Service Catering</h3>
+                                        <p class="service-option-description">Complete setup, professional service staff, and full cleanup. Perfect for stress-free events where you want to focus on your guests.</p>
+                                    </div>
+                                    <div class="service-option-card">
+                                        <div class="service-option-icon">🚚</div>
+                                        <h3 class="service-option-title">Drop-Off Catering</h3>
+                                        <p class="service-option-description">Food delivered hot and ready to serve. Ideal for budget-conscious events where you handle the serving yourself.</p>
+                                    </div>
+                                    <div class="service-option-card">
+                                        <div class="service-option-icon">🍽️</div>
+                                        <h3 class="service-option-title">Buffet Service</h3>
+                                        <p class="service-option-description">Professional buffet setup with serving staff to maintain food quality and presentation throughout your event.</p>
+                                    </div>
+                                    <div class="service-option-card">
+                                        <div class="service-option-icon">🍴</div>
+                                        <h3 class="service-option-title">Plated Service</h3>
+                                        <p class="service-option-description">Elegant plated meals for formal events. Professional waitstaff ensures impeccable presentation and service.</p>
+                                    </div>
+                                    <div class="service-option-card">
+                                        <div class="service-option-icon">🎯</div>
+                                        <h3 class="service-option-title">Custom Packages</h3>
+                                        <p class="service-option-description">Tailored menus to suit your specific needs, dietary restrictions, and budget. We work with you to create the perfect menu.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!-- Catering Menu Page -->
+        <record id="catering_menu_page" model="ir.ui.view">
+            <field name="name">menu.catering.menu.page</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="menu_management.catering_menu_page">
+                    <t t-call="website.layout">
+                        <div id="wrap" class="oe_structure">
+                            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 3rem 2rem;">
+                                <div style="text-align: center; margin-bottom: 4rem;">
+                                    <h1 style="font-size: 3rem; font-weight: 800; color: #333; margin-bottom: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Catering Menu</h1>
+                                    <p style="font-size: 1.3rem; color: #666; max-width: 800px; margin: 0 auto;">All menus can be customized to accommodate dietary restrictions and preferences</p>
+                                </div>
+
+                                <div style="margin-bottom: 4rem;">
+                                    <h2 style="font-size: 2.2rem; color: #333; margin-bottom: 2rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem;">South Asian Specialties</h2>
+                                    
+                                    <div style="margin-bottom: 3rem;">
+                                        <h3 style="font-size: 1.5rem; color: #667eea; margin-bottom: 1rem;">Appetizers &amp; Starters</h3>
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Samosas (vegetable, beef, or chicken)</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Pakoras (mixed vegetable, chicken, or paneer)</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Seekh Kebabs</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Chicken Tikka</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Spring Rolls</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Chaat Selection</div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 3rem;">
+                                        <h3 style="font-size: 1.5rem; color: #667eea; margin-bottom: 1rem;">Main Courses</h3>
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Chicken Biryani (traditional or Hyderabadi style)</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Mutton Biryani</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Butter Chicken</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Chicken Karahi</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Nihari (beef or mutton)</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Haleem</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Chicken Korma</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Palak Paneer</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Mixed Vegetable Curry</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Dal Makhani</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Chana Masala</div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 3rem;">
+                                        <h3 style="font-size: 1.5rem; color: #667eea; margin-bottom: 1rem;">Breads &amp; Rice</h3>
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Naan (plain, garlic, or butter)</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Roti</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Paratha</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Puri</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Pulao</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Zeera Rice</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Vegetable Biryani</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 4rem;">
+                                    <h2 style="font-size: 2.2rem; color: #333; margin-bottom: 2rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem;">Middle Eastern Specialties</h2>
+                                    
+                                    <div style="margin-bottom: 3rem;">
+                                        <h3 style="font-size: 1.5rem; color: #667eea; margin-bottom: 1rem;">Appetizers &amp; Mezze</h3>
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Hummus</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Baba Ghanoush</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Falafel</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Tabbouleh</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Fattoush</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Stuffed Grape Leaves</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Kibbeh</div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 3rem;">
+                                        <h3 style="font-size: 1.5rem; color: #667eea; margin-bottom: 1rem;">Main Courses</h3>
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Shawarma (chicken or beef)</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Lamb Kofta</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Chicken Kabsa</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Mansaf</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Grilled Lamb Chops</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Mixed Grill Platter</div>
+                                            <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">Chicken Mandi</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                                    <h2 style="font-size: 2.2rem; margin-bottom: 2rem; text-align: center;">Desserts &amp; Beverages</h2>
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                                        <div>
+                                            <h3 style="font-size: 1.3rem; margin-bottom: 1rem;">Desserts</h3>
+                                            <p style="opacity: 0.95; line-height: 1.8;">Gulab Jamun, Ras Malai, Kheer, Gajar Halwa, Baklava, Kunafa, Fresh Fruit Platter, Assorted Mithai</p>
+                                        </div>
+                                        <div>
+                                            <h3 style="font-size: 1.3rem; margin-bottom: 1rem;">Beverages</h3>
+                                            <p style="opacity: 0.95; line-height: 1.8;">Fresh Juices, Traditional Lassi (sweet or mango), Rooh Afza, Chai Service, Arabic Coffee, Soft Drinks</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!-- Pricing Page -->
+        <record id="pricing_page" model="ir.ui.view">
+            <field name="name">menu.pricing.page</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="menu_management.pricing_page">
+                    <t t-call="website.layout">
+                        <div id="wrap" class="oe_structure">
+                            <style>
+                                .pricing-page-hero {
+                                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                    color: white;
+                                    padding: 5rem 2rem;
+                                    text-align: center;
+                                    margin-bottom: 4rem;
+                                }
+                                
+                                .pricing-page-hero h1 {
+                                    font-size: 3.5rem;
+                                    font-weight: 900;
+                                    margin-bottom: 1rem;
+                                    text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+                                }
+                                
+                                .pricing-page-hero p {
+                                    font-size: 1.4rem;
+                                    opacity: 0.95;
+                                    max-width: 800px;
+                                    margin: 0 auto;
+                                }
+                                
+                                .pricing-packages-container {
+                                    max-width: 1400px;
+                                    margin: 0 auto;
+                                    padding: 0 2rem 4rem;
+                                }
+                                
+                                .pricing-packages-grid {
+                                    display: grid;
+                                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                                    gap: 2.5rem;
+                                    margin-bottom: 5rem;
+                                }
+                                
+                                .pricing-card {
+                                    background: white;
+                                    border-radius: 25px;
+                                    padding: 3rem 2.5rem;
+                                    box-shadow: 0 10px 35px rgba(0,0,0,0.1);
+                                    transition: all 0.4s ease;
+                                    border: 3px solid transparent;
+                                    position: relative;
+                                    overflow: hidden;
+                                }
+                                
+                                .pricing-card::before {
+                                    content: '';
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    right: 0;
+                                    height: 5px;
+                                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                    transform: scaleX(0);
+                                    transition: transform 0.4s ease;
+                                }
+                                
+                                .pricing-card:hover {
+                                    transform: translateY(-15px);
+                                    box-shadow: 0 20px 50px rgba(102, 126, 234, 0.25);
+                                    border-color: #667eea;
+                                }
+                                
+                                .pricing-card:hover::before {
+                                    transform: scaleX(1);
+                                }
+                                
+                                .pricing-card.featured {
+                                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                    color: white;
+                                    transform: scale(1.05);
+                                    border-color: transparent;
+                                }
+                                
+                                .pricing-card.featured::before {
+                                    display: none;
+                                }
+                                
+                                .pricing-card.featured:hover {
+                                    transform: scale(1.08) translateY(-10px);
+                                }
+                                
+                                .pricing-card-header {
+                                    text-align: center;
+                                    margin-bottom: 2rem;
+                                    padding-bottom: 2rem;
+                                    border-bottom: 2px solid #f0f0f0;
+                                }
+                                
+                                .pricing-card.featured .pricing-card-header {
+                                    border-bottom-color: rgba(255,255,255,0.3);
+                                }
+                                
+                                .pricing-card-icon {
+                                    font-size: 3.5rem;
+                                    margin-bottom: 1rem;
+                                }
+                                
+                                .pricing-card-title {
+                                    font-size: 2rem;
+                                    font-weight: 800;
+                                    margin-bottom: 0.5rem;
+                                    color: #667eea;
+                                }
+                                
+                                .pricing-card.featured .pricing-card-title {
+                                    color: white;
+                                }
+                                
+                                .pricing-card-subtitle {
+                                    font-size: 1.1rem;
+                                    color: #666;
+                                    font-weight: 500;
+                                }
+                                
+                                .pricing-card.featured .pricing-card-subtitle {
+                                    color: rgba(255,255,255,0.95);
+                                }
+                                
+                                .pricing-card-features {
+                                    list-style: none;
+                                    padding: 0;
+                                    margin: 0;
+                                }
+                                
+                                .pricing-card-features li {
+                                    padding: 1rem 0;
+                                    border-bottom: 1px solid #f0f0f0;
+                                    font-size: 1.05rem;
+                                    color: #555;
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.8rem;
+                                }
+                                
+                                .pricing-card.featured .pricing-card-features li {
+                                    border-bottom-color: rgba(255,255,255,0.2);
+                                    color: rgba(255,255,255,0.95);
+                                }
+                                
+                                .pricing-card-features li:last-child {
+                                    border-bottom: none;
+                                }
+                                
+                                .pricing-card-features li::before {
+                                    content: "✓";
+                                    color: #667eea;
+                                    font-weight: 800;
+                                    font-size: 1.3rem;
+                                    flex-shrink: 0;
+                                }
+                                
+                                .pricing-card.featured .pricing-card-features li::before {
+                                    color: white;
+                                }
+                                
+                                .pricing-card-cta {
+                                    margin-top: 2.5rem;
+                                    text-align: center;
+                                }
+                                
+                                .pricing-card-button {
+                                    display: inline-block;
+                                    padding: 1rem 2.5rem;
+                                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                    color: white;
+                                    text-decoration: none;
+                                    border-radius: 50px;
+                                    font-weight: 600;
+                                    font-size: 1.1rem;
+                                    transition: all 0.3s ease;
+                                    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+                                }
+                                
+                                .pricing-card-button:hover {
+                                    transform: translateY(-3px);
+                                    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+                                }
+                                
+                                .pricing-card.featured .pricing-card-button {
+                                    background: white;
+                                    color: #667eea;
+                                }
+                                
+                                .pricing-card.featured .pricing-card-button:hover {
+                                    background: rgba(255,255,255,0.95);
+                                }
+                                
+                                .addons-section {
+                                    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+                                    padding: 4rem 2rem;
+                                    border-radius: 25px;
+                                    margin: 4rem 2rem;
+                                    border-left: 5px solid #667eea;
+                                }
+                                
+                                .addons-title {
+                                    font-size: 2.5rem;
+                                    font-weight: 800;
+                                    color: #333;
+                                    margin-bottom: 2rem;
+                                    text-align: center;
+                                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                    -webkit-background-clip: text;
+                                    -webkit-text-fill-color: transparent;
+                                    background-clip: text;
+                                }
+                                
+                                .addons-grid {
+                                    display: grid;
+                                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                                    gap: 2rem;
+                                    max-width: 1200px;
+                                    margin: 0 auto;
+                                }
+                                
+                                .addon-item {
+                                    background: white;
+                                    padding: 2rem;
+                                    border-radius: 15px;
+                                    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+                                    border-left: 4px solid #667eea;
+                                    transition: all 0.3s ease;
+                                }
+                                
+                                .addon-item:hover {
+                                    transform: translateX(10px);
+                                    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
+                                }
+                                
+                                .addon-item strong {
+                                    color: #667eea;
+                                    font-size: 1.1rem;
+                                    display: block;
+                                    margin-bottom: 0.5rem;
+                                }
+                                
+                                .addon-item p {
+                                    color: #666;
+                                    line-height: 1.7;
+                                    margin: 0;
+                                }
+                                
+                                .pricing-note {
+                                    text-align: center;
+                                    color: #666;
+                                    font-style: italic;
+                                    margin-top: 2rem;
+                                    font-size: 1.05rem;
+                                }
+                                
+                                @media (max-width: 768px) {
+                                    .pricing-page-hero h1 {
+                                        font-size: 2.5rem;
+                                    }
+                                    
+                                    .pricing-packages-grid {
+                                        grid-template-columns: 1fr;
+                                    }
+                                    
+                                    .pricing-card.featured {
+                                        transform: scale(1);
+                                    }
+                                    
+                                    .pricing-card.featured:hover {
+                                        transform: translateY(-10px);
+                                    }
+                                }
+                            </style>
+                            
+                            <div class="pricing-page-hero">
+                                <h1>Pricing Packages</h1>
+                                <p>Flexible Packages Tailored to Your Event Size and Budget</p>
+                            </div>
+                            
+                            <div class="pricing-packages-container">
+                                <div class="pricing-packages-grid">
+                                    <div class="pricing-card">
+                                        <div class="pricing-card-header">
+                                            <div class="pricing-card-icon">🏠</div>
+                                            <h2 class="pricing-card-title">Small Home Event</h2>
+                                            <p class="pricing-card-subtitle">10-25 guests</p>
+                                        </div>
+                                        <ul class="pricing-card-features">
+                                            <li>Choice of 2 appetizers</li>
+                                            <li>2 main courses</li>
+                                            <li>2 rice/bread options</li>
+                                            <li>1 dessert</li>
+                                            <li>Disposable serving ware</li>
+                                            <li>Delivery and setup</li>
+                                        </ul>
+                                        <div class="pricing-card-cta">
+                                            <a href="/booking" class="pricing-card-button">Get Quote</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="pricing-card featured">
+                                        <div class="pricing-card-header">
+                                            <div class="pricing-card-icon">🏡</div>
+                                            <h2 class="pricing-card-title">Medium Home Event</h2>
+                                            <p class="pricing-card-subtitle">25-50 guests</p>
+                                        </div>
+                                        <ul class="pricing-card-features">
+                                            <li>Choice of 3 appetizers</li>
+                                            <li>3 main courses</li>
+                                            <li>2 rice options + bread</li>
+                                            <li>Salad</li>
+                                            <li>2 desserts</li>
+                                            <li>Serving ware and chafing dishes</li>
+                                            <li>Delivery, setup, and pickup</li>
+                                        </ul>
+                                        <div class="pricing-card-cta">
+                                            <a href="/booking" class="pricing-card-button">Get Quote</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="pricing-card">
+                                        <div class="pricing-card-header">
+                                            <div class="pricing-card-icon">🏛️</div>
+                                            <h2 class="pricing-card-title">Large Event</h2>
+                                            <p class="pricing-card-subtitle">50-150 guests</p>
+                                        </div>
+                                        <ul class="pricing-card-features">
+                                            <li>Choice of 4 appetizers</li>
+                                            <li>4 main courses</li>
+                                            <li>3 rice options + bread</li>
+                                            <li>2 salads</li>
+                                            <li>2 desserts</li>
+                                            <li>Full buffet setup</li>
+                                            <li>Service staff (1 per 50 guests)</li>
+                                            <li>Complete service and cleanup</li>
+                                        </ul>
+                                        <div class="pricing-card-cta">
+                                            <a href="/booking" class="pricing-card-button">Get Quote</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="pricing-card">
+                                        <div class="pricing-card-header">
+                                            <div class="pricing-card-icon">⭐</div>
+                                            <h2 class="pricing-card-title">Premium Event</h2>
+                                            <p class="pricing-card-subtitle">150+ guests</p>
+                                        </div>
+                                        <ul class="pricing-card-features">
+                                            <li>Extensive menu selection</li>
+                                            <li>Premium main courses</li>
+                                            <li>Multiple stations</li>
+                                            <li>Full service staff</li>
+                                            <li>Complete setup and breakdown</li>
+                                            <li>Professional presentation</li>
+                                            <li>Event coordination assistance</li>
+                                        </ul>
+                                        <div class="pricing-card-cta">
+                                            <a href="/booking" class="pricing-card-button">Get Quote</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="addons-section">
+                                    <h2 class="addons-title">Add-On Services</h2>
+                                    <div class="addons-grid">
+                                        <div class="addon-item">
+                                            <strong>👨‍🍳 Additional Service Staff</strong>
+                                            <p>Available per hour for events requiring extra assistance</p>
+                                        </div>
+                                        <div class="addon-item">
+                                            <strong>🥤 Beverage Service &amp; Setup</strong>
+                                            <p>Professional beverage station setup and service</p>
+                                        </div>
+                                        <div class="addon-item">
+                                            <strong>🎨 Decorative Buffet Setup</strong>
+                                            <p>Enhanced presentation with decorative elements</p>
+                                        </div>
+                                        <div class="addon-item">
+                                            <strong>⛺ Tent &amp; Table Rental</strong>
+                                            <p>Coordination available for equipment rental</p>
+                                        </div>
+                                        <div class="addon-item">
+                                            <strong>📋 Custom Menu Development</strong>
+                                            <p>Complimentary consultation for personalized menus</p>
+                                        </div>
+                                    </div>
+                                    <p class="pricing-note">All prices subject to change. Final quotes provided after menu consultation.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!-- Booking Page -->
+        <record id="booking_page" model="ir.ui.view">
+            <field name="name">menu.booking.page</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="menu_management.booking_page">
+                    <t t-call="website.layout">
+                        <div id="wrap" class="oe_structure">
+                            <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 3rem 2rem;">
+                                <div style="text-align: center; margin-bottom: 4rem;">
+                                    <h1 style="font-size: 3rem; font-weight: 800; color: #333; margin-bottom: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Booking Information</h1>
+                                    <p style="font-size: 1.3rem; color: #666; max-width: 800px; margin: 0 auto;">Let's Make Your Event Memorable</p>
+                                </div>
+
+                                <div style="margin-bottom: 4rem;">
+                                    <h2 style="font-size: 2.2rem; color: #333; margin-bottom: 2rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem;">How to Book</h2>
+                                    <div style="display: grid; gap: 1.5rem;">
+                                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-left: 4px solid #667eea;">
+                                            <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 0.5rem;">1. Initial Consultation</h3>
+                                            <p style="color: #666; line-height: 1.6;">Contact us to discuss your event details, guest count, and menu preferences</p>
+                                        </div>
+                                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-left: 4px solid #667eea;">
+                                            <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 0.5rem;">2. Custom Quote</h3>
+                                            <p style="color: #666; line-height: 1.6;">Receive a detailed proposal based on your requirements</p>
+                                        </div>
+                                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-left: 4px solid #667eea;">
+                                            <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 0.5rem;">3. Menu Selection</h3>
+                                            <p style="color: #666; line-height: 1.6;">Finalize your menu with our catering coordinator</p>
+                                        </div>
+                                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-left: 4px solid #667eea;">
+                                            <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 0.5rem;">4. Deposit</h3>
+                                            <p style="color: #666; line-height: 1.6;">Secure your date with a 30% deposit</p>
+                                        </div>
+                                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-left: 4px solid #667eea;">
+                                            <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 0.5rem;">5. Final Details</h3>
+                                            <p style="color: #666; line-height: 1.6;">Confirm all details 7 days before your event</p>
+                                        </div>
+                                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-left: 4px solid #667eea;">
+                                            <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 0.5rem;">6. Event Day</h3>
+                                            <p style="color: #666; line-height: 1.6;">We handle everything while you enjoy your celebration</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 4rem;">
+                                    <h2 style="font-size: 2.2rem; color: #333; margin-bottom: 2rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem;">Booking Requirements</h2>
+                                    <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 2rem; border-radius: 10px; margin-bottom: 2rem;">
+                                        <ul style="list-style: none; padding: 0; line-height: 2; color: #856404;">
+                                            <li style="margin-bottom: 0.5rem;"><strong>Minimum Notice:</strong> 2 weeks for small events, 4 weeks for large events (150+ guests)</li>
+                                            <li style="margin-bottom: 0.5rem;"><strong>Deposit:</strong> 30% non-refundable deposit required to secure booking</li>
+                                            <li style="margin-bottom: 0.5rem;"><strong>Final Payment:</strong> Due 3 days before event date</li>
+                                            <li style="margin-bottom: 0.5rem;"><strong>Guest Count:</strong> Final count must be provided 5 days before event</li>
+                                            <li style="margin-bottom: 0.5rem;"><strong>Cancellation Policy:</strong> Full refund minus deposit if cancelled 14+ days before event</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                                    <h2 style="font-size: 2.2rem; margin-bottom: 2rem; text-align: center;">Important Information</h2>
+                                    <div style="display: grid; gap: 1.5rem;">
+                                        <div>
+                                            <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">🕌 Halal Certification</h3>
+                                            <p style="opacity: 0.95; line-height: 1.6;">All meats are certified halal</p>
+                                        </div>
+                                        <div>
+                                            <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">✅ Food Safety</h3>
+                                            <p style="opacity: 0.95; line-height: 1.6;">Full food handler certification and insurance</p>
+                                        </div>
+                                        <div>
+                                            <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">⚠️ Allergies</h3>
+                                            <p style="opacity: 0.95; line-height: 1.6;">Please inform us of any allergies or dietary restrictions</p>
+                                        </div>
+                                        <div>
+                                            <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">🏢 Venue Requirements</h3>
+                                            <p style="opacity: 0.95; line-height: 1.6;">We work with your venue's guidelines and restrictions</p>
+                                        </div>
+                                        <div>
+                                            <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">🍽️ Tastings</h3>
+                                            <p style="opacity: 0.95; line-height: 1.6;">Available for events of 100+ guests (fee may apply)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!-- Testimonials Page -->
+        <record id="testimonials_page" model="ir.ui.view">
+            <field name="name">menu.testimonials.page</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="menu_management.testimonials_page">
+                    <t t-call="website.layout">
+                        <div id="wrap" class="oe_structure">
+                            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 3rem 2rem;">
+                                <div style="text-align: center; margin-bottom: 4rem;">
+                                    <h1 style="font-size: 3rem; font-weight: 800; color: #333; margin-bottom: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">What Our Clients Say</h1>
+                                    <p style="font-size: 1.3rem; color: #666; max-width: 800px; margin: 0 auto;">Trusted by Families and Communities Across the GTA</p>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                                    <div style="background: white; padding: 2.5rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); border-top: 4px solid #667eea;">
+                                        <div style="color: #ffc107; font-size: 1.5rem; margin-bottom: 1rem;">⭐⭐⭐⭐⭐</div>
+                                        <p style="color: #666; line-height: 1.8; font-style: italic; margin-bottom: 1.5rem;">"Food Temptations catered our daughter's wedding with 300 guests. The biryani and karahi were absolutely delicious, and everyone kept asking who the caterer was. Professional service from start to finish!"</p>
+                                        <p style="color: #333; font-weight: 600;">— Fatima A., Markham</p>
+                                    </div>
+
+                                    <div style="background: white; padding: 2.5rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); border-top: 4px solid #667eea;">
+                                        <div style="color: #ffc107; font-size: 1.5rem; margin-bottom: 1rem;">⭐⭐⭐⭐⭐</div>
+                                        <p style="color: #666; line-height: 1.8; font-style: italic; margin-bottom: 1.5rem;">"We've been using Food Temptations for our mosque Iftar events for three years. They're reliable, the food is always fresh and authentic, and they understand our community's needs."</p>
+                                        <p style="color: #333; font-weight: 600;">— Imam Mohammad, Toronto</p>
+                                    </div>
+
+                                    <div style="background: white; padding: 2.5rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); border-top: 4px solid #667eea;">
+                                        <div style="color: #ffc107; font-size: 1.5rem; margin-bottom: 1rem;">⭐⭐⭐⭐⭐</div>
+                                        <p style="color: #666; line-height: 1.8; font-style: italic; margin-bottom: 1.5rem;">"Outstanding catering for our corporate Iftar event. The mix of South Asian and Middle Eastern dishes pleased everyone, and the presentation was beautiful."</p>
+                                        <p style="color: #333; font-weight: 600;">— Sarah K., Vaughan</p>
+                                    </div>
+
+                                    <div style="background: white; padding: 2.5rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); border-top: 4px solid #667eea;">
+                                        <div style="color: #ffc107; font-size: 1.5rem; margin-bottom: 1rem;">⭐⭐⭐⭐⭐</div>
+                                        <p style="color: #666; line-height: 1.8; font-style: italic; margin-bottom: 1.5rem;">"Perfect for our home party! The food arrived hot, setup was quick, and everything tasted homemade. Will definitely use them again."</p>
+                                        <p style="color: #333; font-weight: 600;">— Ahmed R., Markham</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!-- FAQ Page -->
+        <record id="faq_page" model="ir.ui.view">
+            <field name="name">menu.faq.page</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="menu_management.faq_page">
+                    <t t-call="website.layout">
+                        <div id="wrap" class="oe_structure">
+                            <div class="container" style="max-width: 900px; margin: 0 auto; padding: 3rem 2rem;">
+                                <div style="text-align: center; margin-bottom: 4rem;">
+                                    <h1 style="font-size: 3rem; font-weight: 800; color: #333; margin-bottom: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Frequently Asked Questions</h1>
+                                    <p style="font-size: 1.3rem; color: #666; max-width: 800px; margin: 0 auto;">Everything You Need to Know</p>
+                                </div>
+
+                                <div style="display: grid; gap: 1.5rem;">
+                                    <div style="background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                        <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 1rem;">Q: How far in advance should I book?</h3>
+                                        <p style="color: #666; line-height: 1.8;">A: We recommend booking at least 2 weeks in advance for small events and 4-6 weeks for large events, especially during Ramadan and wedding season.</p>
+                                    </div>
+
+                                    <div style="background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                        <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 1rem;">Q: Do you provide service staff?</h3>
+                                        <p style="color: #666; line-height: 1.8;">A: Yes, we provide professional service staff for buffet service and can arrange additional staff as needed.</p>
+                                    </div>
+
+                                    <div style="background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                        <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 1rem;">Q: Can you accommodate dietary restrictions?</h3>
+                                        <p style="color: #666; line-height: 1.8;">A: Absolutely. We can prepare vegetarian, vegan, gluten-free, and nut-free options upon request.</p>
+                                    </div>
+
+                                    <div style="background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                        <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 1rem;">Q: Is all your meat halal certified?</h3>
+                                        <p style="color: #666; line-height: 1.8;">A: Yes, all our meats are certified halal and sourced from trusted suppliers.</p>
+                                    </div>
+
+                                    <div style="background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                        <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 1rem;">Q: Do you travel outside of Markham?</h3>
+                                        <p style="color: #666; line-height: 1.8;">A: Yes, we serve the entire Greater Toronto Area including Toronto, Vaughan, Richmond Hill, Scarborough, and Mississauga.</p>
+                                    </div>
+
+                                    <div style="background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                        <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 1rem;">Q: Can we do a tasting before booking?</h3>
+                                        <p style="color: #666; line-height: 1.8;">A: Tastings are available for events with 100+ guests. A small fee may apply which will be credited toward your final invoice.</p>
+                                    </div>
+
+                                    <div style="background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                        <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 1rem;">Q: What if we need to change our guest count?</h3>
+                                        <p style="color: #666; line-height: 1.8;">A: We understand plans change. Please provide final guest count 5 days before the event. We can accommodate increases up to 10% of the original count.</p>
+                                    </div>
+
+                                    <div style="background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                        <h3 style="font-size: 1.3rem; color: #667eea; margin-bottom: 1rem;">Q: Do you provide tables, chairs, and linens?</h3>
+                                        <p style="color: #666; line-height: 1.8;">A: We focus on food and service, but we're happy to coordinate with rental companies on your behalf.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+        <!-- Contact Page -->
+        <record id="contact_page" model="ir.ui.view">
+            <field name="name">menu.contact.page</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="menu_management.contact_page">
+                    <t t-call="website.layout">
+                        <div id="wrap" class="oe_structure">
+                            <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 3rem 2rem;">
+                                <div style="text-align: center; margin-bottom: 4rem;">
+                                    <h1 style="font-size: 3rem; font-weight: 800; color: #333; margin-bottom: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Contact Us</h1>
+                                    <p style="font-size: 1.3rem; color: #666; max-width: 800px; margin: 0 auto;">Serving Markham and the Greater Toronto Area</p>
+                                </div>
+
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 3rem;">
+                                    <h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center;">Food Temptations</h2>
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; text-align: center;">
+                                        <div>
+                                            <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">📞 Phone</h3>
+                                            <p style="opacity: 0.95;">[Your Phone Number]</p>
+                                        </div>
+                                        <div>
+                                            <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">✉️ Email</h3>
+                                            <p style="opacity: 0.95;">[Your Email Address]</p>
+                                        </div>
+                                        <div>
+                                            <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">🌐 Website</h3>
+                                            <p style="opacity: 0.95;">[Your Website]</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 3rem;">
+                                    <h2 style="font-size: 2rem; color: #333; margin-bottom: 1.5rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem;">Business Hours</h2>
+                                    <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px;">
+                                        <p style="font-size: 1.1rem; color: #666; line-height: 2;"><strong>Monday - Friday:</strong> 9:00 AM - 7:00 PM</p>
+                                        <p style="font-size: 1.1rem; color: #666; line-height: 2;"><strong>Saturday:</strong> 10:00 AM - 6:00 PM</p>
+                                        <p style="font-size: 1.1rem; color: #666; line-height: 2;"><strong>Sunday:</strong> By Appointment</p>
+                                    </div>
+                                </div>
+
+                                <div style="background: #f8f9fa; padding: 2.5rem; border-radius: 15px; text-align: center;">
+                                    <h2 style="font-size: 1.8rem; color: #333; margin-bottom: 1rem;">Follow Us</h2>
+                                    <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                                        <div>
+                                            <p style="color: #666; margin-bottom: 0.5rem;"><strong>Instagram:</strong></p>
+                                            <p style="color: #667eea;">@foodtemptations</p>
+                                        </div>
+                                        <div>
+                                            <p style="color: #666; margin-bottom: 0.5rem;"><strong>Facebook:</strong></p>
+                                            <p style="color: #667eea;">/foodtemptationscatering</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px;">
+                                    <p style="font-size: 1.2rem; margin-bottom: 1rem;">Let Food Temptations bring authentic flavors and exceptional service to your next event.</p>
+                                    <p style="font-size: 1.1rem; opacity: 0.95;">Contact us today for a free consultation and custom quote!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </field>
+    </record>
     </data>
 </odoo>
