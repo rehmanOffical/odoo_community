@@ -10,6 +10,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/menu_views.xml',
+        'views/sale_order_calendar_views.xml',
         'views/website_menu_templates.xml',
         'data/menu_demo.xml',
         'data/website_menu_link.xml',

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+import re
+from datetime import datetime
 
 
 class MenuCategory(models.Model):
@@ -124,7 +126,7 @@ class MenuItem(models.Model):
 
     # Recipe Information
     recipe_id = fields.Many2one(
-        'recipe.recipe', string='Recipe', 
+        'recipe.recipe', string='Recipe',
         help='Link to the recipe for this menu item')
 
     # Related Information
@@ -182,3 +184,58 @@ class RecipeRecipe(models.Model):
             'view_mode': 'list,form',
             'target': 'current',
         }
+
+
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    delivery_date = fields.Date(
+        'Delivery Date',
+        help='Scheduled delivery date for the order'
+    )
+    delivery_time = fields.Char(
+        'Delivery Time',
+        help='Scheduled delivery time for the order'
+    )
+
+    def _extract_delivery_fields(self, values):
+        """Populate delivery_date/time from note when missing."""
+        if not isinstance(values, dict):
+            return values
+
+        note = values.get('note')
+        if note:
+            if not values.get('delivery_date'):
+                date_match = re.search(
+                    r'Delivery Date:\s*(\d{4}-\d{2}-\d{2})', note)
+                if date_match:
+                    try:
+                        values['delivery_date'] = datetime.strptime(
+                            date_match.group(1), '%Y-%m-%d').date()
+                    except ValueError:
+                        pass
+
+            if not values.get('delivery_time'):
+                time_match = re.search(r'Delivery Time:\s*([^\n]+)', note)
+                if time_match:
+                    values['delivery_time'] = time_match.group(1).strip()
+
+        return values
+
+    @api.model
+    def create(self, vals):
+        """Override create to support both dict and list inputs."""
+        if isinstance(vals, list):
+            cleaned_vals = [self._extract_delivery_fields(
+                item) for item in vals]
+            return super(SaleOrder, self).create(cleaned_vals)
+
+        cleaned_vals = self._extract_delivery_fields(vals)
+        return super(SaleOrder, self).create(cleaned_vals)
+
+    def write(self, vals):
+        """Override write to extract delivery_date from note if note is updated"""
+        if 'note' in vals and not vals.get('delivery_date') or not vals.get('delivery_time'):
+            self._extract_delivery_fields(vals)
+
+        return super(SaleOrder, self).write(vals)

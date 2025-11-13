@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Sale Order Calendar View to show orders by delivery date -->
+    <record id="view_sale_order_calendar_inherit" model="ir.ui.view">
+        <field name="name">sale.order.calendar.delivery.date</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sale_order_calendar"/>
+        <field name="arch" type="xml">
+            <calendar position="replace">
+                <calendar string="Delivery Calendar" create="0" mode="month" date_start="delivery_date" color="partner_id" event_limit="10" quick_create="0">
+                    <field name="currency_id" invisible="1"/>
+                    <field name="state" filters="1"/>
+                    <field name="partner_id" avatar_field="avatar_128" options="{'icon': 'fa fa-users'}"/>
+                    <field name="amount_total" widget="monetary"/>
+                    <field name="delivery_time"/>
+                    <field name="name"/>
+                </calendar>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Add filter for delivery date in search view -->
+    <record id="view_sales_order_filter_delivery_date" model="ir.ui.view">
+        <field name="name">sale.order.filter.delivery.date</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <filter name="my_sale_orders_filter" position="after">
+                <filter string="Delivery Date" name="delivery_date_filter" date="delivery_date"/>
+            </filter>
+        </field>
+    </record>
+</odoo>
+
